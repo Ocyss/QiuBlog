@@ -1,31 +1,69 @@
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <n-config-provider
+    :locale="zhCN"
+    :theme="getDarkTheme"
+    :theme-overrides="getThemeOverrides"
+    :date-locale="dateZhCN"
+  >
+    <AppProvider>
+      <RouterView />
+    </AppProvider>
+  </n-config-provider>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
+<script setup>
+import AppProvider from "@/components/Application.vue";
+import { useDesignSettingStore } from "@/store/modules/designSetting.js";
+import { zhCN, dateZhCN, darkTheme } from "naive-ui";
+import { lighten } from "@/utils/index";
+const designStore = useDesignSettingStore();
+
+const getThemeOverrides = computed(() => {
+  const appTheme = designStore.appTheme;
+  const lightenStr = lighten(designStore.appTheme, 6);
+  return {
+    common: {
+      primaryColor: appTheme,
+      primaryColorHover: lightenStr,
+      primaryColorPressed: lightenStr,
+    },
+    LoadingBar: {
+      colorLoading: appTheme,
+    },
+  };
+});
+
+const getDarkTheme = computed(() =>
+  designStore.darkTheme ? darkTheme : undefined
+);
+</script>
+
+<style lang="scss" scoped>
+#main {
+  display: flex;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+.content {
+  width: 100%;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(255, 76, 162);
+}
+</style>
+
+<style lang="scss">
+@import "styles/index.scss";
+
+* {
+  margin: 0;
+  padding: 0;
 }
 </style>
