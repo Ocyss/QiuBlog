@@ -3,13 +3,15 @@
     <n-dialog-provider>
       <n-notification-provider>
         <n-message-provider>
-          <slot name="default"></slot>
+          <layoutVue><slot name="default"></slot></layoutVue>
         </n-message-provider>
       </n-notification-provider>
     </n-dialog-provider>
   </n-loading-bar-provider>
 </template>
 
-<script setup></script>
+<script setup>
+import layoutVue from "@/layout/index.vue";
+</script>
 
 <style scoped></style>

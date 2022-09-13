@@ -1,7 +1,10 @@
 <template>
   <div class="logo">
-    <img src="/Logo.png" alt="" />
-    <h2 v-show="!collapsed" class="title">L4V3</h2>
+    <img
+      src="/favicons/android-icon-192x192.png"
+      alt=""
+      :class="collapsed ? 'small' : 'big'"
+    />
   </div>
 </template>
 
@@ -17,18 +20,18 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 64px;
-  line-height: 64px;
   overflow: hidden;
   white-space: nowrap;
-
+  width: 100%;
   img {
+    margin-top: 1rem;
     width: auto;
-    height: 45px;
   }
-
-  .title {
-    margin-bottom: 0;
+  .big {
+    height: 120px;
+  }
+  .small {
+    height: 60px;
   }
 }
 </style>

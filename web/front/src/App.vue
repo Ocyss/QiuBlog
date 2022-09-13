@@ -45,25 +45,26 @@ const getDarkTheme = computed(() =>
 
 .content {
   width: 100%;
-  overflow-y: scroll;
-  scroll-behavior: smooth;
-  overscroll-behavior: contain;
-}
-
-::-webkit-scrollbar {
-  width: 5px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgb(255, 76, 162);
 }
 </style>
 
 <style lang="scss">
 @import "styles/index.scss";
 
+body {
+  overflow-y: hidden;
+
+  overflow-x: hidden;
+}
 * {
   margin: 0;
   padding: 0;
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(255, 76, 162);
 }
 </style>

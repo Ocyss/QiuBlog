@@ -7,9 +7,9 @@ const { darkTheme, appTheme, appThemeList } = designSetting;
 export const useDesignSettingStore = defineStore({
   id: "app-design-setting",
   state: () => ({
-    darkTheme,
-    appTheme,
-    appThemeList,
+    darkTheme, //深色主题
+    appTheme, //系统风格
+    appThemeList, //系统内置风格
   }),
   getters: {
     getDarkTheme() {

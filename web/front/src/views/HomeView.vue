@@ -1,41 +1,73 @@
 <template>
-  <div>
-    <n-space>
-      <n-button @click="info"> 信息（Hover不消失） </n-button>
-      <n-button @click="error"> 错误 </n-button>
-      <n-button @click="warning"> 警告 </n-button>
-      <n-button @click="success"> 成功 </n-button>
-      <n-button @click="loading"> 加载中 </n-button>
-    </n-space>
-  </div>
+  <rightColumnVue>
+    <template #content>
+      <div class="popular">
+        <n-carousel
+          autoplay
+          draggable
+          show-arrow
+          :space-between="20"
+          effect="custom"
+          :transition-props="{ name: 'creative' }"
+          trigger="hover"
+          :interval="2000"
+        >
+          <div class="article" v-for="(item, index) in 10">
+            <n-image
+              preview-disabled
+              class="carousel-img"
+              :src="`https://cdn.seovx.com/ha/?mom=302&a=${item}`"
+              object-fit="cover"
+            />
+          </div>
+        </n-carousel>
+      </div>
+      <n-tabs :bar-width="28" type="line" class="custom-tabs">
+        <n-tab-pane name="oasis" tab="全部"><PostVue /></n-tab-pane>
+        <n-tab-pane name="the beatles" tab="Python">Hey Jude</n-tab-pane>
+        <n-tab-pane name="jay chou" tab="Golang">七里香</n-tab-pane>
+      </n-tabs>
+    </template>
+    <template #column>
+      <rightContentVue />
+    </template>
+  </rightColumnVue>
 </template>
 
 <script setup>
-import { defineComponent } from "vue";
 import { useMessage } from "naive-ui";
+import rightColumnVue from "@/layout/rightColumn.vue";
+import PostVue from "@/components/Post.vue";
+import rightContentVue from "@/components/home/rightContent.vue";
 const message = useMessage();
-
-function info() {
-  message.info("I don't know why nobody told you how to unfold your love", {
-    keepAliveOnHover: true,
-  });
-}
-function error() {
-  message.error("Once upon a time you dressed so fine");
-}
-function warning() {
-  message.warning("How many roads must a man walk down");
-}
-function success() {
-  message.success(
-    "'Cause you walked hand in hand With another man in my place"
-  );
-}
-function loading() {
-  message.loading(
-    "If I were you, I will realize that I love you more than any other guy"
-  );
-}
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+$popularHeight: 320px;
+.popular {
+  width: 100%;
+  height: $popularHeight;
+  vertical-align: middle;
+  .article {
+    display: flex;
+    height: $popularHeight;
+  }
+}
+.carousel-img {
+  width: 100%;
+}
+.carousel-img :deep(img) {
+  width: 100%;
+}
+
+:deep(.creative-enter-from),
+:deep(.creative-leave-to) {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+:deep(.creative-enter-active),
+:deep(.creative-leave-active) {
+  transition: all 0.3s ease;
+}
+</style>

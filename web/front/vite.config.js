@@ -39,13 +39,22 @@ export default defineConfig({
     alias,
   },
   server: {
-    host: "127.0.0.1",
-    port: 3000,
+    host: "0.0.0.0",
+    port: 6879,
     proxy: {
       "/api": {
         target: "http://127.0.0.1:5000",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        modifyVars: {},
+        javascriptEnabled: true,
+        additionalData: `@import "src/styles/index.scss";`,
       },
     },
   },
