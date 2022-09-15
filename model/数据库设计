@@ -1,0 +1,6 @@
+User:用户表
+Article:文章表
+Category:分类表
+    Menuchild:菜单子项表
+Tags:标签表
+    ArticleTags:标签文章对应表
