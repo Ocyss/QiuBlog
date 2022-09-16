@@ -13,11 +13,12 @@ type Category struct {
 
 // Menuchild 菜单子项表
 type Menuchild struct {
-	ID    uint   `gorm:"primarykey"`                                                  //菜单id
-	Name  string `gorm:"comment:菜单名;not null;unique" json:"name" binding:"required"`  //菜单名
-	Ename string `gorm:"comment:英文名;not null;unique" json:"ename" binding:"required"` //英文名
-	Logo  string `gorm:"comment:图标名;not null" json:"logo" binding:"required"`         //图标名字
-	Link  string `gorm:"comment:路由名;not null;unique" json:"link" binding:"required"`  //路由名
+	ID    uint   `gorm:"primarykey"`                                                        //菜单id
+	Sort  uint   `gorm:"comment:排序字段;unique"`                                               //排序字段
+	Name  string `gorm:"comment:菜单名;not null;unique" json:"name" binding:"required"`        //菜单名
+	Ename string `gorm:"comment:英文名;not null;unique" json:"ename" binding:"required"`       //英文名
+	Logo  string `gorm:"type:longtext;comment:图标名;not null" json:"logo" binding:"required"` //图标
+	Link  string `gorm:"comment:路由名;not null;unique" json:"link" binding:"required"`        //路由名
 }
 
 // AddMenu 添加菜单子项

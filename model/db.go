@@ -34,7 +34,10 @@ func InitDb() {
 	if err != nil {
 		panic(fmt.Sprintf("数据库初始化配置失败,%s", err))
 	}
-	_ = db.AutoMigrate(&User{}, &Article{}, &Menuchild{}, &Tags{}, &Category{}, &ArticleTags{})
+	err = db.AutoMigrate(&User{}, &Article{}, &Menuchild{}, &Tags{}, &Category{}, &ArticleTags{})
+	if err != nil {
+		panic(fmt.Sprintf("数据库迁移失败,%s", err))
+	}
 	// SetMaxIdleConns 设置空闲连接池中连接的最大数量
 	sqlDB.SetMaxIdleConns(10)
 	// SetMaxOpenConns 设置打开数据库连接的最大数量。

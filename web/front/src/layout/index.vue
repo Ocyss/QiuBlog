@@ -48,8 +48,9 @@ import LogoVue from "./components/Logo.vue";
 import HeaderVue from "./components/Header.vue";
 import { ref, onMounted } from "vue";
 import { projectSetting } from "@/store/modules/projectSetting";
-const settingStore = projectSetting();
+import axios from "axios";
 
+const settingStore = projectSetting();
 const isMobile = computed({
   get: () => settingStore.getIsMobile,
   set: (val) => settingStore.setIsMobile(val),
