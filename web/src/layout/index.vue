@@ -13,10 +13,7 @@
       @expand="collapsed = false"
       bordered
     >
-      <div class="leftMenu" style="position: absolute">
-        <LogoVue :collapsed="collapsed" />
-        <MenuVue />
-      </div>
+      <slot name="sider" :collapsed="collapsed"></slot>
     </n-layout-sider>
 
     <n-drawer
@@ -25,15 +22,11 @@
       placement="left"
       class="layout-side-drawer"
     >
-      <div class="leftMenu" style="position: absolute">
-        <LogoVue :collapsed="false" />
-        <MenuVue />
-      </div>
+      <slot name="drawer" :collapsed="collapsed"></slot>
     </n-drawer>
-
     <n-layout>
       <n-layout-header class="layout-header" bordered>
-        <HeaderVue @collapsed="collapsed = !collapsed" />
+        <slot name="header" :collapsed="collapsed"></slot>
       </n-layout-header>
       <n-layout-content class="layout-content">
         <slot name="default"></slot>
@@ -43,12 +36,8 @@
 </template>
 
 <script setup>
-import MenuVue from "./components/Menu.vue";
-import LogoVue from "./components/Logo.vue";
-import HeaderVue from "./components/Header.vue";
 import { ref, onMounted } from "vue";
 import { projectSetting } from "@/store/modules/projectSetting";
-import axios from "axios";
 
 const settingStore = projectSetting();
 const isMobile = computed({
@@ -118,6 +107,7 @@ onMounted(() => {
 
 .layout-content {
   flex: auto;
+  padding: 20px;
   height: 93vh;
 }
 .leftMenu {

@@ -1,18 +1,25 @@
 <template>
-  <n-config-provider
-    :locale="zhCN"
-    :theme="getDarkTheme"
-    :theme-overrides="getThemeOverrides"
-    :date-locale="dateZhCN"
-  >
-    <AppProvider>
-      <RouterView />
-    </AppProvider>
-  </n-config-provider>
+  <div id="app" v-wechat-title="$route.meta.title">
+    <n-config-provider
+      :locale="zhCN"
+      :theme="getDarkTheme"
+      :theme-overrides="getThemeOverrides"
+      :date-locale="dateZhCN"
+    >
+      <n-loading-bar-provider>
+        <n-dialog-provider>
+          <n-notification-provider>
+            <n-message-provider>
+              <RouterView />
+            </n-message-provider>
+          </n-notification-provider>
+        </n-dialog-provider>
+      </n-loading-bar-provider>
+    </n-config-provider>
+  </div>
 </template>
 
 <script setup>
-import AppProvider from "@/components/Application.vue";
 import { useDesignSettingStore } from "@/store/modules/designSetting.js";
 import { zhCN, dateZhCN, darkTheme } from "naive-ui";
 import { lighten } from "@/utils/index";

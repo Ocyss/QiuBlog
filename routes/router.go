@@ -9,8 +9,9 @@ import (
 func InitRouter() {
 	gin.SetMode(utils.AppMode)
 	r := gin.Default()
-
+	r.MaxMultipartMemory = 8 << 20 // 8 MiB
 	router := r.Group("api/v1")
+
 	{
 		//文章
 		router.POST("article/add", v1.ReleaseArticle)  //发布文章
@@ -22,8 +23,11 @@ func InitRouter() {
 		//菜单子项
 		router.POST("menuchild/add", v1.AddMenuchild) //添加菜单子项
 		router.GET("menuchild", v1.GetMenuchild)      //获取菜单子项
+		router.PUT("menuchild/set", v1.SetMenuchild)  //设置菜单子项
 		//分类
 		router.POST("category/add", v1.AddCategory) //添加分类
+		//上传
+		router.POST("upload/image", v1.Upload) //上传文件
 	}
 	err := r.Run(utils.HttpPort)
 	if err != nil {
