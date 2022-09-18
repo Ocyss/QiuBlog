@@ -7,8 +7,10 @@ import (
 
 // Category 分类表
 type Category struct {
-	ID   uint   `gorm:"primarykey"`
-	Name string `gorm:"type:varchar(255);not null;unique;comment:分类名"`
+	ID        uint      `gorm:"primarykey"`
+	Name      string    `gorm:"type:varchar(255);not null;unique;comment:分类名" json:"name"`
+	Menuchild Menuchild `gorm:"foreignKey:Mid;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;comment:菜单子项"`
+	Mid       uint      `gorm:"type:int;comment:菜单子项ID" json:"mid,omitempty"`
 }
 
 // Menuchild 菜单子项表
@@ -31,6 +33,7 @@ type SetMenuChild struct {
 	Link  string `json:"link,omitempty"`
 }
 
+// SetMenu 设置菜单子项
 func SetMenu(dataL []SetMenuChild) int {
 	tx := db.Begin()
 	for _, data := range dataL {

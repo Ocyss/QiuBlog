@@ -1,0 +1,34 @@
+.List {
+  width: 210px;
+  min-width: 210px;
+  height: 85vh;
+  .n-spin-container {
+    overflow: scroll;
+    height: 500px;
+  }
+}
+
+.listcontent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.listname {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  span {
+    font-size: 12px;
+  }
+}
+
+.n-list-item {
+  :deep(.n-list-item__main) {
+    height: 41.58px;
+  }
+}
+
+.checked {
+  background-color: rgb(243, 243, 245);
+}
