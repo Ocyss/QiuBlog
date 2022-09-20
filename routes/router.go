@@ -26,6 +26,7 @@ func InitRouter() {
 		router.PUT("menuchild/set", v1.SetMenuchild)  //设置菜单子项
 		//分类
 		router.POST("category/add", v1.AddCategory) //添加分类
+		router.GET("category", v1.GetCategory)      //获取分类
 		//上传
 		router.POST("upload/image", v1.Upload) //上传文件
 	}

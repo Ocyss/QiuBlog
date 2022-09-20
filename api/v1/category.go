@@ -17,3 +17,14 @@ func AddCategory(c *gin.Context) {
 		"message": errmsg.GetErrMsg(code),
 	})
 }
+
+// GetCategory 获取分类
+func GetCategory(c *gin.Context) {
+	data := model.GetCategory()
+	code = errmsg.SUCCESS
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"message": errmsg.GetErrMsg(code),
+		"data":    data,
+	})
+}

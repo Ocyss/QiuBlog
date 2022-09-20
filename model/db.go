@@ -9,13 +9,13 @@ import (
 	"time"
 )
 
-var db *gorm.DB
+var Db *gorm.DB
 var err error
 
 func InitDb() {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		utils.DbUser, utils.DbPassWord, utils.DbHost, utils.DbPort, utils.DbName)
-	db, err = gorm.Open(mysql.New(mysql.Config{
+	Db, err = gorm.Open(mysql.New(mysql.Config{
 		DSN:                       dsn,
 		DefaultStringSize:         256,  // string 类型字段的默认长度
 		DisableDatetimePrecision:  true, // 禁用 datetime 精度，MySQL 5.6 之前的数据库不支持
@@ -30,11 +30,11 @@ func InitDb() {
 	if err != nil {
 		panic(fmt.Sprintf("数据库连接失败,%s", err))
 	}
-	sqlDB, err := db.DB()
+	sqlDB, err := Db.DB()
 	if err != nil {
 		panic(fmt.Sprintf("数据库初始化配置失败,%s", err))
 	}
-	err = db.AutoMigrate(&User{}, &Article{}, &Menuchild{}, &Tags{}, &Category{}, &ArticleTags{})
+	err = Db.AutoMigrate(&User{}, &Article{}, &Menuchild{}, &Tags{}, &Category{}, &ArticleTags{})
 	if err != nil {
 		panic(fmt.Sprintf("数据库迁移失败,%s", err))
 	}

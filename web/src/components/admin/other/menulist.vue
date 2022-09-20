@@ -5,7 +5,7 @@
       <n-spin :show="setMenuShow">
         <n-list-item
           :class="menuValue.ename == 'home' ? 'checked' : ''"
-          @click="menuValue = { id: 0, name: '主页', ename: 'home', sort: -1 }"
+          @click="selectMenu({ id: 0, name: '主页', ename: 'home', sort: -1 })"
         >
           <div class="home">
             <n-icon size="26" v-html="home.logo" />
@@ -27,12 +27,12 @@
             <n-list-item
               :class="menuValue.id == element.ID ? 'checked' : ''"
               @click="
-                menuValue = {
+                selectMenu({
                   id: element.ID,
                   name: element.name,
                   ename: element.ename,
                   sort: index,
-                }
+                })
               "
             >
               <div class="listcontent">
@@ -77,7 +77,9 @@
         </n-space>
       </template>
     </n-list>
-    <div class="cate"><categoryVue :menuValue="menuValue" /></div>
+    <div class="cate">
+      <categoryVue ref="categoryRef" />
+    </div>
   </div>
   <n-modal
     v-model:show="showModalnew"
@@ -132,7 +134,7 @@ let savedata = [];
 const setMenuShow = ref(false);
 const message = useMessage();
 const menuValue = ref({ id: 0, name: "主页", ename: "home", sort: -1 });
-
+const categoryRef = ref();
 function newMenu() {
   menulist.value.push(newvalue.value);
   newvalue.value = {
@@ -216,6 +218,10 @@ function saveMenu() {
     });
 }
 
+function selectMenu(data) {
+  menuValue.value = data;
+  categoryRef.value?.toggleMenu(data);
+}
 onMounted(() => {
   axios.get("/api/v1/menuchild").then((res) => {
     if (res.data.status == 200) {

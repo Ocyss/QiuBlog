@@ -2,7 +2,6 @@ package model
 
 import (
 	"context"
-	"fmt"
 	"github.com/qiniu/go-sdk/v7/auth/qbox"
 	"github.com/qiniu/go-sdk/v7/storage"
 	"mime/multipart"
@@ -22,7 +21,6 @@ func UpLoadFile(key string, file multipart.File, fileSize int64) (string, int) {
 	mac := qbox.NewMac(AccessKey, SecretKey)
 	upToken := putPolicy.UploadToken(mac)
 	region, _ := storage.GetRegion(AccessKey, Bucket)
-	fmt.Println(region)
 	cfg := storage.Config{
 		Region:        region,
 		UseCdnDomains: false,

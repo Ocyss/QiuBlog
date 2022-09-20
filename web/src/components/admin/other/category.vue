@@ -3,13 +3,16 @@
     <template #header>
       <h2>
         分类管理
-        <span style="font-size: 10px">({{ props.menuValue.name }})</span>
+        <span style="font-size: 10px">({{ menuValue.name }})</span>
         ：
       </h2>
     </template>
     <n-spin :show="cateSpin">
+      <n-list-item v-if="menuValue.name == '主页'">
+        <div>下列内容不显示在主页</div>
+      </n-list-item>
       <draggable
-        v-model="categoryList"
+        v-model="CheckList"
         group="cat"
         @start="drag = true"
         @end="drag = false"
@@ -43,16 +46,23 @@
     </n-spin>
     <template #footer>
       <n-space>
-        <n-button size="small" secondary strong>保存</n-button>
-        <n-button size="small" secondary strong @click="AddCategory">
-          新建
-        </n-button>
+        <n-button size="small" secondary strong @click="save">保存</n-button>
+        <n-popconfirm @positive-click="AddCategory" :show-icon="false">
+          <template #trigger>
+            <n-button size="small" secondary strong>新建</n-button>
+          </template>
+          <n-input v-model:value="newName" type="text" placeholder="输入name" />
+        </n-popconfirm>
         <n-button size="small" secondary strong>重置</n-button>
       </n-space>
     </template>
   </n-list>
   <n-list class="List" hoverable clickable bordered>
-    <template #header><h2>未使用类别：</h2></template>
+    <template #header>
+      <h2>
+        {{ menuValue.name == "主页" ? "所有类别：" : "未使用类别：" }}
+      </h2>
+    </template>
     <n-spin :show="cateSpin">
       <draggable
         v-model="uncheckedList"
@@ -74,17 +84,20 @@
 </template>
 <script setup>
 import draggable from "vuedraggable";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { Pencil, Trash } from "@vicons/ionicons5";
-const props = defineProps(["menuValue"]);
-const setName = ref("");
-const menuValue = computed(() => {
-  get: () => props.menuValue;
-});
+import axios from "axios";
+import { useMessage } from "naive-ui";
 
+const message = useMessage();
+const menuValue = ref({ id: 0, name: "主页", ename: "home", sort: -1 });
+const setName = ref("");
+const newName = ref("");
 const drag = ref(false);
 const cateSpin = ref(false);
-const categoryList = ref([
+
+const categoryList = ref([]);
+const CheckList = ref([
   { name: "a1" },
   { name: "a2" },
   { name: "a3" },
@@ -98,9 +111,35 @@ const uncheckedList = ref([
 ]);
 
 function setNamepositive(index) {
-  categoryList.value[index].name = setName.value;
+  CheckList.value[index].name = setName.value;
 }
-function AddCategory() {}
+function AddCategory() {
+  if (menuValue.value.name == "主页") {
+    uncheckedList.value.push({ name: newName.value });
+  } else {
+    CheckList.value.push({ name: newName.value });
+  }
+  categoryList.value.push({ name: newName.value, ty: "new" });
+  newName.value = "";
+}
+
+function toggleMenu(data) {
+  menuValue.value = data;
+}
+function save() {
+  message.error("未完成！！！！！！！！！！");
+}
+
+defineExpose({ toggleMenu });
+onMounted(() => {
+  axios.get("/api/v1/category").then((res) => {
+    if (res.data.status == 200) {
+      categoryList.value = res.data.data;
+    } else {
+      message.error(res.data.message);
+    }
+  });
+});
 </script>
 
 <style lang="scss" scoped>
