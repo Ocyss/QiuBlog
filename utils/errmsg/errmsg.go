@@ -2,9 +2,9 @@ package errmsg
 
 //goland:noinspection ALL
 const (
-	SUCCESS    = 200
-	ERROR      = 500
-	ERROR_JSON = 601
+	SUCCESS     = 200
+	ERROR       = 500
+	ERROR_PARAM = 601
 	// code = 1000  User      用户表
 
 	// code = 2000  Tags      标签表
@@ -26,7 +26,7 @@ const (
 var codemsg = map[int]string{
 	SUCCESS:           "OK",
 	ERROR:             "ERROR",
-	ERROR_JSON:        "JSON参数不对",
+	ERROR_PARAM:       "参数不对",
 	ERROR_PARM_SO:     "缺少必要参数!",
 	ERROR_FILE_WRONG:  "上传文件/格式有误",
 	ERROR_CLASS_WRONG: "上传类型不对",

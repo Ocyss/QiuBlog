@@ -37,7 +37,7 @@
           </n-upload>
         </n-space>
 
-        <n-dynamic-tags v-model:value="content.tags" />
+        <n-dynamic-tags v-model:value="tags" />
         <Toolbar
           style="border-bottom: 1px solid #ccc"
           :editor="editorRef"
@@ -64,6 +64,7 @@ import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import adminVue from "@/layout/admin.vue";
 import axios from "axios";
 import { useMessage } from "naive-ui";
+import { computed } from "@vue/reactivity";
 const message = useMessage();
 const editorRef = shallowRef();
 const mode = ref("default");
@@ -87,9 +88,15 @@ const editorConfig = {
     },
   },
 };
+
 const content = ref({
-  tags: [],
-  cid: null,
+  tags: computed({
+    get: () =>
+      tags.value.map((item) => {
+        return { name: item };
+      }),
+  }),
+  cid: undefined,
   desc: "",
   title: "",
   content: "",
@@ -135,6 +142,7 @@ const customRequest = ({
       onError();
     });
 };
+
 function send() {
   axios.post("/api/v1/article/add", content.value).then((res) => {
     console.log(res.data);
@@ -149,7 +157,7 @@ onBeforeUnmount(() => {
 onMounted(() => {
   axios.get("/api/v1/menuchild").then((res) => {
     if (res.data.status == 200) {
-      axios.get("/api/v1/category").then((res2) => {
+      axios.get("/api/v1/category?show=false").then((res2) => {
         if (res2.data.status == 200) {
           res.data.data.map((item) => {
             menuoptions.value.push({
@@ -157,8 +165,8 @@ onMounted(() => {
               label: item.name,
               children: res2.data.data
                 .map((item2) => {
-                  if (item2.mid == item.ID) {
-                    return { value: item2.ID, label: item2.name };
+                  if (item2.mid == item.id) {
+                    return { value: item2.id, label: item2.name };
                   }
                 })
                 .filter(Boolean),

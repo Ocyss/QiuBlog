@@ -7,21 +7,22 @@ import (
 
 // Category 分类表
 type Category struct {
-	ID        uint      `gorm:"primarykey"`
-	Name      string    `gorm:"type:varchar(255);not null;unique;comment:分类名" json:"name"`
-	Menuchild Menuchild `gorm:"foreignKey:Mid;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;comment:菜单子项"`
-	Mid       uint      `gorm:"type:int;comment:菜单子项ID" json:"mid,omitempty"`
-	Homeshow  bool      `gorm:"type:bool;comment:主页是否显示;default:true;not null;" json:"homeshow,omitempty"`
+	ID       uint      `gorm:"primarykey" json:"id"`
+	Name     string    `gorm:"type:varchar(255);not null;unique;comment:分类名" json:"name"`
+	Mid      uint      `gorm:"type:int;comment:菜单子项ID" json:"mid,omitempty"`
+	Homeshow bool      `gorm:"type:bool;comment:主页是否显示;default:true;not null;" json:"homeshow,omitempty"`
+	Articles []Article `gorm:"foreignkey:Cid"`
 }
 
 // Menuchild 菜单子项表
 type Menuchild struct {
-	ID    uint   `gorm:"primarykey"`                                     //菜单id
-	Sort  uint   `gorm:"comment:排序字段"`                                   //排序字段
-	Name  string `gorm:"comment:菜单名;not null;unique" json:"name"`        //菜单名
-	Ename string `gorm:"comment:英文名;not null;unique" json:"ename"`       //英文名
-	Logo  string `gorm:"type:longtext;comment:图标名;not null" json:"logo"` //图标
-	Link  string `gorm:"comment:路由名;not null;unique" json:"link"`        //路由名
+	ID    uint       `gorm:"primarykey" json:"id"`                           //菜单id
+	Sort  uint       `gorm:"comment:排序字段" json:"sort"`                       //排序字段
+	Name  string     `gorm:"comment:菜单名;not null;unique" json:"name"`        //菜单名
+	Ename string     `gorm:"comment:英文名;not null;unique" json:"ename"`       //英文名
+	Logo  string     `gorm:"type:longtext;comment:图标名;not null" json:"logo"` //图标
+	Link  string     `gorm:"comment:路由名;not null;unique" json:"link"`        //路由名
+	Cids  []Category `gorm:"foreignkey:Mid"`
 }
 
 type SetMenuChild struct {
@@ -137,9 +138,20 @@ func AddCategory(data *Category) int {
 }
 
 // GetCategory 获取分类
-func GetCategory() []Category {
-	var data []Category
-	err := Db.Find(&data).Error
+func GetCategory(homeshow bool) []struct {
+	ID   uint   `json:"id"`
+	Name string `json:"name"`
+	Mid  uint   `json:"mid"`
+} {
+	var data []struct {
+		ID   uint   `json:"id"`
+		Name string `json:"name"`
+		Mid  uint   `json:"mid"`
+	}
+	err := Db.Model(&Category{}).
+		Select("ID", "mid", "name").
+		Where(&Category{Homeshow: homeshow}).
+		Find(&data).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil
 	}
@@ -147,6 +159,15 @@ func GetCategory() []Category {
 }
 
 // GetMidCid 根据mid获取所有cid
-func GetMidCid(mid int) []int {
-
+func GetMidCid(mid int) []uint {
+	var data []Category
+	var r []uint
+	err := Db.Where("mid = ?", mid).Find(&data).Error
+	if err != nil {
+		return nil
+	}
+	for _, item := range data {
+		r = append(r, item.ID)
+	}
+	return r
 }
