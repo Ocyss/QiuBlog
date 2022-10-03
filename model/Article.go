@@ -10,7 +10,7 @@ type Article struct {
 	gorm.Model
 	Title   string `gorm:"type:varchar(64);not null;comment:标题" json:"title"` //标题
 	Img     string `gorm:"type:varchar(128);comment:首图" json:"img"`           //首图
-	Desc    string `gorm:"type:varchar(64);comment:描述" json:"desc"`           //描述
+	Desc    string `gorm:"type:varchar(255);comment:描述" json:"desc"`          //描述
 	Content string `gorm:"type:longtext;comment:内容" json:"content"`           //内容
 	Cid     *int   `gorm:"type:int;comment:分类ID;" json:"cid,omitempty"`       //分类ID
 	Tags    []Tags `gorm:"many2many:article_tags" json:"tags"`
@@ -41,7 +41,6 @@ func GetsArticle(pageSize int, pageNum int, cid *int, cids []int) ([]Article, in
 	var Articles []Article
 	var total int64
 	err := Db.
-		Debug().
 		Preload("Tags").
 		Where(Article{Cid: cid}).
 		Order("created_at desc").

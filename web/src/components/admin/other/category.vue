@@ -132,13 +132,17 @@ function save() {
 
 defineExpose({ toggleMenu });
 onMounted(() => {
-  axios.get("/api/v1/category").then((res) => {
-    if (res.data.status == 200) {
-      categoryList.value = res.data.data;
-    } else {
-      message.error(res.data.message);
-    }
-  });
+  axios
+    .get("/api/v1/category", {
+      params: { show: false },
+    })
+    .then((res) => {
+      if (res.data.status == 200) {
+        categoryList.value = res.data.data;
+      } else {
+        message.error(res.data.message);
+      }
+    });
 });
 </script>
 

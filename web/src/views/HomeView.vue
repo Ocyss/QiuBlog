@@ -13,7 +13,7 @@
             trigger="hover"
             :interval="2000"
           >
-            <div class="article" v-for="(item, index) in 10">
+            <div class="article" v-for="(item, index) in 3">
               <n-image
                 preview-disabled
                 class="carousel-img"
@@ -28,6 +28,7 @@
             :name="citem.name"
             :tab="citem.name"
             v-for="citem in category"
+            v-if="1"
             :key="citem"
           >
             <div
@@ -85,7 +86,7 @@ const PostData = ref({
 
 const category = computed(() => dataStore.getCategory);
 onMounted(() => {
-  dataStore.askCategory();
+  dataStore.askCategory(false);
   axios
     .get("/api/v1/article/list", {
       params: { pagesize: 10, pagenum: 1 },

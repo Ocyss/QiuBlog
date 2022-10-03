@@ -1,5 +1,7 @@
 <template>
-  <adminVue></adminVue>
+  <adminVue>
+    <RouterView />
+  </adminVue>
 </template>
 
 <script setup>

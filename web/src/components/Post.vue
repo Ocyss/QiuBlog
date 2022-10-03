@@ -12,11 +12,21 @@
           <n-icon-wrapper :size="18" :border-radius="15">
             <n-icon :size="13" :component="Calendar" />
           </n-icon-wrapper>
-          <n-time
-            time-zone="Asia/Shanghai"
-            :time="item.created_at"
-            format="yyyy-MM-dd HH:mm:ss"
-          />
+
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <n-time
+                time-zone="Asia/Shanghai"
+                :time="new Date(item.created_at)"
+                type="relative"
+              />
+            </template>
+            <n-time
+              time-zone="Asia/Shanghai"
+              :time="new Date(item.created_at)"
+              format="yyyy-MM-dd HH:mm:ss"
+            />
+          </n-tooltip>
         </div>
         <div class="rightInfo">
           <div style="margin-right: 0.5rem">
@@ -137,13 +147,12 @@ if (props.item.img == "") {
   border-radius: 0.5rem;
   overflow: hidden;
   position: relative;
-
-  ~ .right {
-    flex-direction: row-reverse;
-    .img {
-      clip-path: polygon(6% 0, 100% 0, 100% 100%, 0 100%);
-      -webkit-clip-path: polygon(6% 0, 100% 0, 100% 100%, 0 100%);
-    }
+}
+.right {
+  flex-direction: row-reverse;
+  .img {
+    clip-path: polygon(6% 0, 100% 0, 100% 100%, 0 100%);
+    -webkit-clip-path: polygon(6% 0, 100% 0, 100% 100%, 0 100%);
   }
 }
 .img {

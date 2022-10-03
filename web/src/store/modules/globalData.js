@@ -3,7 +3,7 @@ import axios from "axios";
 export const globalData = defineStore({
   id: "app-global-data",
   state: () => {
-    return { category: [{ id: -1, name: "全部" }] };
+    return { category: [{ id: -1, name: "全部", homeshow: true }] };
   },
   getters: {
     getCategory() {
@@ -11,10 +11,10 @@ export const globalData = defineStore({
     },
   },
   actions: {
-    askCategory() {
+    askCategory(show) {
       axios
         .get("/api/v1/category", {
-          params: { show: true },
+          params: { show: show },
         })
         .then((res) => {
           if (res.data.status == 200) {

@@ -1,67 +1,56 @@
 <template>
-  <adminVue>
-    <div class="article" style="border: 1px solid #ccc">
-      <n-space vertical>
-        <n-space>
-          <n-input
-            v-model:value="content.title"
-            type="text"
-            placeholder="标题"
-          />
-          <n-input
-            v-model:value="content.desc"
-            type="text"
-            placeholder="描述"
-          />
-          <n-cascader
-            v-model:value="content.cid"
-            placeholder="选择发布类别"
-            :options="menuoptions"
-            check-strategy="child"
-            expand-trigger="hover"
-            :show-path="true"
-            :filterable="true"
-            @update:value="handleUpdateValue"
-          />
-          <n-upload
-            action="/api/v1/upload/image"
-            :default-file-list="fileList"
-            list-type="image"
-            accept="image/*"
-            :data="{ class: 'Article' }"
-            :max="1"
-            with-credentials
-            :custom-request="customRequest"
-          >
-            <n-button>上传头图</n-button>
-          </n-upload>
-        </n-space>
-
-        <n-dynamic-tags v-model:value="tags" />
-        <Toolbar
-          style="border-bottom: 1px solid #ccc"
-          :editor="editorRef"
-          :defaultConfig="toolbarConfig"
-          :mode="mode"
+  <div class="article" style="border: 1px solid #ccc">
+    <n-space vertical>
+      <n-space>
+        <n-input v-model:value="content.title" type="text" placeholder="标题" />
+        <n-input v-model:value="content.desc" type="text" placeholder="描述" />
+        <n-cascader
+          v-model:value="content.cid"
+          placeholder="选择发布类别"
+          :options="menuoptions"
+          check-strategy="child"
+          expand-trigger="hover"
+          :show-path="true"
+          :filterable="true"
+          @update:value="handleUpdateValue"
         />
-        <Editor
-          style="height: 500px; overflow-y: hidden"
-          v-model="content.content"
-          :defaultConfig="editorConfig"
-          :mode="mode"
-          @onCreated="handleCreated"
-        />
-        <n-button type="success" @click="send">发布</n-button>
+        <n-upload
+          action="/api/v1/upload/image"
+          :default-file-list="fileList"
+          list-type="image"
+          accept="image/*"
+          :data="{ class: 'Article' }"
+          :max="1"
+          with-credentials
+          :custom-request="customRequest"
+        >
+          <n-button>上传头图</n-button>
+        </n-upload>
       </n-space>
-    </div>
-  </adminVue>
+
+      <n-dynamic-tags v-model:value="tags" />
+      <Toolbar
+        style="border-bottom: 1px solid #ccc"
+        :editor="editorRef"
+        :defaultConfig="toolbarConfig"
+        :mode="mode"
+      />
+      <Editor
+        style="height: 500px; overflow-y: hidden"
+        v-model="content.content"
+        :defaultConfig="editorConfig"
+        :mode="mode"
+        @onCreated="handleCreated"
+      />
+      <n-button type="success" @click="send">发布</n-button>
+    </n-space>
+  </div>
 </template>
 
 <script setup>
 import "@wangeditor/editor/dist/css/style.css";
 import { onBeforeUnmount, ref, shallowRef, onMounted } from "vue";
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
-import adminVue from "@/layout/admin.vue";
 import axios from "axios";
 import { useMessage } from "naive-ui";
 import { computed } from "@vue/reactivity";

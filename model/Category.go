@@ -139,17 +139,18 @@ func AddCategory(data *Category) int {
 
 // GetCategory 获取分类
 func GetCategory(homeshow bool) []struct {
-	ID   uint   `json:"id"`
-	Name string `json:"name"`
-	Mid  uint   `json:"mid"`
+	ID       uint   `json:"id"`
+	Name     string `json:"name"`
+	Mid      uint   `json:"mid"`
+	Homeshow bool   `json:"homeshow"`
 } {
 	var data []struct {
-		ID   uint   `json:"id"`
-		Name string `json:"name"`
-		Mid  uint   `json:"mid"`
+		ID       uint   `json:"id"`
+		Name     string `json:"name"`
+		Mid      uint   `json:"mid"`
+		Homeshow bool   `json:"homeshow"`
 	}
 	err := Db.Model(&Category{}).
-		Select("ID", "mid", "name").
 		Where(&Category{Homeshow: homeshow}).
 		Find(&data).Error
 	if err != nil && err != gorm.ErrRecordNotFound {

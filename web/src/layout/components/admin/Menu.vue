@@ -13,24 +13,17 @@
 <script setup>
 import { ref, h, onBeforeMount } from "vue";
 import { NIcon, useMessage } from "naive-ui";
-import { RouterLink, useRouter } from "vue-router";
+import { RouterLink, useRoute } from "vue-router";
 import axios from "axios";
 import { renderIcon } from "@/utils/index.js";
-import { Home, ReaderSharp, Settings } from "@vicons/ionicons5";
+import { Home, ReaderSharp, Settings, Timer } from "@vicons/ionicons5";
 const collapsed = ref(false);
-const router = useRouter();
+const route = useRoute();
 const message = useMessage();
-
+const menusKey = ref("go-" + route.name);
 function clickMenuItem(key) {
-  // if (/http(s)?:/.test(key)) {
-  //   window.open(key);
-  // } else {
-  //   router.push({ name: key });
-  // }
-  // emit("clickMenuItem", key);
-  message.error("还没写好嘞");
+  menusKey.value = key;
 }
-
 const menus = ref([
   {
     label: () =>
@@ -45,6 +38,20 @@ const menus = ref([
       ),
     key: "go-back-home",
     icon: renderIcon(Home),
+  },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            name: "dashboard",
+          },
+        },
+        { default: () => "仪表盘" }
+      ),
+    key: "go-dashboard",
+    icon: renderIcon(Timer),
   },
   {
     label: () =>
@@ -75,9 +82,6 @@ const menus = ref([
     icon: renderIcon(Settings),
   },
 ]);
-
-const menusKey = ref("主页");
-onBeforeMount(() => {});
 </script>
 
 <style scoped></style>
