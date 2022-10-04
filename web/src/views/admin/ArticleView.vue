@@ -77,7 +77,7 @@ const editorConfig = {
     },
   },
 };
-
+const tags = ref([]);
 const content = ref({
   tags: computed({
     get: () =>

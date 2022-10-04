@@ -4,7 +4,9 @@
       <img :src="imgSrc" alt="" />
     </div>
     <div class="img">
-      <img :src="imgSrc" alt="" />
+      <router-link :to="`/post/${item.id}`" target="_blank">
+        <img :src="imgSrc" alt="" />
+      </router-link>
     </div>
     <div class="content">
       <div class="information">
@@ -52,12 +54,14 @@
         </div>
       </div>
       <div class="title">
-        <a>{{ item.title }}</a>
+        <router-link :to="`/post/${item.id}`" target="_blank">
+          {{ item.title }}
+        </router-link>
       </div>
       <div class="contentMain">
-        <a>
+        <router-link :to="`/post/${item.id}`" target="_blank">
           {{ item.desc }}
-        </a>
+        </router-link>
       </div>
       <div class="tags">
         <n-space :wrap="false">
@@ -96,6 +100,11 @@ if (props.item.img == "") {
 </script>
 
 <style lang="scss" scoped>
+a {
+  text-decoration-line: none;
+  color: #fff;
+}
+
 .content {
   color: #fff;
   z-index: 10;
@@ -127,8 +136,7 @@ if (props.item.img == "") {
   }
   .contentMain {
     font-size: 1rem;
-    line-height: 1.8rem;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 4;
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;

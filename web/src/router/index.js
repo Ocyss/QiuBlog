@@ -1,55 +1,22 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import index from "@/views/HomeView.vue";
+import { RedirectRoute } from "@/router/base";
+import { admin, exception, front } from "@/router/modules";
+//需要验证权限
+export const asyncRoutes = admin;
 
-const routes = [
-  {
-    path: "/",
-    name: "home",
-    meta: {
-      title: "主页",
-    },
-    component: index,
-  },
-  {
-    path: "/admin",
-    name: "admin",
-    meta: {
-      title: "后台管理",
-    },
-    component: () => import("@/views/AdminView.vue"),
-    redirect: "/admin/dashboard",
-    children: [
-      {
-        path: "dashboard",
-        name: "dashboard",
-        component: () => import("@/views/admin/DashboardView.vue"),
-        meta: {
-          title: "仪表盘",
-        },
-      },
-      {
-        path: "other",
-        name: "other",
-        component: () => import("@/views/admin/OtherView.vue"),
-        meta: {
-          title: "其他设置",
-        },
-      },
-      {
-        path: "article",
-        name: "article",
-        component: () => import("@/views/admin/ArticleView.vue"),
-        meta: {
-          title: "文章管理",
-        },
-      },
-    ],
-  },
+//普通路由 无需验证权限
+export const constantRouter = [
+  ...exception,
+  ...front,
+  RedirectRoute,
+  ...asyncRoutes,
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
-  routes,
+  history: createWebHashHistory(""),
+  routes: constantRouter,
+  strict: true,
+  scrollBehavior: () => ({ left: 0, top: 0 }),
 });
 
 export default router;

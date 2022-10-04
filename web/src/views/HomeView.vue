@@ -41,7 +41,7 @@
                 :key="index"
                 :index="index"
                 :item="item"
-                :category="category[item.cid]"
+                :category="getCategory(item.cid)"
               />
               <n-skeleton v-else class="skeleton" :sharp="false" />
             </div>
@@ -85,6 +85,11 @@ const PostData = ref({
 });
 
 const category = computed(() => dataStore.getCategory);
+const getCategory = (cid) => {
+  return category.value.find((item) => {
+    return item.id == cid;
+  });
+};
 onMounted(() => {
   dataStore.askCategory(false);
   axios
