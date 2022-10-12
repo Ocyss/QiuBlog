@@ -7,6 +7,9 @@ export const globalData = defineStore({
   },
   getters: {
     getCategory() {
+      if (this.category.length == 1) {
+        this.askCategory(false);
+      }
       return this.category;
     },
   },

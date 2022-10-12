@@ -55,6 +55,11 @@ func GetsArticle(pageSize int, pageNum int, cid *int, cids []int) ([]Article, in
 }
 
 // GetArticle 获取单个文章
-func GetArticle(Aid int) {
-
+func GetArticle(Aid int) (int, *Article) {
+	var data Article
+	err = Db.Preload("Tags").Where("id=?", Aid).Find(&data).Error
+	if err != nil {
+		return errmsg.ERROR, nil
+	}
+	return errmsg.SUCCESS, &data
 }

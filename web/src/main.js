@@ -12,5 +12,7 @@ pinia.use(piniaPersist);
 const app = createApp(App);
 app.config.globalProperties.$axios = axios;
 app.config.globalProperties.$cookies = VueCookies;
+
 app.use(VueWechatTitle);
+
 app.use(router).use(pinia).mount("#app");

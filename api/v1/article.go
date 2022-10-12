@@ -42,7 +42,16 @@ func GetsArticle(c *gin.Context) {
 
 // GetArticle 获取单文章
 func GetArticle(c *gin.Context) {
-
+	aid, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		ask.ErrParam(c)
+	}
+	code, data := model.GetArticle(aid)
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"message": errmsg.GetErrMsg(code),
+		"data":    *data,
+	})
 }
 
 //// ReleaseArticle 发布文章

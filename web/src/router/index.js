@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { RedirectRoute } from "@/router/base";
+// import { RedirectRoute } from "@/router/base";
 import { admin, exception, front } from "@/router/modules";
 //需要验证权限
 export const asyncRoutes = admin;
@@ -8,7 +8,7 @@ export const asyncRoutes = admin;
 export const constantRouter = [
   ...exception,
   ...front,
-  RedirectRoute,
+  // RedirectRoute,
   ...asyncRoutes,
 ];
 
