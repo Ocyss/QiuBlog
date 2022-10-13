@@ -41,25 +41,28 @@ import { ref, onMounted } from "vue";
 import { projectSetting } from "@/store/modules/projectSetting";
 
 const settingStore = projectSetting();
+
+//是否手机模式，宽度小于700
 const isMobile = computed({
   get: () => settingStore.getIsMobile,
   set: (val) => settingStore.setIsMobile(val),
 });
+//是否折叠
 const collapsed = computed({
   get: () => settingStore.getCollapsed,
   set: (val) => {
     settingStore.setCollapsed(val);
   },
 });
-
+//是否显示侧抽屉
 const showSideDrawder = computed({
   get: () => isMobile.value && collapsed.value,
   set: (val) => (collapsed.value = val),
 });
+//左侧菜单宽度
 const leftMenuWidth = ref("140");
 
-const checkMobileMode = () => {};
-
+//宽度改变自适应
 const watchWidth = () => {
   const Width = document.body.clientWidth;
   if (Width <= 700) {
@@ -72,6 +75,7 @@ const watchWidth = () => {
 };
 
 onMounted(() => {
+  //监听大小改动，自适应页面
   watchWidth();
   window.addEventListener("resize", watchWidth);
   window["$loading"] = useLoadingBar();

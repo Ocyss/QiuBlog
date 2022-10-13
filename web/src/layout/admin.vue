@@ -27,6 +27,7 @@ import layoutVue from "./index.vue";
 
 import { projectSetting } from "@/store/modules/projectSetting";
 const settingStore = projectSetting();
+//是否折叠
 const collapsed = computed({
   get: () => settingStore.getCollapsed,
   set: (val) => {

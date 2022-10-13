@@ -135,6 +135,7 @@ const setMenuShow = ref(false);
 const message = useMessage();
 const menuValue = ref({ id: 0, name: "主页", ename: "home", sort: -1 });
 const categoryRef = ref();
+//新建菜单
 function newMenu() {
   menulist.value.push(newvalue.value);
   newvalue.value = {
@@ -145,6 +146,7 @@ function newMenu() {
     link: "",
   };
 }
+//编辑菜单项
 function editMenu() {
   menulist.value[editvalue.value.index].name = editvalue.value.name;
   menulist.value[editvalue.value.index].ename = editvalue.value.ename;
@@ -152,6 +154,7 @@ function editMenu() {
   menulist.value[editvalue.value.index].link = editvalue.value.link;
   menulist.value[editvalue.value.index].ty = "up";
 }
+
 function edit(index) {
   editvalue.value = {
     index: index,
@@ -162,12 +165,12 @@ function edit(index) {
   };
   showModaledit.value = true;
 }
-
+//删除菜单项
 function del(index) {
   savedata.push({ type: "remove", id: menulist.value[index].ID });
   menulist.value.splice(index, 1);
 }
-
+//保存菜单修改
 function saveMenu() {
   setMenuShow.value = true;
   menulist.value.map((item, index) => {
@@ -217,12 +220,13 @@ function saveMenu() {
       setMenuShow.value = false;
     });
 }
-
+//选中菜单
 function selectMenu(data) {
   menuValue.value = data;
   categoryRef.value?.toggleMenu(data);
 }
 onMounted(() => {
+  //请求菜单子项
   axios.get("/api/v1/menuchild").then((res) => {
     if (res.data.status == 200) {
       menulist.value = res.data.data;
