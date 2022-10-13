@@ -90,13 +90,15 @@ import axios from "axios";
 import { useMessage } from "naive-ui";
 
 const message = useMessage();
+//菜单项
 const menuValue = ref({ id: 0, name: "主页", ename: "home", sort: -1 });
-const setName = ref("");
-const newName = ref("");
-const drag = ref(false);
-const cateSpin = ref(false);
+const setName = ref(""); //修改的名字
+const newName = ref(""); //新建的菜单名
+const drag = ref(false); //是否在拖动
+const cateSpin = ref(false); //是否显示加载中
 
-const categoryList = ref([]);
+const categoryList = ref([]); //分类列表
+
 const CheckList = ref([
   { name: "a1" },
   { name: "a2" },
@@ -109,10 +111,11 @@ const uncheckedList = ref([
   { name: "b3" },
   { name: "b4" },
 ]);
-
+//设置菜单名
 function setNamepositive(index) {
   CheckList.value[index].name = setName.value;
 }
+//添加分类
 function AddCategory() {
   if (menuValue.value.name == "主页") {
     uncheckedList.value.push({ name: newName.value });
@@ -122,16 +125,18 @@ function AddCategory() {
   categoryList.value.push({ name: newName.value, ty: "new" });
   newName.value = "";
 }
-
+//修改菜单名
 function toggleMenu(data) {
   menuValue.value = data;
 }
+//保存
 function save() {
   message.error("未完成！！！！！！！！！！");
 }
-
+//函数暴露
 defineExpose({ toggleMenu });
 onMounted(() => {
+  //请求分类
   axios
     .get("/api/v1/category", {
       params: { show: false },

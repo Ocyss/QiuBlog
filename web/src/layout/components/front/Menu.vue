@@ -18,6 +18,8 @@ import axios from "axios";
 const collapsed = ref(false);
 const router = useRouter();
 const message = useMessage();
+
+//切换左侧菜单
 function clickMenuItem(key) {
   if (/http(s)?:/.test(key)) {
     window.open(key);
@@ -26,11 +28,11 @@ function clickMenuItem(key) {
     menusKey.value = key;
   }
 }
-
+//图标赋值
 function renderIcon(icon) {
   return () => h(NIcon, { innerHTML: icon });
 }
-
+//主页菜单
 const menus = ref([
   {
     label: () =>
@@ -49,9 +51,11 @@ const menus = ref([
     ),
   },
 ]);
-
+//当前菜单选择key
 const menusKey = ref("home");
+
 onBeforeMount(() => {
+  //请求菜单项
   axios.get("/api/v1/menuchild").then((res) => {
     if (res.data.status == 200) {
       res.data.data.map((item) => {

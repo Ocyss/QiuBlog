@@ -92,6 +92,7 @@ import { 随机风景API } from "@/settings/config.js";
 import { ref } from "vue";
 const imgSrc = ref("");
 const props = defineProps(["index", "item", "category"]);
+//渲染判断，无头图则采用随机api
 if (props.item.img == "") {
   imgSrc.value = 随机风景API + `wcnm=${props.index}`;
 } else {
