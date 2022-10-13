@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 // import { RedirectRoute } from "@/router/base";
 import { admin, exception, front } from "@/router/modules";
 //需要验证权限
@@ -13,7 +13,7 @@ export const constantRouter = [
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(""),
+  history: createWebHistory(),
   routes: constantRouter,
   strict: true,
   scrollBehavior: () => ({ left: 0, top: 0 }),

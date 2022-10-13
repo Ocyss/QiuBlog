@@ -30,6 +30,7 @@
       </n-layout-header>
       <n-layout-content class="layout-content">
         <slot name="default"></slot>
+        <slot name="footer"></slot>
       </n-layout-content>
     </n-layout>
   </n-layout>
@@ -110,6 +111,7 @@ onMounted(() => {
   padding: 20px;
   height: 93vh;
 }
+
 .leftMenu {
   width: 100%;
   background-color: $color;

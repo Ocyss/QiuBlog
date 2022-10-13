@@ -3,19 +3,22 @@
     <template #sider>
       <div class="leftMenu" style="position: absolute">
         <LogoVue :collapsed="collapsed" />
-        <MenuVue />
+        <MenuVue @clickMenuItem="" />
       </div>
     </template>
     <template #drawer>
       <div class="leftMenu" style="position: absolute">
         <LogoVue :collapsed="false" />
-        <MenuVue />
+        <MenuVue @clickMenuItem="" />
       </div>
     </template>
     <template #header>
       <HeaderVue @collapsed="collapsed = !collapsed" />
     </template>
     <slot name="default"></slot>
+    <template #footer>
+      <h1>666</h1>
+    </template>
   </layoutVue>
 </template>
 

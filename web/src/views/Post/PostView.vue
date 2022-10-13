@@ -107,7 +107,7 @@ import { globalData } from "@/store/modules/globalData.js";
 import { Calendar, Book, PricetagsSharp } from "@vicons/ionicons5";
 import { computed } from "@vue/reactivity";
 
-const url = ref(window.location.href);
+const url = window.location.href;
 const dataStore = globalData();
 const route = useRoute();
 const message = useMessage();

@@ -2,7 +2,7 @@ import index from "@/views/HomeView.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "/:menu",
     name: "home",
     meta: {
       title: "主页",
