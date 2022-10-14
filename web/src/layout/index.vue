@@ -30,7 +30,8 @@
       </n-layout-header>
       <n-layout-content class="layout-content">
         <slot name="default"></slot>
-        <slot name="footer"></slot>
+        <n-divider />
+        <Footer />
       </n-layout-content>
     </n-layout>
   </n-layout>
@@ -39,7 +40,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { projectSetting } from "@/store/modules/projectSetting";
-
+import Footer from "./components/Footer.vue";
 const settingStore = projectSetting();
 
 //是否手机模式，宽度小于700
@@ -112,7 +113,6 @@ onMounted(() => {
 
 .layout-content {
   flex: auto;
-  padding: 20px;
   height: 93vh;
 }
 

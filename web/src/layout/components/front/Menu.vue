@@ -24,8 +24,12 @@ function clickMenuItem(key) {
   if (/http(s)?:/.test(key)) {
     window.open(key);
   } else {
-    router.push({ name: "home", query: { menu: key } });
     menusKey.value = key;
+    if (key == "home") {
+      router.push({ name: "menuHome" });
+    } else {
+      router.push({ name: "menu", params: { menuName: key } });
+    }
   }
 }
 //图标赋值

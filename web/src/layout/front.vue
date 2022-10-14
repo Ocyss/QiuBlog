@@ -16,9 +16,6 @@
       <HeaderVue @collapsed="collapsed = !collapsed" />
     </template>
     <slot name="default"></slot>
-    <template #footer>
-      <h1>666</h1>
-    </template>
   </layoutVue>
 </template>
 
