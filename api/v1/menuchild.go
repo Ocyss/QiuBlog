@@ -33,6 +33,17 @@ func GetMenuchild(c *gin.Context) {
 	})
 }
 
+// GetSingleMenuItem 获取单菜单项
+func GetSingleMenuItem(c *gin.Context) {
+	MenuLink := c.Query("link")
+	code, data := model.GetSingleMenu(MenuLink)
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"message": errmsg.GetErrMsg(code),
+		"data":    data,
+	})
+}
+
 // SetMenuchild 设置菜单子项
 func SetMenuchild(c *gin.Context) {
 	var data []model.SetMenuChild

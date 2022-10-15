@@ -227,7 +227,7 @@ function selectMenu(data) {
 }
 onMounted(() => {
   //请求菜单子项
-  axios.get("/api/v1/menuchild").then((res) => {
+  axios.get("/api/v1/menuchilds").then((res) => {
     if (res.data.status == 200) {
       menulist.value = res.data.data;
       menulist2.value = [...menulist.value];

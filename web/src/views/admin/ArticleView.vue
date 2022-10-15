@@ -144,7 +144,7 @@ onBeforeUnmount(() => {
 });
 
 onMounted(() => {
-  axios.get("/api/v1/menuchild").then((res) => {
+  axios.get("/api/v1/menuchilds").then((res) => {
     if (res.data.status == 200) {
       axios.get("/api/v1/category?show=false").then((res2) => {
         if (res2.data.status == 200) {

@@ -37,12 +37,18 @@ func CreateArticle(tx *gorm.DB, data *Article) (int, uint) {
 }
 
 // GetsArticle 获取文章列表
-func GetsArticle(pageSize int, pageNum int, cid *int, cids []int) ([]Article, int64) {
+func GetsArticle(pageSize int, pageNum int, cid int, cids []uint) ([]Article, int64) {
 	var Articles []Article
 	var total int64
+	where := map[string]interface{}{}
+	if cid != 0 {
+		where["cid"] = cid
+	} else if cids != nil {
+		where["cid"] = cids
+	}
 	err := Db.
 		Preload("Tags").
-		Where(Article{Cid: cid}).
+		Where(where).
 		Order("created_at desc").
 		Limit(pageSize).
 		Offset((pageNum - 1) * 10).
@@ -50,7 +56,7 @@ func GetsArticle(pageSize int, pageNum int, cid *int, cids []int) ([]Article, in
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, 0
 	}
-	Db.Model(&Article{}).Where(Article{Cid: cid}).Count(&total)
+	Db.Model(&Article{}).Where(where).Count(&total)
 	return Articles, total
 }
 

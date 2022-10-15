@@ -11,12 +11,12 @@ const routes = [
     redirect: "/m/home",
     children: [
       {
-        path: "/m/home",
+        path: "m/home",
         name: "menuHome",
         component: () => import("@/views/front/HomeView.vue"),
       },
       {
-        path: "/m/:menuName",
+        path: "m/:menuName",
         name: "menu",
         component: () => import("@/views/front/MenuPostView.vue"),
       },

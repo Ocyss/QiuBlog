@@ -13,8 +13,10 @@
 <script setup>
 import { ref, h, onBeforeMount } from "vue";
 import { NIcon, useMessage } from "naive-ui";
-import { RouterLink, useRouter } from "vue-router";
+import { RouterLink, useRouter, useRoute } from "vue-router";
 import axios from "axios";
+
+const route = useRoute();
 const collapsed = ref(false);
 const router = useRouter();
 const message = useMessage();
@@ -25,11 +27,6 @@ function clickMenuItem(key) {
     window.open(key);
   } else {
     menusKey.value = key;
-    if (key == "home") {
-      router.push({ name: "menuHome" });
-    } else {
-      router.push({ name: "menu", params: { menuName: key } });
-    }
   }
 }
 //图标赋值
@@ -56,11 +53,13 @@ const menus = ref([
   },
 ]);
 //当前菜单选择key
-const menusKey = ref("home");
-
+const menusKey = ref(
+  route.params.menuName == undefined ? "home" : route.params.menuName
+);
 onBeforeMount(() => {
   //请求菜单项
-  axios.get("/api/v1/menuchild").then((res) => {
+
+  axios.get("/api/v1/menuchilds").then((res) => {
     if (res.data.status == 200) {
       res.data.data.map((item) => {
         menus.value.push({
@@ -69,12 +68,15 @@ onBeforeMount(() => {
               RouterLink,
               {
                 to: {
-                  name: "home",
+                  name: "menu",
+                  params: {
+                    menuName: item.link,
+                  },
                 },
               },
               { default: () => item.name }
             ),
-          key: item.ename,
+          key: item.link,
           icon: renderIcon(item.logo),
         });
       });

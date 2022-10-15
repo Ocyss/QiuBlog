@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"gorm.io/gorm"
 	"qiublog/utils/errmsg"
 )
@@ -128,6 +129,33 @@ func GetMenu() []Menuchild {
 	return data
 }
 
+type GetSingleMenuTy struct {
+	ID    uint   `json:"id"`    //菜单id
+	Name  string `json:"name"`  //菜单名
+	Ename string `json:"ename"` //英文名
+	Link  string `json:"link"`  //路由名
+	Cids  []struct {
+		ID       uint   `json:"id"`       //分类id
+		Name     string `json:"name"`     //分类name
+		Mid      uint   `json:"mid"`      //分类mid
+		Homeshow bool   `json:"homeshow"` //分类首页是否显示
+	} `json:"cids"`
+}
+
+// GetSingleMenu 获取单菜单项
+func GetSingleMenu(link string) (int, *GetSingleMenuTy) {
+	var data GetSingleMenuTy
+	err := Db.Model(Menuchild{}).Where("link=?", link).Find(&data).Error
+	if err != nil {
+		return errmsg.ERROR, nil
+	}
+	err = Db.Model(Category{}).Where("mid=?", data.ID).Find(&data.Cids).Error
+	if err != nil {
+		return errmsg.ERROR, nil
+	}
+	return errmsg.SUCCESS, &data
+}
+
 // AddCategory 添加分类
 func AddCategory(data *Category) int {
 	err := Db.Create(&data).Error
@@ -137,19 +165,16 @@ func AddCategory(data *Category) int {
 	return errmsg.SUCCESS
 }
 
-// GetCategory 获取分类
-func GetCategory(homeshow bool) []struct {
+type GetCategoryTy struct {
 	ID       uint   `json:"id"`
 	Name     string `json:"name"`
 	Mid      uint   `json:"mid"`
 	Homeshow bool   `json:"homeshow"`
-} {
-	var data []struct {
-		ID       uint   `json:"id"`
-		Name     string `json:"name"`
-		Mid      uint   `json:"mid"`
-		Homeshow bool   `json:"homeshow"`
-	}
+}
+
+// GetCategory 获取分类
+func GetCategory(homeshow bool) []GetCategoryTy {
+	var data []GetCategoryTy
 	err := Db.Model(&Category{}).
 		Where(&Category{Homeshow: homeshow}).
 		Find(&data).Error
@@ -169,6 +194,9 @@ func GetMidCid(mid int) []uint {
 	}
 	for _, item := range data {
 		r = append(r, item.ID)
+	}
+	if r == nil {
+		fmt.Println("数据为nil", r)
 	}
 	return r
 }
