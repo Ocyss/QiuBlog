@@ -20,7 +20,7 @@
       </div>
     </n-carousel>
   </div>
-  <PostListVue :cdata="cdata" v-if="cdata.id == 0" />
+  <PostListVue :cdata="cdata" />
 </template>
 
 <script setup>
@@ -30,32 +30,17 @@ import { 随机美女API } from "@/settings/config.js";
 import { globalData } from "@/store/modules/globalData.js";
 const dataStore = globalData();
 
-//获取全部分类列表
-const category = computed(() => dataStore.getCategory);
-
-//筛选主页显示分类
-// const TabCategory = computed(() =>
-//   category.value.filter((item) => {
-//     return item.homeshow;
-//   })
-// );
-
+//帖子分类数据
 const cdata = ref({
   ename: "home",
-  id: -1,
+  id: 0,
   link: "home",
   name: "主页",
   cids: [{ id: -1, name: "全部", homeshow: true }],
 });
 
-onBeforeMount(() => {
-  //初始化全部分类
-  dataStore.askCategory();
-  cdata.value.cids = category.value.filter((item) => {
-    return item.homeshow;
-  });
-  cdata.value.id = 0;
-});
+// 初始化全部分类
+cdata.value.cids.push(...dataStore.getCategory(true));
 </script>
 
 <style lang="scss" scoped>

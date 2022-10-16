@@ -52,44 +52,6 @@ func GetArticle(c *gin.Context) {
 	})
 }
 
-//// ReleaseArticle 发布文章
-//func ReleaseArticle(c *gin.Context) {
-//	var data struct {
-//		model.Article
-//		Tags []*string `json:"tags"`
-//	}
-//	err := c.ShouldBindJSON(&data)
-//	if err != nil {
-//		ask.ErrParam(c)
-//	} else {
-//		tx := model.Db.Begin()
-//		code, Aid := model.CreateArticle(
-//			tx, &model.Article{
-//				Cid:     data.Cid,
-//				Desc:    data.Desc,
-//				Title:   data.Title,
-//				Content: data.Content,
-//				Img:     data.Img,
-//			})
-//		if code == errmsg.ERROR {
-//			tx.Rollback()
-//		} else {
-//			code = model.AddsTags(tx, data.Tags, Aid)
-//			if code == errmsg.ERROR {
-//				tx.Rollback()
-//			}
-//		}
-//		if code == errmsg.SUCCESS {
-//			tx.Commit()
-//		}
-//		c.JSON(http.StatusOK, gin.H{
-//			"status":  code,
-//			"message": errmsg.GetErrMsg(code),
-//		})
-//
-//	}
-//}
-
 // ReleaseArticle 发布文章
 func ReleaseArticle(c *gin.Context) {
 	var data model.Article

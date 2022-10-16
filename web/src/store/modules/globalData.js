@@ -3,27 +3,25 @@ import axios from "axios";
 export const globalData = defineStore({
   id: "app-global-data",
   state: () => {
-    return { category: [{ id: -1, name: "全部", homeshow: true }] };
+    return { category: [] };
   },
-  getters: {
-    getCategory() {
-      if (this.category.length == 1) {
-        this.askCategory(false);
-      }
-      return this.category;
-    },
-  },
+  getters: {},
   actions: {
-    askCategory(show) {
-      axios
-        .get("/api/v1/category", {
-          params: { show: show },
-        })
-        .then((res) => {
+    getCategory(show = false) {
+      if (this.category.length == 0) {
+        axios.get("/api/v1/category?show=false").then((res) => {
           if (res.data.status == 200) {
-            this.category.push(...res.data.data);
+            this.category = res.data.data;
           }
         });
+      }
+      if (show) {
+        return this.category.filter((item) => {
+          return item.homeshow;
+        });
+      } else {
+        return this.category;
+      }
     },
   },
   persist: {
@@ -32,7 +30,7 @@ export const globalData = defineStore({
       {
         key: "globalData",
         storage: localStorage,
-        paths: [""],
+        paths: ["category"],
       },
     ],
   },

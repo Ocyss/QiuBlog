@@ -1,7 +1,6 @@
 package model
 
 import (
-	"fmt"
 	"gorm.io/gorm"
 	"qiublog/utils/errmsg"
 )
@@ -188,15 +187,18 @@ func GetCategory(homeshow bool) []GetCategoryTy {
 func GetMidCid(mid int) []uint {
 	var data []Category
 	var r []uint
-	err := Db.Where("mid = ?", mid).Find(&data).Error
+	where := map[string]interface{}{}
+	if mid == 0 {
+		where["homeshow"] = true
+	} else {
+		where["mid"] = mid
+	}
+	err := Db.Where(where).Find(&data).Error
 	if err != nil {
 		return nil
 	}
 	for _, item := range data {
 		r = append(r, item.ID)
-	}
-	if r == nil {
-		fmt.Println("数据为nil", r)
 	}
 	return r
 }
