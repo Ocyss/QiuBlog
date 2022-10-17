@@ -1,5 +1,5 @@
 <template>
-  <div class="main" :class="index % 2 === 0 ? 'left' : 'right'">
+  <div class="main">
     <div class="bgimg">
       <img :src="imgSrc" alt="" />
     </div>
@@ -15,7 +15,7 @@
             <n-icon :size="13" :component="Calendar" />
           </n-icon-wrapper>
 
-          <n-tooltip trigger="hover">
+          <n-tooltip trigger="hover" v-if="item.created_at">
             <template #trigger>
               <n-time
                 time-zone="Asia/Shanghai"
@@ -49,7 +49,7 @@
             >
               <n-icon :size="13" :component="PricetagsSharp" />
             </n-icon-wrapper>
-            {{ category.name }}
+            {{ item.cname }}
           </div>
         </div>
       </div>
@@ -91,7 +91,7 @@ import { Calendar, Book, PricetagsSharp } from "@vicons/ionicons5";
 import { 随机风景API } from "@/settings/config.js";
 import { ref } from "vue";
 const imgSrc = ref("");
-const props = defineProps(["index", "item", "category"]);
+const props = defineProps(["item"]);
 //渲染判断，无头图则采用随机api
 if (props.item.img == "") {
   imgSrc.value = 随机风景API + `wcnm=${props.index}`;
@@ -150,7 +150,8 @@ a {
 .main {
   margin: 20px 0px;
   display: flex;
-  width: 100%;
+  width: 85%;
+  max-width: 800px;
   height: 14.5rem;
   background-color: #fff;
   border-radius: 0.5rem;

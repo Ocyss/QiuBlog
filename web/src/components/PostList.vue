@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <n-spin :show="PostSpinShow" style="min-height: 300px">
     <n-tabs
       :bar-width="28"
       type="line"
@@ -12,26 +12,19 @@
         :tab="citem.name"
         v-for="citem in cdata.cids"
       >
-        <n-spin :show="PostSpinShow" v-if="PostData[citem.id]">
-          <div
-            class="content"
-            v-if="PostData[citem.id].length > 0"
+        <div class="PostSpin" v-if="PostData[citem.id] != false">
+          <PostVue
             v-for="(item, index) in PostData[citem.id]"
+            :class="index % 2 === 0 ? 'left' : 'right'"
             :key="item"
-          >
-            <PostVue
-              v-if="item.created_at"
-              :index="index"
-              :item="item"
-              :category="getCategory(item.cid)"
-            />
-          </div>
-          <n-empty v-else description="没有东西。。。" />
-          <template #description>加载中~~~~</template>
-        </n-spin>
+            :item="item"
+          />
+        </div>
+        <n-empty v-else description="没有东西。。。" />
       </n-tab-pane>
     </n-tabs>
-  </div>
+    <template #description>加载中~~~~</template>
+  </n-spin>
 </template>
 
 <script setup>
@@ -46,38 +39,49 @@ const PostData = ref({
   "-1": [{ id: -1 }, { id: -2 }, { id: -3 }],
 });
 
-const getCategory = (cid) => {
-  return props.cdata.cids.find((item) => {
-    return item.id == cid;
-  });
-};
-
 //请求主页文章列表
-axios
-  .get("/api/v1/article/list", {
-    params: { pagesize: 10, pagenum: 1, mid: props.cdata.id },
-  })
-  .then((res) => {
-    if (res.data.status == 200) {
-      PostData.value["-1"] = res.data.data.articles;
-    }
-  });
-PostSpinShow.value = false;
+// c是分类请求,m是菜单请求
+function getPosts(id, ty = "c") {
+  const params = { pagesize: 10, pagenum: 1 };
+  if (ty == "m" || id == "-1") {
+    params.mid = props.cdata.id;
+  } else if (ty == "c") {
+    params.cid = id;
+  }
+  axios
+    .get("/api/v1/article/list", {
+      params: params,
+    })
+    .then((res) => {
+      if (res.data.status == 200) {
+        PostData.value[id] = res.data.data.articles.map((item) => {
+          item.cname = props.cdata.cids.find((citem) => {
+            return citem.id == item.cid;
+          })["name"];
+          return item;
+        });
+      }
+      PostSpinShow.value = false;
+    });
+}
+
+getPosts("-1", "m");
+
 function changeCategory(val) {
   PostSpinShow.value = true;
   if (PostData.value[val] == undefined) {
-    axios
-      .get("/api/v1/article/list", {
-        params: { pagesize: 10, pagenum: 1, cid: val },
-      })
-      .then((res) => {
-        if (res.data.status == 200) {
-          PostData.value[val] = res.data.data.articles;
-        }
-      });
+    getPosts(val, "c");
+  } else {
+    PostSpinShow.value = false;
   }
-  PostSpinShow.value = false;
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.PostSpin {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  align-items: center;
+}
+</style>

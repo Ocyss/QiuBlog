@@ -138,7 +138,7 @@ type GetSingleMenuTy struct {
 		Name     string `json:"name"`     //分类name
 		Mid      uint   `json:"mid"`      //分类mid
 		Homeshow bool   `json:"homeshow"` //分类首页是否显示
-	} `json:"cids"`
+	} `gorm:"foreignkey:Mid" json:"cids"`
 }
 
 // GetSingleMenu 获取单菜单项
@@ -190,8 +190,10 @@ func GetMidCid(mid int) []uint {
 	where := map[string]interface{}{}
 	if mid == 0 {
 		where["homeshow"] = true
-	} else {
+	} else if mid > 0 {
 		where["mid"] = mid
+	} else if mid == -1 {
+		where["homeshow"] = false
 	}
 	err := Db.Where(where).Find(&data).Error
 	if err != nil {

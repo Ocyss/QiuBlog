@@ -36,4 +36,10 @@ const collapsed = computed({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.leftMenu {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+</style>
