@@ -16,23 +16,25 @@ type Category struct {
 
 // Menuchild 菜单子项表
 type Menuchild struct {
-	ID    uint       `gorm:"primarykey" json:"id"`                           //菜单id
-	Sort  uint       `gorm:"comment:排序字段" json:"sort"`                       //排序字段
-	Name  string     `gorm:"comment:菜单名;not null;unique" json:"name"`        //菜单名
-	Ename string     `gorm:"comment:英文名;not null;unique" json:"ename"`       //英文名
-	Logo  string     `gorm:"type:longtext;comment:图标名;not null" json:"logo"` //图标
-	Link  string     `gorm:"comment:路由名;not null;unique" json:"link"`        //路由名
-	Cids  []Category `gorm:"foreignkey:Mid"`
+	ID       uint       `gorm:"primarykey" json:"id"`
+	Sort     uint       `gorm:"comment:排序字段" json:"sort"`
+	Name     string     `gorm:"comment:菜单名;not null;unique" json:"name"`
+	Ename    string     `gorm:"comment:英文名;not null;unique" json:"ename"`
+	Logo     string     `gorm:"type:longtext;comment:图标名;" json:"logo"`
+	Link     string     `gorm:"comment:路由名;not null;unique" json:"link"`
+	ParentId uint       `gorm:"comment:父级id;not null" json:"parent_id"`
+	Cids     []Category `gorm:"foreignkey:Mid"`
 }
 
 type SetMenuChild struct {
-	Type  string `json:"type"`
-	ID    uint   `json:"id,omitempty"`
-	Sort  uint   `json:"sort,omitempty"`
-	Name  string `json:"name,omitempty"`
-	Ename string `json:"ename,omitempty"`
-	Logo  string `json:"logo,omitempty"`
-	Link  string `json:"link,omitempty"`
+	Type     string `json:"type"`
+	ID       uint   `json:"id,omitempty"`
+	Sort     uint   `json:"sort,omitempty"`
+	Name     string `json:"name,omitempty"`
+	Ename    string `json:"ename,omitempty"`
+	Logo     string `json:"logo,omitempty"`
+	Link     string `json:"link,omitempty"`
+	ParentId uint   `json:"parent_id"` //父级id
 }
 
 type SetCategory struct {
@@ -121,7 +123,7 @@ func AddMenu(data *Menuchild) int {
 // GetMenu 获取菜单子项
 func GetMenu() []Menuchild {
 	var data []Menuchild
-	err := Db.Order("sort asc").Find(&data).Error
+	err := Db.Order("parent_id asc").Order("sort asc").Find(&data).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil
 	}

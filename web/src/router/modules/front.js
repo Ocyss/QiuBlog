@@ -16,6 +16,21 @@ const routes = [
         component: () => import("@/views/front/HomeView.vue"),
       },
       {
+        path: "m/qa",
+        name: "menuQa",
+        component: () => import("@/views/front/menu/QaView.vue"),
+      },
+      {
+        path: "m/message",
+        name: "menuMessage",
+        component: () => import("@/views/front/menu/MessageView.vue"),
+      },
+      {
+        path: "m/about",
+        name: "menuAbout",
+        component: () => import("@/views/front/menu/AboutView.vue"),
+      },
+      {
         path: "m/:menuName",
         name: "menu",
         component: () => import("@/views/front/MenuPostView.vue"),
