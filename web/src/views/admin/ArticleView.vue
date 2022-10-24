@@ -91,6 +91,7 @@ const content = ref({
   content: "",
   img: "",
 });
+
 const fileList = ref([]);
 const handleCreated = (editor) => {
   editorRef.value = editor; // 记录 editor 实例，重要！
@@ -134,7 +135,23 @@ const customRequest = ({
 
 function send() {
   axios.post("/api/v1/article/add", content.value).then((res) => {
-    console.log(res.data);
+    if (res.data.status == 200) {
+      message.success("发布成功！！！");
+      tags.value = [];
+      content.value = {
+        tags: computed({
+          get: () =>
+            tags.value.map((item) => {
+              return { name: item };
+            }),
+        }),
+        cid: undefined,
+        desc: "",
+        title: "",
+        content: "",
+        img: "",
+      };
+    }
   });
 }
 onBeforeUnmount(() => {

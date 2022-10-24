@@ -33,7 +33,7 @@ export const projectSetting = defineStore({
       {
         key: "Setting",
         storage: localStorage,
-        paths: ["collapsed"],
+        paths: ["collapsed", "darkMode"],
       },
     ],
   },

@@ -13,7 +13,7 @@
       </div>
     </template>
     <template #header>
-      <HeaderVue @collapsed="collapsed = !collapsed" />
+      <HeaderVue @collapsed="collapsed = !collapsed" :collapsed="collapsed" />
     </template>
     <slot name="default"></slot>
   </layoutVue>

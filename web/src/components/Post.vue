@@ -150,7 +150,7 @@ a {
 .main {
   margin: 20px 0px;
   display: flex;
-  width: 85%;
+  width: 95%;
   max-width: 800px;
   height: 14.5rem;
   background-color: #fff;

@@ -22,7 +22,11 @@ export const useDesignSettingStore = defineStore({
       return this.appThemeList;
     },
   },
-  actions: {},
+  actions: {
+    setDarkTheme(value) {
+      this.darkTheme = value;
+    },
+  },
 });
 
 // Need to be used outside the setup
