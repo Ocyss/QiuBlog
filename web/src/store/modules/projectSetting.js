@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { darkTheme } from "naive-ui";
 
 export const projectSetting = defineStore({
   id: "app-project-setting",
@@ -33,7 +32,7 @@ export const projectSetting = defineStore({
       {
         key: "Setting",
         storage: localStorage,
-        paths: ["collapsed"],
+        paths: ["collapsed", "darkMode"],
       },
     ],
   },

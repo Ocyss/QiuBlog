@@ -1,5 +1,5 @@
 <template>
-  <div class="about">
+  <n-card class="about">
     <div class="img">
       <img class="avatar" src="/avatar.png" alt="" />
     </div>
@@ -7,22 +7,22 @@
       <div class="name">- - -</div>
       <div class="word">故事很短，满是遗憾。</div>
     </div>
-  </div>
+  </n-card>
 </template>
 
-<script setup></script>
+<script setup>
+console.log();
+</script>
 
 <style lang="scss" scoped>
 .about {
   width: 95%;
-  height: 220px;
   display: flex;
   align-items: center;
   flex-direction: column;
   border-radius: 8px;
   border-style: solid;
   border-width: 2px;
-  border-color: rgb(236, 236, 236);
 }
 .img {
   width: 100%;
@@ -31,7 +31,7 @@
   flex-direction: column;
   overflow: hidden;
   .avatar {
-    width: 35%;
+    width: 50%;
     height: auto;
   }
 }
@@ -44,7 +44,8 @@
     font-size: 2rem;
   }
   .word {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    white-space: nowrap;
   }
 }
 </style>

@@ -40,7 +40,6 @@ const settingStore = projectSetting();
   height: 7vh;
   transition: all 0.2s ease-in-out;
   width: 100%;
-  background-color: $color;
   z-index: 500;
 }
 

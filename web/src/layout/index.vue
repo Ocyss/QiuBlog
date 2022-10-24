@@ -30,7 +30,6 @@
       </n-layout-header>
       <n-layout-content class="layout-content">
         <slot name="default"></slot>
-        <n-divider />
         <Footer />
       </n-layout-content>
     </n-layout>
@@ -99,7 +98,6 @@ onMounted(() => {
 .layout-sider {
   height: 100vh;
   box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
-  background-color: $color;
   position: relative;
   z-index: 16;
   transition: all 0.2s ease-in-out;

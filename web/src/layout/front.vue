@@ -13,9 +13,13 @@
       </div>
     </template>
     <template #header>
-      <HeaderVue @collapsed="collapsed = !collapsed" />
+      <HeaderVue
+        style="height: 7vh"
+        @collapsed="collapsed = !collapsed"
+        :collapsed="collapsed"
+      />
     </template>
-    <slot name="default"></slot>
+    <div style="min-height: 93vh"><slot name="default"></slot></div>
   </layoutVue>
 </template>
 

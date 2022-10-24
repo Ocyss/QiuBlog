@@ -5,25 +5,12 @@
         <MenuSharp />
       </n-icon>
       <n-icon size="25"><ShareSocialOutline /></n-icon>
-      <n-breadcrumb separator=">" v-if="!settingStore.isMobile">
-        <n-breadcrumb-item>
-          <n-icon><Airplane /></n-icon>
-          北京总行
-        </n-breadcrumb-item>
-        <n-breadcrumb-item>
-          <n-icon><Airplane /></n-icon>
-          天津分行
-        </n-breadcrumb-item>
-        <n-breadcrumb-item>
-          <n-icon><Airplane /></n-icon>
-          平山道支行
-        </n-breadcrumb-item>
-      </n-breadcrumb>
     </div>
     <div class="menuRight">
-      <n-switch>
-        <template #checked>傍晚六点下班</template>
-        <template #unchecked>午夜零点下班</template>
+      <n-switch v-model:value="darkMode" :rail-style="railStyle">
+        <template #checked>下班</template>
+        <template #unchecked>上班</template>
+        <template #icon>{{ darkMode ? "🌛" : "🌞" }}</template>
       </n-switch>
       <n-icon size="25"><Language /></n-icon>
       <n-icon size="25"><ColorPalette /></n-icon>
@@ -38,11 +25,35 @@ import {
   Language,
   ShareSocialOutline,
   MenuSharp,
-  Airplane,
 } from "@vicons/ionicons5";
-
 import { projectSetting } from "@/store/modules/projectSetting";
-const settingStore = projectSetting();
+
+import { useDesignSettingStore } from "@/store/modules/designSetting.js";
+const designStore = useDesignSettingStore();
+
+//暗黑模式
+const darkMode = computed({
+  get: () => designStore.getDarkTheme,
+  set: (val) => designStore.setDarkTheme(val),
+});
+
+defineProps(["collapsed"]);
+
+const railStyle = ({ focused, checked }) => {
+  const style = {};
+  if (checked) {
+    style.background = "#d03050";
+    if (focused) {
+      style.boxShadow = "0 0 0 2px #d0305040";
+    }
+  } else {
+    style.background = "#2080f0";
+    if (focused) {
+      style.boxShadow = "0 0 0 2px #2080f040";
+    }
+  }
+  return style;
+};
 </script>
 
 <style lang="scss" scoped>
@@ -51,10 +62,8 @@ const settingStore = projectSetting();
   justify-content: space-between;
   align-items: center;
   padding: 0;
-  height: 7vh;
   transition: all 0.2s ease-in-out;
   width: 100%;
-  background-color: $color;
   z-index: 500;
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <n-config-provider :theme="null" class="main">
     <div class="bgimg">
       <img :src="imgSrc" alt="" />
     </div>
@@ -83,7 +83,7 @@
         </n-space>
       </div>
     </div>
-  </div>
+  </n-config-provider>
 </template>
 
 <script setup>
@@ -150,7 +150,7 @@ a {
 .main {
   margin: 20px 0px;
   display: flex;
-  width: 85%;
+  width: 95%;
   max-width: 800px;
   height: 14.5rem;
   background-color: #fff;
