@@ -14,7 +14,7 @@
         <template #unchecked>上班</template>
         <template #icon>{{ darkMode ? "🌛" : "🌞" }}</template>
       </n-switch>
-      <n-icon size="25"><Language /></n-icon>
+      <n-icon size="25" @click="locale = !locale"><Language /></n-icon>
       <n-icon size="25"><ColorPalette /></n-icon>
     </div>
     <n-modal v-model:show="shareShow">
@@ -42,7 +42,11 @@ const darkMode = computed({
   get: () => designStore.getDarkTheme,
   set: (val) => designStore.setDarkTheme(val),
 });
-
+//国际化语言
+const locale = computed({
+  get: () => designStore.getLocale,
+  set: (val) => designStore.setLocale(val),
+});
 defineProps(["collapsed"]);
 
 const railStyle = ({ focused, checked }) => {

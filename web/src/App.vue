@@ -1,10 +1,10 @@
 <template>
   <div id="app" v-wechat-title="$route.meta.title">
     <n-config-provider
-      :locale="zhCN"
+      :locale="getLocale"
       :theme="getDarkTheme"
       :theme-overrides="getThemeOverrides"
-      :date-locale="dateZhCN"
+      :date-locale="getDateLocale"
     >
       <n-loading-bar-provider>
         <n-dialog-provider>
@@ -21,7 +21,7 @@
 
 <script setup>
 import { useDesignSettingStore } from "@/store/modules/designSetting.js";
-import { zhCN, dateZhCN, darkTheme } from "naive-ui";
+import { zhCN, dateZhCN, darkTheme, enUS, dateEnUS } from "naive-ui";
 import { lighten } from "@/utils/index";
 const designStore = useDesignSettingStore();
 
@@ -42,6 +42,11 @@ const getThemeOverrides = computed(() => {
 
 const getDarkTheme = computed(() =>
   designStore.darkTheme ? darkTheme : undefined
+);
+
+const getLocale = computed(() => (designStore.locale ? zhCN : enUS));
+const getDateLocale = computed(() =>
+  designStore.locale ? dateZhCN : dateEnUS
 );
 </script>
 
