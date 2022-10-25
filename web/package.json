@@ -9,12 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chenfengyuan/vue-qrcode": "2",
     "@wangeditor/editor": "^5.1.17",
     "@wangeditor/editor-for-vue": "^5.1.12",
     "axios": "^0.27.2",
     "pinia": "^2.0.22",
     "pinia-plugin-persist": "^1.0.0",
-    "vue": "^3.2.37",
+    "qrcode": "1",
+    "vue": "3",
     "vue-cookies": "^1.8.1",
     "vue-router": "4",
     "vue-wechat-title": "^2.0.7",

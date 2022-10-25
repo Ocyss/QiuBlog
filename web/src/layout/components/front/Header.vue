@@ -4,7 +4,9 @@
       <n-icon size="27" @click="() => $emit('collapsed')" style="">
         <MenuSharp />
       </n-icon>
-      <n-icon size="25"><ShareSocialOutline /></n-icon>
+      <n-icon size="25" @click="shareShow = true">
+        <ShareSocialOutline />
+      </n-icon>
     </div>
     <div class="menuRight">
       <n-switch v-model:value="darkMode" :rail-style="railStyle">
@@ -15,6 +17,9 @@
       <n-icon size="25"><Language /></n-icon>
       <n-icon size="25"><ColorPalette /></n-icon>
     </div>
+    <n-modal v-model:show="shareShow">
+      <vue-qrcode :value="url" :options="{ width: 300 }"></vue-qrcode>
+    </n-modal>
   </div>
 </template>
 
@@ -26,11 +31,12 @@ import {
   ShareSocialOutline,
   MenuSharp,
 } from "@vicons/ionicons5";
-import { projectSetting } from "@/store/modules/projectSetting";
-
 import { useDesignSettingStore } from "@/store/modules/designSetting.js";
+
+const shareShow = ref(false);
 const designStore = useDesignSettingStore();
 
+const url = window.location.href;
 //暗黑模式
 const darkMode = computed({
   get: () => designStore.getDarkTheme,
