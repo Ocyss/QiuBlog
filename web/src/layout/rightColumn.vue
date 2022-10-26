@@ -36,4 +36,10 @@ const settingStore = projectSetting();
     max-width: 768px;
   }
 }
+.layoutSide :deep(.n-layout-sider-scroll-container) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 </style>

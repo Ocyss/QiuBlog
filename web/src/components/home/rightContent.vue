@@ -22,6 +22,7 @@ import tagCloudVue from "./card/tagCloud.vue";
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  max-width: 280px;
   :deep(.n-card) {
     width: 95%;
     border-radius: 8px;
