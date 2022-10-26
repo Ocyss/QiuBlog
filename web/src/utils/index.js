@@ -190,3 +190,10 @@ export function lighten(color, amount) {
 export function isUrl(url) {
   return /^(http|https):\/\//g.test(url);
 }
+
+export const randomRgb = (min, max, opacity) => {
+  let R = Math.floor(Math.random() * (max - min)) + min;
+  let G = Math.floor(Math.random() * (max - min)) + min;
+  let B = Math.floor(Math.random() * (max - min)) + min;
+  return "rgba(" + R + "," + G + "," + B + ", " + opacity + ")";
+};

@@ -15,15 +15,6 @@ console.log();
 </script>
 
 <style lang="scss" scoped>
-.about {
-  width: 95%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  border-radius: 8px;
-  border-style: solid;
-  border-width: 2px;
-}
 .img {
   width: 100%;
   display: flex;

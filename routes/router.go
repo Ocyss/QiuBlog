@@ -28,6 +28,8 @@ func InitRouter() {
 		//分类
 		router.POST("category/add", v1.AddCategory) //添加分类
 		router.GET("category", v1.GetCategory)      //获取分类
+		//标签
+		router.GET("tags", v1.GetTags) //获取全部标签
 		//上传
 		router.POST("upload/image", v1.Upload) //上传文件
 	}

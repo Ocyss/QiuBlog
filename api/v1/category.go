@@ -36,3 +36,14 @@ func GetCategory(c *gin.Context) {
 		"data":    data,
 	})
 }
+
+// GetTags 获取全部标签
+func GetTags(c *gin.Context) {
+	data := model.GetTags()
+	code = errmsg.SUCCESS
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"message": errmsg.GetErrMsg(code),
+		"data":    data,
+	})
+}
