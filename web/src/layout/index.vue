@@ -119,8 +119,4 @@ onMounted(() => {
   background-color: $color;
   height: 100%;
 }
-
-.n-layout {
-  background-color: rgba($color: #000000, $alpha: 0);
-}
 </style>

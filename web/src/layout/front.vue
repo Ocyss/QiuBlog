@@ -13,11 +13,7 @@
       </div>
     </template>
     <template #header>
-      <HeaderVue
-        style="height: 7vh"
-        @collapsed="collapsed = !collapsed"
-        :collapsed="collapsed"
-      />
+      <HeaderVue @collapsed="collapsed = !collapsed" :collapsed="collapsed" />
     </template>
     <div style="min-height: 93vh"><slot name="default"></slot></div>
   </layoutVue>
@@ -26,7 +22,7 @@
 <script setup>
 import MenuVue from "./components/front/Menu.vue";
 import LogoVue from "./components/Logo.vue";
-import HeaderVue from "./components/front/Header.vue";
+import HeaderVue from "./components/Header.vue";
 import layoutVue from "./index.vue";
 import { projectSetting } from "@/store/modules/projectSetting";
 const settingStore = projectSetting();

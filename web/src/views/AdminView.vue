@@ -1,6 +1,6 @@
 <template>
   <adminVue>
-    <RouterView />
+    <RouterView style="padding: 20px" />
   </adminVue>
 </template>
 

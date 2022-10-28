@@ -13,17 +13,21 @@
 <script setup>
 import { ref, h, onBeforeMount } from "vue";
 import { NIcon, useMessage } from "naive-ui";
-import { RouterLink, useRoute } from "vue-router";
+import { RouterLink, useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import { renderIcon } from "@/utils/index.js";
 import { Home, ReaderSharp, Settings, Timer } from "@vicons/ionicons5";
-const collapsed = ref(false);
+const router = useRouter();
 const route = useRoute();
+
+const collapsed = ref(false);
 const message = useMessage();
-const menusKey = ref("go-" + route.name);
+const menusKey = ref("go-" + route.name.split("-")[0]);
+console.log(menusKey.value);
 function clickMenuItem(key) {
   menusKey.value = key;
 }
+
 //后台菜单项
 const menus = ref([
   {

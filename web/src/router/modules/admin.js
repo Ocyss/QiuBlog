@@ -27,9 +27,25 @@ const routes = [
       {
         path: "article",
         name: "article",
-        component: () => import("@/views/admin/ArticleView.vue"),
+        component: () => import("@/views/admin/Article/ArticleView.vue"),
         meta: {
           title: "文章管理",
+        },
+      },
+      {
+        path: "article/updata/:id",
+        name: "article-updata",
+        component: () => import("@/views/admin/Article/content.vue"),
+        meta: {
+          title: "修改文章",
+        },
+      },
+      {
+        path: "article/create",
+        name: "article-create",
+        component: () => import("@/views/admin/Article/content.vue"),
+        meta: {
+          title: "发布文章",
         },
       },
     ],

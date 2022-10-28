@@ -21,7 +21,7 @@
 
 <script setup>
 import MenuVue from "./components/admin/Menu.vue";
-import HeaderVue from "./components/admin/Header.vue";
+import HeaderVue from "./components/Header.vue";
 import LogoVue from "./components/Logo.vue";
 import layoutVue from "./index.vue";
 
