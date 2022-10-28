@@ -54,7 +54,7 @@ function getPosts(id, ty = "c") {
     })
     .then((res) => {
       if (res.data.status == 200) {
-        PostData.value[id] = res.data.data.articles.map((item) => {
+        PostData.value[id] = res.data.data.map((item) => {
           item.cname = props.cdata.cids.find((citem) => {
             return citem.id == item.cid;
           })["name"];

@@ -29,10 +29,8 @@ func GetsArticle(c *gin.Context) {
 	data, total := model.GetsArticle(pageSize, pageNum, cid, cids)
 	code = errmsg.SUCCESS
 	c.JSON(http.StatusOK, gin.H{
-		"status": code,
-		"data": gin.H{
-			"articles": data,
-		},
+		"status":  code,
+		"data":    data,
 		"total":   total,
 		"message": errmsg.GetErrMsg(code),
 	})

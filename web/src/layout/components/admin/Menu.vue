@@ -23,7 +23,6 @@ const route = useRoute();
 const collapsed = ref(false);
 const message = useMessage();
 const menusKey = ref("go-" + route.name.split("-")[0]);
-console.log(menusKey.value);
 function clickMenuItem(key) {
   menusKey.value = key;
 }
