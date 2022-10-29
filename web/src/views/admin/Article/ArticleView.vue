@@ -1,77 +1,126 @@
 <template>
   <div>
-    <n-space>
-      <n-button type="primary" @click="router.push({ name: 'article-create' })">
-        文章发布
-      </n-button>
-    </n-space>
-    <n-divider />
-    <n-data-table :columns="colsReactive" :data="data" />
+    <n-button
+      style="margin-bottom: 10px"
+      type="primary"
+      @click="router.push({ name: 'article-create' })"
+    >
+      文章发布
+    </n-button>
+
+    <n-data-table
+      size="small"
+      max-height="68vh"
+      :columns="colsReactive"
+      :data="data"
+      :pagination="{
+        pageSize: 10,
+      }"
+      :row-props="rowProps"
+    />
+    <n-dropdown
+      placement="bottom-start"
+      trigger="manual"
+      :x="dropdown.x"
+      :y="dropdown.y"
+      :options="dropdown.options"
+      :show="dropdown.showDropdown"
+      :on-clickoutside="onClickoutside"
+      @select="handleSelect"
+    />
   </div>
 </template>
 
 <script setup>
 import { useRouter } from "vue-router";
-import { defineComponent, h, reactive } from "vue";
-import {
-  NButton,
-  NSpace,
-  NTag,
-  NTooltip,
-  NTime,
-  NImage,
-  NEllipsis,
-} from "naive-ui";
-import { PawOutline, SearchOutline } from "@vicons/ionicons5";
+import { h, reactive, nextTick } from "vue";
+import { NButton, NTag, NImage } from "naive-ui";
+import { timeControl } from "@/utils";
 import axios from "axios";
 const router = useRouter();
 const data = ref([]);
-
-const timer = (t) => {
-  return h(
-    NTooltip,
-    { trigger: "hover" },
+const dropdown = ref({
+  x: 0,
+  y: 0,
+  showDropdown: false,
+  options: [
     {
-      default: () =>
-        h(NTime, {
-          timeZone: "Asia/Shanghai",
-          time: new Date(t),
-          format: "yyyy-MM-dd HH:mm:ss",
-        }),
-      trigger: () =>
-        h(NTime, {
-          timeZone: "Asia/Shanghai",
-          time: new Date(t),
-          type: "relative",
-        }),
-    }
-  );
+      label: "编辑",
+      key: "edit",
+    },
+    {
+      label: () => h("span", { style: { color: "red" } }, "删除"),
+      key: "delete",
+    },
+  ],
+  row: { id: -1 },
+});
+const onClickoutside = () => {
+  dropdown.value.showDropdown = false;
+};
+const handleSelect = (key) => {
+  dropdown.value.showDropdown = false;
+  if (key == "edit") {
+    router.push({
+      name: "article-updata",
+      params: {
+        id: dropdown.value.row.id,
+      },
+    });
+  }
+};
+const rowProps = (row) => {
+  return {
+    onContextmenu: (e) => {
+      e.preventDefault();
+      dropdown.value.showDropdown = false;
+      nextTick().then(() => {
+        dropdown.value.showDropdown = true;
+        dropdown.value.x = e.clientX;
+        dropdown.value.y = e.clientY;
+        dropdown.value.row = row;
+      });
+    },
+  };
 };
 
 const colsReactive = reactive([
-  { title: "ID", key: "id" },
+  {
+    title: "ID",
+    key: "id",
+    width: 50,
+    sorter: (row1, row2) => row1.id - row2.id,
+  },
   {
     title: "发布时间",
     key: "created_at",
+    resizable: true,
+    width: 100,
     render(row) {
-      return timer(row.created_at);
+      return timeControl(row.created_at);
     },
+    sorter: (row1, row2) =>
+      new Date(row1.created_at) - new Date(row2.created_at),
   },
   {
     title: "更新时间",
     key: "updated_at",
+    resizable: true,
+    width: 100,
     render(row) {
-      return timer(row.updated_at);
+      return timeControl(row.updated_at);
     },
+    sorter: (row1, row2) =>
+      new Date(row1.updated_at) - new Date(row2.updated_at),
   },
-  { title: "标题", key: "title" },
+  { title: "标题", key: "title", minWidth: 150, resizable: true },
   {
     title: "简介",
     key: "desc",
-    width: 200,
     ellipsis: {
       tooltip: true,
     },
+    resizable: true,
   },
   {
     title: "标签",
@@ -83,6 +132,7 @@ const colsReactive = reactive([
           {
             style: {
               marginRight: "6px",
+              marginBottom: "5px",
             },
             type: "info",
             bordered: false,
@@ -94,19 +144,20 @@ const colsReactive = reactive([
       });
       return tags;
     },
+    resizable: true,
   },
   {
     title: "头图",
     key: "img",
     render(row) {
-      return h(NImage, { src: row.img });
+      return h(NImage, { width: 80, src: row.img });
     },
   },
 ]);
 
 axios
   .get("/api/v1/article/list", {
-    params: { mid: -1 },
+    params: { mid: -2 },
   })
   .then((res) => {
     if (res.data.status == 200) {

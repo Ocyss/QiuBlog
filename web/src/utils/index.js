@@ -1,6 +1,5 @@
 import { h, unref } from "vue";
-
-import { NIcon, NTag } from "naive-ui";
+import { NIcon, NTag, NTooltip, NTime } from "naive-ui";
 import { cloneDeep } from "lodash-es";
 /**
  * render 图标
@@ -196,4 +195,25 @@ export const randomRgb = (min, max, opacity) => {
   let G = Math.floor(Math.random() * (max - min)) + min;
   let B = Math.floor(Math.random() * (max - min)) + min;
   return "rgba(" + R + "," + G + "," + B + ", " + opacity + ")";
+};
+
+export const timeControl = (t) => {
+  return h(
+    NTooltip,
+    { trigger: "hover" },
+    {
+      default: () =>
+        h(NTime, {
+          timeZone: "Asia/Shanghai",
+          time: new Date(t),
+          format: "yyyy-MM-dd HH:mm:ss",
+        }),
+      trigger: () =>
+        h(NTime, {
+          timeZone: "Asia/Shanghai",
+          time: new Date(t),
+          type: "relative",
+        }),
+    }
+  );
 };

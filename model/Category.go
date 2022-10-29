@@ -196,6 +196,8 @@ func GetMidCid(mid int) []uint {
 		where["mid"] = mid
 	} else if mid == -1 {
 		where["homeshow"] = false
+	} else {
+		return nil
 	}
 	err := Db.Where(where).Find(&data).Error
 	if err != nil {

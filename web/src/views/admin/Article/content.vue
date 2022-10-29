@@ -4,34 +4,59 @@
       <n-button class="back" @click="router.push({ name: 'article' })">
         返回
       </n-button>
-      <n-space>
-        <n-input v-model:value="content.title" type="text" placeholder="标题" />
-        <n-input v-model:value="content.desc" type="text" placeholder="描述" />
-        <n-cascader
-          v-model:value="content.cid"
-          placeholder="选择发布类别"
-          :options="menuoptions"
-          check-strategy="child"
-          expand-trigger="hover"
-          :show-path="true"
-          :filterable="true"
-          @update:value="handleUpdateValue"
-        />
-        <n-upload
-          action="/api/v1/upload/image"
-          :default-file-list="fileList"
-          list-type="image"
-          accept="image/*"
-          :data="{ class: 'Article' }"
-          :max="1"
-          with-credentials
-          :custom-request="customRequest"
-        >
-          <n-button>上传头图</n-button>
-        </n-upload>
-      </n-space>
+      <n-grid x-gap="12" y-gap="12" cols="2">
+        <n-gi span="2">
+          <n-input
+            size="large"
+            v-model:value="content.title"
+            type="text"
+            placeholder="标题"
+          />
+        </n-gi>
+        <n-gi>
+          <n-input
+            v-model:value="content.desc"
+            type="textarea"
+            placeholder="描述"
+          />
+        </n-gi>
+        <n-gi>
+          <n-space vertical>
+            <n-cascader
+              v-model:value="content.cid"
+              placeholder="选择发布类别"
+              :options="menuoptions"
+              check-strategy="child"
+              expand-trigger="hover"
+              :show-path="true"
+              :filterable="true"
+            />
+            <!-- <n-input
+              v-model:value="imageurl"
+              type="text"
+              placeholder="图片url"
+            /> -->
+          </n-space>
+        </n-gi>
+        <n-gi span="2">
+          <n-space>
+            <n-upload
+              action="/api/v1/upload/image"
+              :default-file-list="fileList"
+              list-type="image-card"
+              accept="image/*"
+              :data="{ class: 'Article' }"
+              :max="1"
+              with-credentials
+              :custom-request="customRequest"
+            >
+              <n-button>上传头图</n-button>
+            </n-upload>
+            <n-dynamic-tags v-model:value="tags" />
+          </n-space>
+        </n-gi>
+      </n-grid>
 
-      <n-dynamic-tags v-model:value="tags" />
       <Toolbar
         class="weTool"
         :editor="editorRef"
@@ -46,7 +71,15 @@
         :mode="mode"
         @onCreated="handleCreated"
       />
-      <n-button type="success" @click="send">发布</n-button>
+
+      <n-button
+        v-if="route.name == 'article-updata'"
+        type="success"
+        @click="save"
+      >
+        保存
+      </n-button>
+      <n-button v-else type="success" @click="send">发布</n-button>
     </n-space>
   </div>
 </template>
@@ -57,9 +90,9 @@ import { onBeforeUnmount, ref, shallowRef, onMounted } from "vue";
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import axios from "axios";
 import { useMessage } from "naive-ui";
-import { computed } from "@vue/reactivity";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
+const route = useRoute();
 const message = useMessage();
 const editorRef = shallowRef();
 const mode = ref("default");
@@ -84,12 +117,26 @@ const editorConfig = {
   },
 };
 const tags = ref([]);
+const fileList = ref([]);
+// const imageurl = computed({
+//   get: () => {
+//     return fileList.value.length == 0 ? "" : fileList.value[0].url;
+//   },
+//   set: (val) => {
+//     fileList.value = [
+//       {
+//         id: val,
+//         status: "finished",
+//         url: val,
+//       },
+//     ];
+//   },
+// });
 const content = ref({
-  tags: computed({
-    get: () =>
-      tags.value.map((item) => {
-        return { name: item };
-      }),
+  tags: computed(() => {
+    return tags.value.map((item) => {
+      return { name: item };
+    });
   }),
   cid: undefined,
   desc: "",
@@ -98,12 +145,8 @@ const content = ref({
   img: "",
 });
 
-const fileList = ref([]);
 const handleCreated = (editor) => {
   editorRef.value = editor; // 记录 editor 实例，重要！
-};
-const handleUpdateValue = (value, option) => {
-  console.log(value, option);
 };
 const customRequest = ({
   file,
@@ -125,7 +168,6 @@ const customRequest = ({
     .post(action, formData)
     .then((res) => {
       if (res.data.errno == 0) {
-        console.log(res.data);
         content.value.img = res.data.data.url;
         onFinish();
       } else {
@@ -157,6 +199,14 @@ function send() {
         content: "",
         img: "",
       };
+    }
+  });
+}
+function save() {
+  axios.put(`/api/v1/article/${route.params.id}`, content.value).then((res) => {
+    if (res.data.status == 200) {
+      message.success("保存成功！！！");
+      router.push({ name: "article" });
     }
   });
 }
@@ -192,6 +242,24 @@ onMounted(() => {
       message.error(res.data.message);
     }
   });
+  if (route.name == "article-updata") {
+    axios.get(`/api/v1/article/${route.params.id}`).then((res) => {
+      if (res.data.status == 200) {
+        content.value.cid = res.data.data.cid;
+        content.value.desc = res.data.data.desc;
+        content.value.title = res.data.data.title;
+        content.value.content = res.data.data.content;
+        res.data.data.tags.map((item) => {
+          tags.value.push(item.name);
+        });
+        fileList.value.push({
+          id: 0,
+          status: "finished",
+          url: res.data.data.img,
+        });
+      }
+    });
+  }
 });
 </script>
 

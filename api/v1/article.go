@@ -25,7 +25,6 @@ func GetsArticle(c *gin.Context) {
 	if pageNum <= 0 {
 		pageNum = -1
 	}
-
 	data, total := model.GetsArticle(pageSize, pageNum, cid, cids)
 	code = errmsg.SUCCESS
 	c.JSON(http.StatusOK, gin.H{
@@ -62,8 +61,7 @@ func ReleaseArticle(c *gin.Context) {
 	code, Aid := model.CreateArticle(tx, &data)
 	if code == errmsg.ERROR {
 		tx.Rollback()
-	}
-	if code == errmsg.SUCCESS {
+	} else if code == errmsg.SUCCESS {
 		tx.Commit()
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -76,6 +74,24 @@ func ReleaseArticle(c *gin.Context) {
 // ModifyArticle 修改文章
 func ModifyArticle(c *gin.Context) {
 
+	var data model.Article
+	id, err := strconv.Atoi(c.Param("id"))
+	err = c.ShouldBindJSON(&data)
+	if err != nil {
+		ask.ErrParam(c)
+		return
+	}
+	tx := model.Db.Begin()
+	code = model.ModifyArticle(tx, id, &data)
+	if code == errmsg.ERROR {
+		tx.Rollback()
+	} else if code == errmsg.SUCCESS {
+		tx.Commit()
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"message": errmsg.GetErrMsg(code),
+	})
 }
 
 // DeleteArticle 删除文章

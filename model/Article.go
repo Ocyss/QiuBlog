@@ -48,6 +48,26 @@ func CreateArticle(tx *gorm.DB, data *Article) (int, uint) {
 	return errmsg.SUCCESS, data.ID
 }
 
+// ModifyArticle 修改文章
+func ModifyArticle(tx *gorm.DB, id int, data *Article) int {
+	for index, item := range data.Tags {
+		var tags Tags
+		err := tx.
+			Where(Tags{Name: item.Name}).
+			Attrs(Tags{Name: item.Name, Logo: item.Logo, Color: item.Color}).
+			FirstOrInit(&tags).Error
+		if err != nil {
+			return errmsg.ERROR
+		}
+		data.Tags[index] = tags
+	}
+	err := tx.Model(&Article{}).Where("id", id).Updates(data).Error
+	if err != nil {
+		return errmsg.ERROR
+	}
+	return errmsg.SUCCESS
+}
+
 // GetsArticle 获取文章列表
 func GetsArticle(pageSize int, pageNum int, cid int, cids []uint) ([]Article, int64) {
 	var articles []Article
