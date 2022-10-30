@@ -31,7 +31,6 @@ export const useDesignSettingStore = defineStore({
       this.darkTheme = value;
     },
     setLocale(value) {
-      console.log(value);
       this.locale = value;
     },
   },

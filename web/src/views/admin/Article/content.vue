@@ -288,6 +288,6 @@ onMounted(() => {
   --w-e-toolbar-bg-color: #333;
   --w-e-toolbar-border-color: #666; //工具栏分割线
   --w-e-toolbar-active-bg-color: #666; //选中颜色
-  --w-e-toolbar-active-color: #fff//悬浮提示颜色;
+  --w-e-toolbar-active-color: #fff; //悬浮提示颜色
 }
 </style>

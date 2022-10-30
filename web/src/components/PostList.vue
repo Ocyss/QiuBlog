@@ -8,9 +8,10 @@
       @update:value="changeCategory"
     >
       <n-tab-pane
+        v-for="citem in cdata.cids"
+        :key="citem"
         :name="String(citem.id)"
         :tab="citem.name"
-        v-for="citem in cdata.cids"
       >
         <div class="PostSpin" v-if="PostData[citem.id] != false">
           <PostVue

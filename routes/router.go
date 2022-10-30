@@ -10,6 +10,17 @@ func InitRouter() {
 	gin.SetMode(utils.AppMode)
 	r := gin.Default()
 	r.MaxMultipartMemory = 8 << 20 // 8 MiB
+	r.Use(gin.Recovery())
+	if utils.AppMode == "release" {
+		r.LoadHTMLGlob("web/index.html")
+		r.Static("/assets", "web/assets")
+		r.Static("favicons", "web/favicons")
+		r.Static("img", "web/img")
+		r.GET("/", func(c *gin.Context) {
+			c.HTML(200, "index.html", nil)
+		})
+	}
+
 	router := r.Group("api/v1")
 
 	{

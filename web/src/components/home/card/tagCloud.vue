@@ -17,6 +17,7 @@
       <a
         href="#"
         v-for="(tag, index) in tags"
+        :key="tag"
         @mouseover="mouseover(index)"
         @mouseout="mouseout(index)"
       >

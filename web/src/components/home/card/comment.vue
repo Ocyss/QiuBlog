@@ -1,6 +1,6 @@
 <template>
   <n-card class="comment" title="最新留言" size="small">
-    <div class="subitem" v-for="item in 5">
+    <div class="subitem" v-for="item in 5" :key="item">
       <n-avatar round size="small">{{ item }}</n-avatar>
       <div class="text">
         <div class="name">{{ item }}(时间)</div>

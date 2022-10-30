@@ -8,20 +8,18 @@ export const globalData = defineStore({
   getters: {},
   actions: {
     getCategory(show = false) {
-      if (this.category.length == 0) {
-        axios.get("/api/v1/category?show=false").then((res) => {
-          if (res.data.status == 200) {
-            this.category = res.data.data;
+      axios.get("/api/v1/category?show=false").then((res) => {
+        if (res.data.status == 200) {
+          this.category = res.data.data;
+          if (show) {
+            return res.data.data.filter((item) => {
+              return item.homeshow;
+            });
+          } else {
+            return res.data.data;
           }
-        });
-      }
-      if (show) {
-        return this.category.filter((item) => {
-          return item.homeshow;
-        });
-      } else {
-        return this.category;
-      }
+        }
+      });
     },
   },
   persist: {

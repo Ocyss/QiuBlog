@@ -1,7 +1,7 @@
 <template>
   <n-card class="about">
     <div class="img">
-      <img class="avatar" src="/avatar.png" alt="" />
+      <img class="avatar" src="/img/avatar.png" alt="" />
     </div>
     <div class="text">
       <div class="name">- - -</div>
@@ -10,9 +10,7 @@
   </n-card>
 </template>
 
-<script setup>
-console.log();
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
 .img {

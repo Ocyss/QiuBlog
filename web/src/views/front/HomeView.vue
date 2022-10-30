@@ -10,7 +10,7 @@
       trigger="hover"
       :interval="2000"
     >
-      <div class="article" v-for="(item, index) in 3">
+      <div class="article" v-for="(item, index) in 3" :key="item">
         <n-image
           preview-disabled
           class="carousel-img"
@@ -25,7 +25,7 @@
 
 <script setup>
 import PostListVue from "@/components/PostList.vue";
-import { ref, onBeforeMount, onMounted } from "vue";
+import { ref } from "vue";
 import { 随机美女API } from "@/settings/config.js";
 import { globalData } from "@/store/modules/globalData.js";
 const dataStore = globalData();
@@ -36,11 +36,11 @@ const cdata = ref({
   id: 0,
   link: "home",
   name: "主页",
-  cids: [{ id: -1, name: "全部", homeshow: true }],
+  cids: [
+    { id: -1, name: "全部", homeshow: true },
+    ...dataStore.getCategory(true),
+  ],
 });
-
-// 初始化全部分类
-cdata.value.cids.push(...dataStore.getCategory(true));
 </script>
 
 <style lang="scss" scoped>

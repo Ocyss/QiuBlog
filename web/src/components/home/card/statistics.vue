@@ -1,6 +1,6 @@
 <template>
   <n-card class="statistics" title="统计信息" size="small">
-    <div v-for="item in data" class="block">
+    <div v-for="item in data" :key="item" class="block">
       <div>{{ item.key }}:</div>
       <div>{{ item.value }}</div>
     </div>

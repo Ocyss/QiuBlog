@@ -67,6 +67,7 @@
         <n-space :wrap="false">
           <n-tag
             v-for="tag in item.tags"
+            :key="tag"
             size="small"
             round
             :color="tag.color"
