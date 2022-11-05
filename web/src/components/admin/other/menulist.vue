@@ -106,7 +106,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import draggable from "vuedraggable";
-import axios from "axios";
+import { request } from "@/utils/request";
 import { Pencil, Trash } from "@vicons/ionicons5";
 import menueditVue from "./menuedit.vue";
 import { useMessage } from "naive-ui";
@@ -201,24 +201,14 @@ function saveMenu() {
       savedata.push(da);
     }
   });
-  axios
-    .put("/api/v1/menuchild/set", savedata)
-    .then((res) => {
-      if (res.data.status == 200) {
-        message.success("菜单子项保存成功！！");
-        menulist.value = res.data.data;
-        menulist2.value = [...menulist.value];
-        setMenuShow.value = false;
-        savedata = [];
-      } else {
-        message.error(`保存失败  ${res.data.message}`);
-        setMenuShow.value = false;
-      }
-    })
-    .error((e) => {
-      message.error(`保存失败  ${e}`);
-      setMenuShow.value = false;
-    });
+  request.put("/api/v1/menuchild/set", savedata).then((res) => {
+    message.success("菜单子项保存成功！！");
+    menulist.value = res.data;
+    menulist2.value = [...menulist.value];
+    setMenuShow.value = false;
+    savedata = [];
+  });
+  setMenuShow.value = false;
 }
 //选中菜单
 function selectMenu(data) {
@@ -227,11 +217,9 @@ function selectMenu(data) {
 }
 onMounted(() => {
   //请求菜单子项
-  axios.get("/api/v1/menuchilds").then((res) => {
-    if (res.data.status == 200) {
-      menulist.value = res.data.data;
-      menulist2.value = [...menulist.value];
-    }
+  request.get("/api/v1/menuchilds").then((res) => {
+    menulist.value = res.data;
+    menulist2.value = [...menulist.value];
   });
 });
 </script>

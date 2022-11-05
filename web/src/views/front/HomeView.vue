@@ -28,6 +28,7 @@ import PostListVue from "@/components/PostList.vue";
 import { ref } from "vue";
 import { 随机美女API } from "@/settings/config.js";
 import { globalData } from "@/store/modules/globalData.js";
+import { request } from "@/utils/request";
 const dataStore = globalData();
 
 //帖子分类数据
@@ -36,10 +37,15 @@ const cdata = ref({
   id: 0,
   link: "home",
   name: "主页",
-  cids: [
-    { id: -1, name: "全部", homeshow: true },
-    ...dataStore.getCategory(true),
-  ],
+  cids: [{ id: -1, name: "全部", homeshow: true }],
+});
+
+request.get("/api/v1/category?show=false").then((res) => {
+  res.data.map((item) => {
+    if (item.homeshow) {
+      cdata.value.cids.push(item);
+    }
+  });
 });
 </script>
 

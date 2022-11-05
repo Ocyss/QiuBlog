@@ -36,7 +36,7 @@ import { useRouter } from "vue-router";
 import { h, reactive, nextTick } from "vue";
 import { NButton, NTag, NImage } from "naive-ui";
 import { timeControl } from "@/utils";
-import axios from "axios";
+import { request } from "@/utils/request";
 const router = useRouter();
 const data = ref([]);
 const dropdown = ref({
@@ -155,14 +155,12 @@ const colsReactive = reactive([
   },
 ]);
 
-axios
+request
   .get("/api/v1/article/list", {
     params: { mid: -2 },
   })
   .then((res) => {
-    if (res.data.status == 200) {
-      data.value.push(...res.data.data);
-    }
+    data.value.push(...res.data);
   });
 </script>
 

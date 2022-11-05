@@ -109,7 +109,7 @@
 <script setup>
 import frontVue from "@/layout/front.vue";
 import { ref, onMounted, reactive } from "vue";
-import axios from "axios";
+import { request } from "@/utils/request";
 import { useRoute } from "vue-router";
 import { useMessage } from "naive-ui";
 import { 随机风景API } from "@/settings/config.js";
@@ -147,12 +147,8 @@ const category = computed(() => {
   });
 });
 
-axios.get(`/api/v1/article/${route.params.pid}`).then((res) => {
-  if (res.data.status == 200) {
-    postData.value = res.data.data;
-  } else {
-    message.error(res.data.message);
-  }
+request.get(`/api/v1/article/${route.params.pid}`).then((res) => {
+  postData.value = res.data;
 });
 </script>
 

@@ -21,24 +21,3 @@ export const ErrorPageRoute = {
     },
   ],
 };
-
-export const RedirectRoute = {
-  path: "/redirect",
-  name: RedirectName,
-  component: Layout,
-  meta: {
-    title: RedirectName,
-    hideBreadcrumb: true,
-  },
-  children: [
-    {
-      path: "/redirect/:path(.*)",
-      name: RedirectName,
-      component: () => import("@/views/redirect/index.vue"),
-      meta: {
-        title: RedirectName,
-        hideBreadcrumb: true,
-      },
-    },
-  ],
-};

@@ -14,7 +14,7 @@
 import { ref, h, onBeforeMount } from "vue";
 import { NIcon, useMessage } from "naive-ui";
 import { RouterLink, useRouter, useRoute } from "vue-router";
-import axios from "axios";
+import { request } from "@/utils/request";
 
 const route = useRoute();
 const collapsed = ref(false);
@@ -105,28 +105,26 @@ const menusKey = ref(route.path.split("/").at(-1));
 
 onBeforeMount(() => {
   //请求菜单项
-  axios.get("/api/v1/menuchilds").then((res) => {
-    if (res.data.status == 200) {
-      res.data.data.map((item) => {
-        menus.value.splice(1, 0, {
-          label: () =>
-            h(
-              RouterLink,
-              {
-                to: {
-                  name: "menu",
-                  params: {
-                    menuName: item.link,
-                  },
+  request.get("/api/v1/menuchilds").then((res) => {
+    res.data.map((item) => {
+      menus.value.splice(1, 0, {
+        label: () =>
+          h(
+            RouterLink,
+            {
+              to: {
+                name: "menu",
+                params: {
+                  menuName: item.link,
                 },
               },
-              { default: () => item.name }
-            ),
-          key: item.link,
-          icon: renderIcon(item.logo),
-        });
+            },
+            { default: () => item.name }
+          ),
+        key: item.link,
+        icon: renderIcon(item.logo),
       });
-    }
+    });
   });
 });
 </script>

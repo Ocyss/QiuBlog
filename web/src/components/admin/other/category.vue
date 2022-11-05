@@ -86,7 +86,7 @@
 import draggable from "vuedraggable";
 import { ref, onMounted } from "vue";
 import { Pencil, Trash } from "@vicons/ionicons5";
-import axios from "axios";
+import { request } from "@/utils/request";
 import { useMessage } from "naive-ui";
 
 const message = useMessage();
@@ -137,16 +137,12 @@ function save() {
 defineExpose({ toggleMenu });
 onMounted(() => {
   //请求分类
-  axios
+  request
     .get("/api/v1/category", {
       params: { show: false },
     })
     .then((res) => {
-      if (res.data.status == 200) {
-        categoryList.value = res.data.data;
-      } else {
-        message.error(res.data.message);
-      }
+      categoryList.value = res.data;
     });
 });
 </script>

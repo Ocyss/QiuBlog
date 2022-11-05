@@ -37,7 +37,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import Axios from "axios";
+import { request } from "@/utils/request";
 import { randomRgb } from "@/utils";
 import { tagDark } from "naive-ui";
 let timer = null;
@@ -139,11 +139,9 @@ const watchWidth = () => {
 };
 
 onMounted(() => {
-  Axios.get("/api/v1/tags").then((res) => {
-    if (res.data.status == 200) {
-      TagData.value.tags = res.data.data;
-      watchWidth();
-    }
+  request.get("/api/v1/tags").then((res) => {
+    TagData.value.tags = res.data;
+    watchWidth();
   });
   window.addEventListener("resize", watchWidth);
   timer = setInterval(() => {

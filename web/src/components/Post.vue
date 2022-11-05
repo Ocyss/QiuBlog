@@ -41,7 +41,7 @@
             </n-icon-wrapper>
             1.5K阅读
           </div>
-          <div>
+          <div v-if="item.cname">
             <n-icon-wrapper
               color="rgb(67,160,71)"
               :size="18"
@@ -49,7 +49,7 @@
             >
               <n-icon :size="13" :component="PricetagsSharp" />
             </n-icon-wrapper>
-            {{ item.cname }}
+            {{ item.cname.name }}
           </div>
         </div>
       </div>

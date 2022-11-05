@@ -41,6 +41,7 @@
         <n-gi span="2">
           <n-space>
             <n-upload
+              ref="uploadref"
               action="/api/v1/upload/image"
               :default-file-list="fileList"
               list-type="image-card"
@@ -88,7 +89,7 @@
 import "@wangeditor/editor/dist/css/style.css";
 import { onBeforeUnmount, ref, shallowRef, onMounted } from "vue";
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
-import axios from "axios";
+import { request } from "@/utils/request";
 import { useMessage } from "naive-ui";
 import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
@@ -118,6 +119,7 @@ const editorConfig = {
 };
 const tags = ref([]);
 const fileList = ref([]);
+const uploadref = ref();
 // const imageurl = computed({
 //   get: () => {
 //     return fileList.value.length == 0 ? "" : fileList.value[0].url;
@@ -164,14 +166,14 @@ const customRequest = ({
     });
   }
   formData.append("file", file.file);
-  axios
+  request
     .post(action, formData)
     .then((res) => {
-      if (res.data.errno == 0) {
-        content.value.img = res.data.data.url;
+      if (res.errno == 0) {
+        content.value.img = res.data.url;
         onFinish();
       } else {
-        message.error(res.data.message);
+        message.error(res.message);
         onError();
       }
     })
@@ -182,82 +184,72 @@ const customRequest = ({
 };
 
 function send() {
-  axios.post("/api/v1/article/add", content.value).then((res) => {
-    if (res.data.status == 200) {
-      message.success("发布成功！！！");
-      tags.value = [];
-      content.value = {
-        tags: computed({
-          get: () =>
-            tags.value.map((item) => {
-              return { name: item };
-            }),
-        }),
-        cid: undefined,
-        desc: "",
-        title: "",
-        content: "",
-        img: "",
-      };
-    }
+  request.post("/api/v1/article/add", content.value).then((res) => {
+    message.success("发布成功！！！");
+    uploadref.value.clear();
+    tags.value = [];
+    content.value = {
+      tags: computed({
+        get: () =>
+          tags.value.map((item) => {
+            return { name: item };
+          }),
+      }),
+      cid: undefined,
+      desc: "",
+      title: "",
+      content: "",
+      img: "",
+    };
   });
 }
 function save() {
-  axios.put(`/api/v1/article/${route.params.id}`, content.value).then((res) => {
-    if (res.data.status == 200) {
+  request
+    .put(`/api/v1/article/${route.params.id}`, content.value)
+    .then((res) => {
       message.success("保存成功！！！");
       router.push({ name: "article" });
-    }
-  });
+    });
 }
 onBeforeUnmount(() => {
+  //关闭前注销编辑器组件
   const editor = editorRef.value;
   if (editor == null) return;
   editor.destroy();
 });
 
 onMounted(() => {
-  axios.get("/api/v1/menuchilds").then((res) => {
-    if (res.data.status == 200) {
-      axios.get("/api/v1/category?show=false").then((res2) => {
-        if (res2.data.status == 200) {
-          res.data.data.map((item) => {
-            menuoptions.value.push({
-              value: item.name,
-              label: item.name,
-              children: res2.data.data
-                .map((item2) => {
-                  if (item2.mid == item.id) {
-                    return { value: item2.id, label: item2.name };
-                  }
-                })
-                .filter(Boolean),
-            });
-          });
-        } else {
-          message.error(res.data.message);
-        }
+  //请求菜单项和分类
+  request.get("/api/v1/menuchilds").then((res) => {
+    request.get("/api/v1/category?show=false").then((res2) => {
+      res.data.map((item) => {
+        menuoptions.value.push({
+          value: item.name,
+          label: item.name,
+          children: res2.data.map((item2) => {
+            if (item2.mid == item.id) {
+              return { value: item2.id, label: item2.name };
+            }
+          }),
+        });
       });
-    } else {
-      message.error(res.data.message);
-    }
+    });
   });
+  //判断是不是修改帖子
   if (route.name == "article-updata") {
-    axios.get(`/api/v1/article/${route.params.id}`).then((res) => {
-      if (res.data.status == 200) {
-        content.value.cid = res.data.data.cid;
-        content.value.desc = res.data.data.desc;
-        content.value.title = res.data.data.title;
-        content.value.content = res.data.data.content;
-        res.data.data.tags.map((item) => {
-          tags.value.push(item.name);
-        });
-        fileList.value.push({
-          id: 0,
-          status: "finished",
-          url: res.data.data.img,
-        });
-      }
+    request.get(`/api/v1/article/${route.params.id}`).then((res) => {
+      content.value.cid = res.data.cid;
+      content.value.desc = res.data.desc;
+      content.value.title = res.data.title;
+      content.value.content = res.data.content;
+      res.data.tags.map((item) => {
+        tags.value.push(item.name);
+      });
+      fileList.value.push({
+        id: 0,
+        status: "finished",
+        url: res.data.img,
+      });
     });
   }
 });

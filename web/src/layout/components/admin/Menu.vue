@@ -14,7 +14,7 @@
 import { ref, h, onBeforeMount } from "vue";
 import { NIcon, useMessage } from "naive-ui";
 import { RouterLink, useRoute, useRouter } from "vue-router";
-import axios from "axios";
+import { request } from "@/utils/request";
 import { renderIcon } from "@/utils";
 import { Home, ReaderSharp, Settings, Timer } from "@vicons/ionicons5";
 const router = useRouter();
