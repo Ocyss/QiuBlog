@@ -109,7 +109,7 @@
 <script setup>
 import frontVue from "@/layout/front.vue";
 import { ref, onMounted, reactive } from "vue";
-import { request } from "@/utils/request";
+import Api from "@/api";
 import { useRoute } from "vue-router";
 import { useMessage } from "naive-ui";
 import { 随机风景API } from "@/settings/config.js";
@@ -141,14 +141,16 @@ const imgSrc = computed(() => {
   return postData.value.img ? postData.value.img : 随机风景API;
 });
 
-const category = computed(() => {
-  return dataStore.getCategory().find((item) => {
-    return item.id == postData.value.cid;
-  });
+const category = ref({ name: "" });
+
+Api.article.get(route.params.pid).then((res) => {
+  postData.value = res.data;
 });
 
-request.get(`/api/v1/article/${route.params.pid}`).then((res) => {
-  postData.value = res.data;
+Api.category.get().then((res) => {
+  category.value = res.data.find((item) => {
+    return item.id == postData.value.cid;
+  });
 });
 </script>
 

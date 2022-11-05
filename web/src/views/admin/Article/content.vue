@@ -89,9 +89,10 @@
 import "@wangeditor/editor/dist/css/style.css";
 import { onBeforeUnmount, ref, shallowRef, onMounted } from "vue";
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
-import { request } from "@/utils/request";
+import request from "@/utils/request";
 import { useMessage } from "naive-ui";
 import { useRouter, useRoute } from "vue-router";
+import Api from "@/api";
 const router = useRouter();
 const route = useRoute();
 const message = useMessage();
@@ -184,7 +185,7 @@ const customRequest = ({
 };
 
 function send() {
-  request.post("/api/v1/article/add", content.value).then((res) => {
+  Api.article.add(content.value).then((res) => {
     message.success("发布成功！！！");
     uploadref.value.clear();
     tags.value = [];
@@ -204,12 +205,10 @@ function send() {
   });
 }
 function save() {
-  request
-    .put(`/api/v1/article/${route.params.id}`, content.value)
-    .then((res) => {
-      message.success("保存成功！！！");
-      router.push({ name: "article" });
-    });
+  Api.article.put(route.params.id, content.value).then((res) => {
+    message.success("保存成功！！！");
+    router.push({ name: "article" });
+  });
 }
 onBeforeUnmount(() => {
   //关闭前注销编辑器组件
@@ -220,8 +219,8 @@ onBeforeUnmount(() => {
 
 onMounted(() => {
   //请求菜单项和分类
-  request.get("/api/v1/menuchilds").then((res) => {
-    request.get("/api/v1/category?show=false").then((res2) => {
+  Api.menuchild.get().then((res) => {
+    Api.category.get().then((res2) => {
       res.data.map((item) => {
         menuoptions.value.push({
           value: item.name,
@@ -237,7 +236,7 @@ onMounted(() => {
   });
   //判断是不是修改帖子
   if (route.name == "article-updata") {
-    request.get(`/api/v1/article/${route.params.id}`).then((res) => {
+    Api.article.get(route.params.id).then((res) => {
       content.value.cid = res.data.cid;
       content.value.desc = res.data.desc;
       content.value.title = res.data.title;

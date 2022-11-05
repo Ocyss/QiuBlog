@@ -106,11 +106,11 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import draggable from "vuedraggable";
-import { request } from "@/utils/request";
 import { Pencil, Trash } from "@vicons/ionicons5";
 import menueditVue from "./menuedit.vue";
 import { useMessage } from "naive-ui";
 import categoryVue from "./category.vue";
+import Api from "@/api";
 const home = ref({
   id: -1,
   name: "主页",
@@ -201,7 +201,7 @@ function saveMenu() {
       savedata.push(da);
     }
   });
-  request.put("/api/v1/menuchild/set", savedata).then((res) => {
+  Api.menuchild.set(savedata).then((res) => {
     message.success("菜单子项保存成功！！");
     menulist.value = res.data;
     menulist2.value = [...menulist.value];
@@ -217,7 +217,7 @@ function selectMenu(data) {
 }
 onMounted(() => {
   //请求菜单子项
-  request.get("/api/v1/menuchilds").then((res) => {
+  Api.menuchild.set().then((res) => {
     menulist.value = res.data;
     menulist2.value = [...menulist.value];
   });

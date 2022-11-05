@@ -31,7 +31,7 @@
 <script setup>
 import { ref } from "vue";
 import PostVue from "./Post.vue";
-import { request } from "@/utils/request";
+import Api from "@/api";
 const PostSpinShow = ref(true);
 const props = defineProps(["cdata"]);
 
@@ -49,20 +49,16 @@ function getPosts(id, ty = "c") {
   } else if (ty == "c") {
     params.cid = id;
   }
-  request
-    .get("/api/v1/article/list", {
-      params: params,
-    })
-    .then((res) => {
-      PostData.value[id] = res.data.map((item) => {
-        item.cname = props.cdata.cids.find((citem) => {
-          return citem.id == item.cid;
-        });
-        return item;
+  Api.article.getList(params).then((res) => {
+    PostData.value[id] = res.data.map((item) => {
+      item.cname = props.cdata.cids.find((citem) => {
+        return citem.id == item.cid;
       });
-
-      PostSpinShow.value = false;
+      return item;
     });
+
+    PostSpinShow.value = false;
+  });
 }
 
 getPosts("-1", "m");

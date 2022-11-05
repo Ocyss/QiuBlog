@@ -37,7 +37,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { request } from "@/utils/request";
+import Api from "@/api";
 import { randomRgb } from "@/utils";
 import { tagDark } from "naive-ui";
 let timer = null;
@@ -139,10 +139,11 @@ const watchWidth = () => {
 };
 
 onMounted(() => {
-  request.get("/api/v1/tags").then((res) => {
+  Api.tags.get().then((res) => {
     TagData.value.tags = res.data;
     watchWidth();
   });
+
   window.addEventListener("resize", watchWidth);
   timer = setInterval(() => {
     rotateX();

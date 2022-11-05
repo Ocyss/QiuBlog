@@ -1,8 +1,7 @@
 import axios from "axios";
 import { createDiscreteApi } from "naive-ui";
 const { message } = createDiscreteApi(["message"]);
-
-export const request = axios.create({
+let request = axios.create({
   timeout: 5000,
 });
 
@@ -36,3 +35,5 @@ request.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export default request;

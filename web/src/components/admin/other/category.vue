@@ -86,9 +86,8 @@
 import draggable from "vuedraggable";
 import { ref, onMounted } from "vue";
 import { Pencil, Trash } from "@vicons/ionicons5";
-import { request } from "@/utils/request";
 import { useMessage } from "naive-ui";
-
+import Api from "@/api";
 const message = useMessage();
 //菜单项
 const menuValue = ref({ id: 0, name: "主页", ename: "home", sort: -1 });
@@ -137,13 +136,9 @@ function save() {
 defineExpose({ toggleMenu });
 onMounted(() => {
   //请求分类
-  request
-    .get("/api/v1/category", {
-      params: { show: false },
-    })
-    .then((res) => {
-      categoryList.value = res.data;
-    });
+  Api.category.get().then((res) => {
+    categoryList.value = res.data;
+  });
 });
 </script>
 
