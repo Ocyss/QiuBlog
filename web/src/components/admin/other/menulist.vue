@@ -25,10 +25,10 @@
           >
           <template #item="{ element, index }">
             <n-list-item
-              :class="menuValue.id == element.ID ? 'checked' : ''"
+              :class="menuValue.id == element.id ? 'checked' : ''"
               @click="
                 selectMenu({
-                  id: element.ID,
+                  id: element.id,
                   name: element.name,
                   ename: element.ename,
                   sort: index,
@@ -80,27 +80,27 @@
     <div class="cate">
       <categoryVue ref="categoryRef" />
     </div>
+    <n-modal
+      v-model:show="showModalnew"
+      preset="dialog"
+      title="新建菜单子项"
+      positive-text="确认"
+      negative-text="算了"
+      @positive-click="newMenu"
+    >
+      <menueditVue :value="newvalue" />
+    </n-modal>
+    <n-modal
+      v-model:show="showModaledit"
+      preset="dialog"
+      title="编辑菜单子项"
+      positive-text="确认"
+      negative-text="算了"
+      @positive-click="editMenu"
+    >
+      <menueditVue :value="editvalue" />
+    </n-modal>
   </div>
-  <n-modal
-    v-model:show="showModalnew"
-    preset="dialog"
-    title="新建菜单子项"
-    positive-text="确认"
-    negative-text="算了"
-    @positive-click="newMenu"
-  >
-    <menueditVue :value="newvalue" />
-  </n-modal>
-  <n-modal
-    v-model:show="showModaledit"
-    preset="dialog"
-    title="编辑菜单子项"
-    positive-text="确认"
-    negative-text="算了"
-    @positive-click="editMenu"
-  >
-    <menueditVue :value="editvalue" />
-  </n-modal>
 </template>
 
 <script setup>
@@ -167,7 +167,7 @@ function edit(index) {
 }
 //删除菜单项
 function del(index) {
-  savedata.push({ type: "remove", id: menulist.value[index].ID });
+  savedata.push({ type: "remove", id: menulist.value[index].id });
   menulist.value.splice(index, 1);
 }
 //保存菜单修改
@@ -187,7 +187,7 @@ function saveMenu() {
     } else if (item.ty == "up") {
       da = {
         type: "updata",
-        id: item.ID,
+        id: item.id,
         sort: index,
         name: item.name,
         ename: item.ename,
@@ -195,7 +195,7 @@ function saveMenu() {
         link: item.link,
       };
     } else if (item.Sort != index) {
-      da = { type: "sort", id: item.ID, sort: index };
+      da = { type: "sort", id: item.id, sort: index };
     }
     if (!savedata.includes(da) && da != null) {
       savedata.push(da);
@@ -215,20 +215,18 @@ function selectMenu(data) {
   menuValue.value = data;
   categoryRef.value?.toggleMenu(data);
 }
-onMounted(() => {
-  //请求菜单子项
-  Api.menuchild.set().then((res) => {
-    menulist.value = res.data;
-    menulist2.value = [...menulist.value];
-  });
+
+//请求菜单子项
+Api.menuchild.get().then((res) => {
+  menulist.value = res.data;
+  menulist2.value = [...menulist.value];
 });
 </script>
 
 <style lang="scss" scoped>
-@import "list.scss";
+@import "./list.scss";
 .main {
   display: flex;
-  height: 100%;
 }
 
 .home {
@@ -240,5 +238,9 @@ onMounted(() => {
 .cate {
   display: flex;
   margin-left: 20px;
+  height: 85vh;
+}
+.checked {
+  background-color: rgba(96, 152, 255, 0.3);
 }
 </style>

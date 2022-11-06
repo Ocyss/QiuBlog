@@ -37,8 +37,9 @@ func InitRouter() {
 		router.GET("menuchild", v1.GetSingleMenuItem) //获取单个菜单项
 		router.PUT("menuchild/set", v1.SetMenuchild)  //设置菜单子项
 		//分类
-		router.POST("category/add", v1.AddCategory) //添加分类
-		router.GET("category", v1.GetCategory)      //获取分类
+		router.POST("category/add", v1.AddCategory)     //添加分类
+		router.GET("category", v1.GetCategory)          //获取分类
+		router.PUT("category/list", v1.ModifyCategorys) //批量修改分类
 		//标签
 		router.GET("tags", v1.GetTags) //获取全部标签
 		//上传

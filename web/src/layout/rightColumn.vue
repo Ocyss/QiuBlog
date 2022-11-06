@@ -38,7 +38,6 @@ const settingStore = projectSetting();
 }
 .layoutSide :deep(.n-layout-sider-scroll-container) {
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
 }

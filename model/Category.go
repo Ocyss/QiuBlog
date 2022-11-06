@@ -9,7 +9,7 @@ import (
 type Category struct {
 	ID       uint      `gorm:"primarykey" json:"id"`
 	Name     string    `gorm:"type:varchar(255);not null;unique;comment:分类名" json:"name"`
-	Mid      uint      `gorm:"type:int;comment:菜单子项ID" json:"mid,omitempty"`
+	Mid      *uint     `gorm:"type:int;comment:菜单子项ID" json:"mid"`
 	Homeshow bool      `gorm:"type:bool;comment:主页是否显示;default:true;not null;" json:"homeshow,omitempty"`
 	Articles []Article `gorm:"foreignkey:Cid"`
 }
@@ -43,6 +43,18 @@ type SetCategory struct {
 	Name     string `json:"name,omitempty"`
 	Mid      uint   `json:"mid,omitempty"`
 	Homeshow bool   `json:"homeshow,omitempty"`
+}
+type GetSingleMenuTy struct {
+	ID    uint   `json:"id"`    //菜单id
+	Name  string `json:"name"`  //菜单名
+	Ename string `json:"ename"` //英文名
+	Link  string `json:"link"`  //路由名
+	Cids  []struct {
+		ID       uint   `json:"id"`       //分类id
+		Name     string `json:"name"`     //分类name
+		Mid      uint   `json:"mid"`      //分类mid
+		Homeshow bool   `json:"homeshow"` //分类首页是否显示
+	} `gorm:"foreignkey:Mid" json:"cids"`
 }
 
 // SetCate  设置菜单子项
@@ -130,19 +142,6 @@ func GetMenu() []Menuchild {
 	return data
 }
 
-type GetSingleMenuTy struct {
-	ID    uint   `json:"id"`    //菜单id
-	Name  string `json:"name"`  //菜单名
-	Ename string `json:"ename"` //英文名
-	Link  string `json:"link"`  //路由名
-	Cids  []struct {
-		ID       uint   `json:"id"`       //分类id
-		Name     string `json:"name"`     //分类name
-		Mid      uint   `json:"mid"`      //分类mid
-		Homeshow bool   `json:"homeshow"` //分类首页是否显示
-	} `gorm:"foreignkey:Mid" json:"cids"`
-}
-
 // GetSingleMenu 获取单菜单项
 func GetSingleMenu(link string) (int, *GetSingleMenuTy) {
 	var data GetSingleMenuTy
@@ -207,4 +206,18 @@ func GetMidCid(mid int) []uint {
 		r = append(r, item.ID)
 	}
 	return r
+}
+
+// ModifyCategorys 批量修改分类
+func ModifyCategorys(data *[]Category) int {
+	tx := Db.Begin()
+	for _, item := range *data {
+		err = tx.Debug().Table("category").Select("*").Updates(item).Error
+		if err != nil {
+			tx.Rollback()
+			return errmsg.ERROR
+		}
+	}
+	tx.Commit()
+	return errmsg.SUCCESS
 }
