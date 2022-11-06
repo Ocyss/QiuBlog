@@ -47,3 +47,14 @@ func GetTags(c *gin.Context) {
 		"data":    data,
 	})
 }
+
+// ModifyCategorys 批量修改分类
+func ModifyCategorys(c *gin.Context) {
+	var data []model.Category
+	_ = c.ShouldBindJSON(&data)
+	code = model.ModifyCategorys(&data)
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"message": errmsg.GetErrMsg(code),
+	})
+}

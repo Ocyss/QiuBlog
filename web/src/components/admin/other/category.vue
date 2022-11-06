@@ -1,16 +1,14 @@
 <template>
   <n-list class="List" hoverable clickable bordered>
     <template #header>
-      <h2>
+      <h2 v-if="menuValue.id != 0">
         分类管理
         <span style="font-size: 10px">({{ menuValue.name }})</span>
         ：
       </h2>
+      <h2 v-else>主页不显示：</h2>
     </template>
     <n-spin :show="cateSpin">
-      <n-list-item v-if="menuValue.name == '主页'">
-        <div>下列内容不显示在主页</div>
-      </n-list-item>
       <draggable
         v-model="CheckList"
         group="cat"
@@ -60,7 +58,7 @@
   <n-list class="List" hoverable clickable bordered>
     <template #header>
       <h2>
-        {{ menuValue.name == "主页" ? "所有类别：" : "未使用类别：" }}
+        {{ menuValue.id == 0 ? "主页显示：" : "未使用类别：" }}
       </h2>
     </template>
     <n-spin :show="cateSpin">
@@ -86,6 +84,7 @@
 import draggable from "vuedraggable";
 import { ref, onMounted } from "vue";
 import { Pencil, Trash } from "@vicons/ionicons5";
+
 import { useMessage } from "naive-ui";
 import Api from "@/api";
 const message = useMessage();
@@ -97,19 +96,72 @@ const drag = ref(false); //是否在拖动
 const cateSpin = ref(false); //是否显示加载中
 
 const categoryList = ref([]); //分类列表
+const categoryChange = []; // 变动列表
 
-const CheckList = ref([
-  { name: "a1" },
-  { name: "a2" },
-  { name: "a3" },
-  { name: "a4" },
-]);
-const uncheckedList = ref([
-  { name: "b1" },
-  { name: "b2" },
-  { name: "b3" },
-  { name: "b4" },
-]);
+//请求分类
+Api.category.get().then((res) => {
+  categoryList.value = res.data;
+});
+const CheckList = computed({
+  get: () => {
+    if (menuValue.value.id == 0) {
+      return categoryList.value.filter((item) => {
+        return !item.homeshow;
+      });
+    } else {
+      return categoryList.value.filter((item) => {
+        return item.mid == menuValue.value.id;
+      });
+    }
+  },
+  set: (val) => {
+    val.map((item) => {
+      if (item.mid == 0) {
+        categoryList.value.map((item2, index) => {
+          if (item2.id == item.id) {
+            categoryList.value[index].mid = menuValue.value.id;
+            if (
+              categoryChange.every((v) => v.id !== categoryList.value[index].id)
+            ) {
+              categoryChange.push(categoryList.value[index]);
+            }
+          }
+        });
+      }
+    });
+  },
+});
+
+const uncheckedList = computed({
+  get: () => {
+    if (menuValue.value.id == 0) {
+      return categoryList.value.filter((item) => {
+        return item.homeshow;
+      });
+    } else {
+      return categoryList.value.filter((item) => {
+        return item.mid == null || item.mid == 0;
+      });
+    }
+  },
+  set: (val) => {
+    val.map((item) => {
+      if (item.mid != 0) {
+        categoryList.value.map((item2, index) => {
+          if (item2.id == item.id) {
+            categoryList.value[index].mid = null;
+            if (
+              categoryChange.every((v) => v.id !== categoryList.value[index].id)
+            ) {
+              categoryChange.push(categoryList.value[index]);
+            }
+          }
+        });
+      }
+    });
+  },
+});
+
 //设置菜单名
 function setNamepositive(index) {
   CheckList.value[index].name = setName.value;
@@ -130,18 +182,15 @@ function toggleMenu(data) {
 }
 //保存
 function save() {
-  message.error("未完成！！！！！！！！！！");
+  Api.category.put(categoryChange).then((res) => {
+    console.log(res);
+  });
 }
+
 //函数暴露
 defineExpose({ toggleMenu });
-onMounted(() => {
-  //请求分类
-  Api.category.get().then((res) => {
-    categoryList.value = res.data;
-  });
-});
 </script>
 
 <style lang="scss" scoped>
-@import "list.scss";
+@import "./list.scss";
 </style>

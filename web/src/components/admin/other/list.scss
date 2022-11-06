@@ -3,7 +3,7 @@
   min-width: 210px;
   height: 85vh;
   .n-spin-container {
-    overflow: scroll;
+    overflow-y: scroll;
     height: 500px;
   }
 }
@@ -27,8 +27,4 @@
   :deep(.n-list-item__main) {
     height: 41.58px;
   }
-}
-
-.checked {
-  background-color: rgb(243, 243, 245);
 }
