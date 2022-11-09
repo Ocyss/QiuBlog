@@ -56,7 +56,7 @@ const menus = ref([
 const menusKey = ref(route.path.split("/").at(-1));
 
 //请求菜单项
-Api.menuchild.get().then((res) => {
+Api.menuchild.gets().then((res) => {
   res.data.map((item) => {
     menus.value.push({
       label: () =>

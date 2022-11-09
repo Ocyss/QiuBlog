@@ -219,7 +219,7 @@ onBeforeUnmount(() => {
 
 onMounted(() => {
   //请求菜单项和分类
-  Api.menuchild.get().then((res) => {
+  Api.menuchild.gets().then((res) => {
     Api.category.get().then((res2) => {
       res.data.map((item) => {
         menuoptions.value.push({

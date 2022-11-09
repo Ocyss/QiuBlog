@@ -90,5 +90,7 @@
 
 [wejectchen GinBlog](https://github.com/wejectchen/Ginblog) 非常感谢wejectchen的开源项目，和录制的教程
 
+[naive-ui-admin](https://github.com/jekip/naive-ui-admin) 部分代码 借鉴 了次项目
+
 [shaojintian README模板](https://github.com/shaojintian/Best_README_template)  一下子就正式起来了
 

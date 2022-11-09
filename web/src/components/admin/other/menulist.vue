@@ -217,7 +217,7 @@ function selectMenu(data) {
 }
 
 //请求菜单子项
-Api.menuchild.get().then((res) => {
+Api.menuchild.gets().then((res) => {
   menulist.value = res.data;
   menulist2.value = [...menulist.value];
 });
