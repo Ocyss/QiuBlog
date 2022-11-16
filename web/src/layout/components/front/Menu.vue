@@ -14,7 +14,7 @@
 import { ref, h, onBeforeMount } from "vue";
 import { NIcon, useMessage } from "naive-ui";
 import { RouterLink, useRouter, useRoute } from "vue-router";
-import Api from "@/api";
+import api from "@/api";
 
 const route = useRoute();
 const collapsed = ref(false);
@@ -56,7 +56,7 @@ const menus = ref([
 const menusKey = ref(route.path.split("/").at(-1));
 
 //请求菜单项
-Api.menuchild.gets().then((res) => {
+api.menuchild.gets().then((res) => {
   res.data.map((item) => {
     menus.value.push({
       label: () =>

@@ -92,7 +92,7 @@ import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import request from "@/utils/request";
 import { useMessage } from "naive-ui";
 import { useRouter, useRoute } from "vue-router";
-import Api from "@/api";
+import api from "@/api";
 const router = useRouter();
 const route = useRoute();
 const message = useMessage();
@@ -185,7 +185,7 @@ const customRequest = ({
 };
 
 function send() {
-  Api.article.add(content.value).then((res) => {
+  api.article.add(content.value).then((res) => {
     message.success("发布成功！！！");
     uploadref.value.clear();
     tags.value = [];
@@ -205,7 +205,7 @@ function send() {
   });
 }
 function save() {
-  Api.article.put(route.params.id, content.value).then((res) => {
+  api.article.put(route.params.id, content.value).then((res) => {
     message.success("保存成功！！！");
     router.push({ name: "article" });
   });
@@ -219,8 +219,8 @@ onBeforeUnmount(() => {
 
 onMounted(() => {
   //请求菜单项和分类
-  Api.menuchild.gets().then((res) => {
-    Api.category.get().then((res2) => {
+  api.menuchild.gets().then((res) => {
+    api.category.get().then((res2) => {
       res.data.map((item) => {
         menuoptions.value.push({
           value: item.name,
@@ -236,7 +236,7 @@ onMounted(() => {
   });
   //判断是不是修改帖子
   if (route.name == "article-updata") {
-    Api.article.get(route.params.id).then((res) => {
+    api.article.get(route.params.id).then((res) => {
       content.value.cid = res.data.cid;
       content.value.desc = res.data.desc;
       content.value.title = res.data.title;

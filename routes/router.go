@@ -31,6 +31,8 @@ func InitRouter() {
 		router.PUT("article/:id", v1.ModifyArticle)    //更新文章
 		router.DELETE("article/:id", v1.DeleteArticle) //删除文章
 		//用户
+		router.POST("user/register", v1.Register) //注册用户
+		router.POST("user/login", v1.Login)       //登陆用户
 		//菜单子项
 		router.POST("menuchild/add", v1.AddMenuchild) //添加菜单子项
 		router.GET("menuchilds", v1.GetMenuchild)     //获取菜单子项

@@ -6,7 +6,9 @@ const (
 	ERROR       = 500
 	ERROR_PARAM = 601
 	// code = 1000  User      用户表
-
+	ERROR_PWDERR  = 1001
+	ERROR_MANYERR = 1002
+	ERROR_REPEAT  = 1003
 	// code = 2000  Tags      标签表
 
 	// code = 3000  Article   文章表
@@ -27,6 +29,9 @@ var codemsg = map[int]string{
 	SUCCESS:           "OK",
 	ERROR:             "ERROR",
 	ERROR_PARAM:       "参数不对",
+	ERROR_PWDERR:      "用户名或者密码有误",
+	ERROR_MANYERR:     "错误次数过多",
+	ERROR_REPEAT:      "注册失败：重复的用户名",
 	ERROR_PARM_SO:     "缺少必要参数!",
 	ERROR_FILE_WRONG:  "上传文件/格式有误",
 	ERROR_CLASS_WRONG: "上传类型不对",

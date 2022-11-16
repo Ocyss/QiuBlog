@@ -36,7 +36,7 @@ import { useRouter } from "vue-router";
 import { h, reactive, nextTick } from "vue";
 import { NButton, NTag, NImage } from "naive-ui";
 import { timeControl } from "@/utils";
-import Api from "@/api";
+import api from "@/api";
 const router = useRouter();
 const data = ref([]);
 const dropdown = ref({
@@ -155,7 +155,7 @@ const colsReactive = reactive([
   },
 ]);
 
-Api.article.getList({ mid: -2 }).then((res) => {
+api.article.getList({ mid: -2 }).then((res) => {
   data.value.push(...res.data);
 });
 </script>

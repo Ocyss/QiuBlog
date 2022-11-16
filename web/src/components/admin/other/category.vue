@@ -86,7 +86,7 @@ import { ref, onMounted } from "vue";
 import { Pencil, Trash } from "@vicons/ionicons5";
 
 import { useMessage } from "naive-ui";
-import Api from "@/api";
+import api from "@/api";
 const message = useMessage();
 //菜单项
 const menuValue = ref({ id: 0, name: "主页", ename: "home", sort: -1 });
@@ -99,7 +99,7 @@ const categoryList = ref([]); //分类列表
 const categoryChange = []; // 变动列表
 
 //请求分类
-Api.category.get().then((res) => {
+api.category.get().then((res) => {
   categoryList.value = res.data;
 });
 const CheckList = computed({
@@ -182,7 +182,7 @@ function toggleMenu(data) {
 }
 //保存
 function save() {
-  Api.category.put(categoryChange).then((res) => {
+  api.category.put(categoryChange).then((res) => {
     console.log(res);
   });
 }

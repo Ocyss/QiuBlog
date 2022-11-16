@@ -50,6 +50,14 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/login",
+    name: "login",
+    meta: {
+      title: "登录",
+    },
+    component: () => import("@/views/admin/LoginView.vue"),
+  },
 ];
 
 export default routes;

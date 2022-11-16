@@ -110,7 +110,7 @@ import { Pencil, Trash } from "@vicons/ionicons5";
 import menueditVue from "./menuedit.vue";
 import { useMessage } from "naive-ui";
 import categoryVue from "./category.vue";
-import Api from "@/api";
+import api from "@/api";
 const home = ref({
   id: -1,
   name: "主页",
@@ -201,7 +201,7 @@ function saveMenu() {
       savedata.push(da);
     }
   });
-  Api.menuchild.set(savedata).then((res) => {
+  api.menuchild.set(savedata).then((res) => {
     message.success("菜单子项保存成功！！");
     menulist.value = res.data;
     menulist2.value = [...menulist.value];
@@ -217,7 +217,7 @@ function selectMenu(data) {
 }
 
 //请求菜单子项
-Api.menuchild.gets().then((res) => {
+api.menuchild.gets().then((res) => {
   menulist.value = res.data;
   menulist2.value = [...menulist.value];
 });

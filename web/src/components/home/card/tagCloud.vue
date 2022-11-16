@@ -37,7 +37,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import Api from "@/api";
+import api from "@/api";
 import { randomRgb } from "@/utils";
 import { tagDark } from "naive-ui";
 let timer = null;
@@ -139,7 +139,7 @@ const watchWidth = () => {
 };
 
 onMounted(() => {
-  Api.tags.get().then((res) => {
+  api.tags.get().then((res) => {
     TagData.value.tags = res.data;
     watchWidth();
   });

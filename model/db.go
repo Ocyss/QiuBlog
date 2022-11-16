@@ -44,4 +44,5 @@ func InitDb() {
 	sqlDB.SetMaxOpenConns(100)
 	// SetConnMaxLifetime 设置了连接可复用的最大时间。
 	sqlDB.SetConnMaxLifetime(10 * time.Second)
+	//Db.Create(&User{Username: "root", Password: "123456", Role: 0})
 }

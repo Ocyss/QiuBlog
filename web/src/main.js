@@ -8,7 +8,8 @@ import VueWechatTitle from "vue-wechat-title";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
 
 const app = createApp(App);
-app.config.globalProperties.$cookies = VueCookies;
+//依赖注入cookies
+app.provide("$cookies", VueCookies);
 
 app.use(VueWechatTitle);
 app.component(VueQrcode.name, VueQrcode);

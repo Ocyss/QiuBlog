@@ -27,7 +27,7 @@
 import PostListVue from "@/components/PostList.vue";
 import { ref } from "vue";
 import { 随机美女API } from "@/settings/config.js";
-import Api from "@/api";
+import api from "@/api";
 
 //帖子分类数据
 const cdata = ref({
@@ -38,7 +38,7 @@ const cdata = ref({
   cids: [{ id: -1, name: "全部", homeshow: true }],
 });
 
-Api.category.get().then((res) => {
+api.category.get().then((res) => {
   res.data.map((item) => {
     if (item.homeshow) {
       cdata.value.cids.push(item);

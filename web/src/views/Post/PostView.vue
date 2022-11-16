@@ -109,7 +109,7 @@
 <script setup>
 import frontVue from "@/layout/front.vue";
 import { ref, onMounted, reactive } from "vue";
-import Api from "@/api";
+import api from "@/api";
 import { useRoute } from "vue-router";
 import { useMessage } from "naive-ui";
 import { 随机风景API } from "@/settings/config.js";
@@ -143,11 +143,11 @@ const imgSrc = computed(() => {
 
 const category = ref({ name: "" });
 
-Api.article.get(route.params.pid).then((res) => {
+api.article.get(route.params.pid).then((res) => {
   postData.value = res.data;
 });
 
-Api.category.get().then((res) => {
+api.category.get().then((res) => {
   category.value = res.data.find((item) => {
     return item.id == postData.value.cid;
   });
