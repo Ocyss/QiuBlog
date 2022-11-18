@@ -26,13 +26,11 @@ func Login(c *gin.Context) {
 	if err != nil {
 		ask.ErrParam(c)
 	}
-	code, uid, token := model.Login(&data)
-
+	code, uid, token := model.CheckLogin(&data)
+	c.SetCookie("token", token, 259200, "/", "localhost", false, false)
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"message": errmsg.GetErrMsg(code),
 		"uid":     uid,
-		"token":   token,
 	})
-
 }

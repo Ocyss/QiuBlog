@@ -14,7 +14,6 @@
           <n-icon-wrapper :size="18" :border-radius="15">
             <n-icon :size="13" :component="Calendar" />
           </n-icon-wrapper>
-
           <n-tooltip trigger="hover" v-if="item.created_at">
             <template #trigger>
               <n-time

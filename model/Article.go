@@ -8,7 +8,7 @@ import (
 
 type (
 	Article struct {
-		gorm.Model
+		Model
 		Title   string `gorm:"type:varchar(64);not null;comment:标题" json:"title"` //标题
 		Img     string `gorm:"type:varchar(128);comment:首图" json:"img"`           //首图
 		Desc    string `gorm:"type:varchar(255);comment:描述" json:"desc"`          //描述

@@ -306,10 +306,6 @@ function login() {
       return;
     } else {
       api.user.login(loginData.value).then((res) => {
-        if (cookies.isKey("token")) {
-          cookies.remove("token");
-        }
-        cookies.set("token", res.token, "1M");
         message.success("登陆成功！！");
         router.push({ name: "admin" });
       });

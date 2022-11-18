@@ -1,17 +1,14 @@
 package model
 
 import (
-	"fmt"
-	"github.com/golang-jwt/jwt"
 	"gopkg.in/hlandau/passlib.v1"
-	"gorm.io/gorm"
+	"qiublog/middleware"
 	"qiublog/utils/errmsg"
-	"time"
 )
 
 // User 用户
 type User struct {
-	gorm.Model
+	Model
 	Username string `gorm:"type:varchar(40);not null;comment:用户名" json:"username"` //用户名
 	Password string `gorm:"type:varchar(100);not null;comment:密码" json:"password"` //密码
 	NickName string `gorm:"type:varchar(20)" json:"nickname"`                      //昵称
@@ -19,8 +16,7 @@ type User struct {
 	Avatar   string `gorm:"type:varchar(20);comment:头像" json:"avatar"`             //头像
 }
 
-func Login(user *User) (int, uint, string) {
-	signingKey := []byte("0691e86e167431a3601c0a842ddad74f")
+func CheckLogin(user *User) (int, uint, string) {
 	var data User
 	//根据用户名获取对应的全部数据
 	err = Db.Where("username=?", user.Username).Find(&data).Error
@@ -30,22 +26,17 @@ func Login(user *User) (int, uint, string) {
 	//进行哈希值效验密码是否正确
 	newHash, err := passlib.Verify(user.Password, data.Password)
 	if err != nil {
-		return errmsg.ERROR_PWDERR, 0, ""
+		return errmsg.ERROR_PWDERR_WRONG, 0, ""
 	}
 	if newHash != "" {
 		//登陆成功，判断是否需要更换哈希值
 		Db.Model(&User{}).Where(data).Update("password", newHash)
 	}
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id":   data.ID,
-		"role": data.Role,
-		"exp":  time.Now().Unix() + 60*60*24*3, //3天
-	})
-	tokenString, err := token.SignedString(signingKey)
-	if err != nil {
-		return errmsg.ERROR, 0, fmt.Sprintf("%v", err)
+	token, tCode := middleware.SetToken(data.ID, data.Username, data.Role)
+	if tCode != errmsg.SUCCESS {
+		return tCode, 0, ""
 	}
-	return errmsg.SUCCESS, data.ID, tokenString
+	return errmsg.SUCCESS, data.ID, token
 }
 
 func Register(user *User) int {

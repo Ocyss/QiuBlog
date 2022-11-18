@@ -3,6 +3,7 @@ const getCookie = (name) =>
 
 export function febore(router) {
   router.beforeEach(async (to, from, next) => {
+    console.log(document.cookie);
     if (!to.name) {
       //判断有没有路由
       next({ name: "exception-404" });

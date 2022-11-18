@@ -12,6 +12,12 @@ import (
 var Db *gorm.DB
 var err error
 
+type Model struct {
+	ID        uint      `gorm:"primarykey" json:"id,omitempty"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
 func InitDb() {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		utils.DbUser, utils.DbPassWord, utils.DbHost, utils.DbPort, utils.DbName)

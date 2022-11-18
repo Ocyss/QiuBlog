@@ -141,7 +141,7 @@ const content = ref({
       return { name: item };
     });
   }),
-  cid: undefined,
+  cid: "",
   desc: "",
   title: "",
   content: "",
@@ -196,7 +196,7 @@ function send() {
             return { name: item };
           }),
       }),
-      cid: undefined,
+      cid: "",
       desc: "",
       title: "",
       content: "",
@@ -204,6 +204,7 @@ function send() {
     };
   });
 }
+
 function save() {
   api.article.put(route.params.id, content.value).then((res) => {
     message.success("保存成功！！！");
@@ -218,22 +219,26 @@ onBeforeUnmount(() => {
 });
 
 onMounted(() => {
-  //请求菜单项和分类
+  //请求菜单项和分类;
   api.menuchild.gets().then((res) => {
-    api.category.get().then((res2) => {
+    api.category.get(false).then((res2) => {
       res.data.map((item) => {
         menuoptions.value.push({
           value: item.name,
           label: item.name,
-          children: res2.data.map((item2) => {
-            if (item2.mid == item.id) {
-              return { value: item2.id, label: item2.name };
-            }
-          }),
+          children: res2.data
+            .map((item2) => {
+              if (item2.mid == item.id) {
+                return { value: item2.id, label: item2.name };
+              }
+            })
+            .filter((item) => typeof item !== "undefined"),
         });
       });
     });
   });
+
+  console.log(menuoptions.value);
   //判断是不是修改帖子
   if (route.name == "article-updata") {
     api.article.get(route.params.id).then((res) => {
