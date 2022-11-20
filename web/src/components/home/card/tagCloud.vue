@@ -15,7 +15,7 @@
         fill="rgba(0,255,0,0.3)"
       /> -->
       <a
-        href="#"
+        :href="`#/m/tag?id=${tag.id}`"
         v-for="(tag, index) in tags"
         :key="tag"
         @mouseover="mouseover(index)"

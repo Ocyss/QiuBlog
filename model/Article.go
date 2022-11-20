@@ -101,3 +101,15 @@ func GetArticle(Aid int) (int, *Article) {
 	}
 	return errmsg.SUCCESS, &data
 }
+
+// TagGetArticle  根据标签获取所有文章
+func TagGetArticle(tagId int) (*Tags, int64) {
+	var tag Tags
+	var total int64
+	err = Db.Preload("Article.Tags").Find(&tag, tagId).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, 0
+	}
+	total = Db.Model(&Tags{}).Association("Article").Count()
+	return &tag, total
+}

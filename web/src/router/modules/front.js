@@ -16,6 +16,11 @@ const routes = [
         component: () => import("@/views/front/HomeView.vue"),
       },
       {
+        path: "m/tag",
+        name: "menuTag",
+        component: () => import("@/views/front/TagView.vue"),
+      },
+      {
         path: "m/qa",
         name: "menuQa",
         component: () => import("@/views/front/menu/QaView.vue"),

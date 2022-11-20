@@ -12,6 +12,10 @@ export const getList = (params) => {
   return request({ url: "/api/v1/article/list", method: "get", params });
 };
 
+export const tagGetList = (tagId) => {
+  return request({ url: `/api/v1/article/tag/${tagId}`, method: "get" });
+};
+
 export const put = (id, data) => {
   return request({ url: `/api/v1/article/${id}`, method: "put", data });
 };

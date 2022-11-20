@@ -76,6 +76,10 @@ func ModifyArticle(c *gin.Context) {
 
 	var data model.Article
 	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		ask.ErrParam(c)
+		return
+	}
 	err = c.ShouldBindJSON(&data)
 	if err != nil {
 		ask.ErrParam(c)
@@ -97,4 +101,21 @@ func ModifyArticle(c *gin.Context) {
 // DeleteArticle 删除文章
 func DeleteArticle(c *gin.Context) {
 
+}
+
+// TagGetArticle  根据标签获取所有文章
+func TagGetArticle(c *gin.Context) {
+	tagId, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		ask.ErrParam(c)
+		return
+	}
+	data, total := model.TagGetArticle(tagId)
+	code = 200
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"data":    data,
+		"total":   total,
+		"message": errmsg.GetErrMsg(code),
+	})
 }

@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import PostListVue from "@/components/PostList.vue";
+import PostListVue from "@/components/front/post/PostList.vue";
 import { ref } from "vue";
 import { 随机美女API } from "@/settings/config.js";
 import api from "@/api";

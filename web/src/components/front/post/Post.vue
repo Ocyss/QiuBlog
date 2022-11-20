@@ -66,6 +66,8 @@
         <n-space :wrap="false">
           <n-tag
             v-for="tag in item.tags"
+            @click="router.push({ name: menuTag, query: { id: tag.id } })"
+            style="cursor: pointer"
             :key="tag"
             size="small"
             round
@@ -90,6 +92,8 @@
 import { Calendar, Book, PricetagsSharp } from "@vicons/ionicons5";
 import { 随机风景API } from "@/settings/config.js";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
 const imgSrc = ref("");
 const props = defineProps(["item"]);
 //渲染判断，无头图则采用随机api

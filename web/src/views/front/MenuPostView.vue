@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import PostListVue from "@/components/PostList.vue";
+import PostListVue from "@/components/front/post/PostList.vue";
 import { useRoute, useRouter } from "vue-router";
 import { ref, onBeforeMount } from "vue";
 import api from "@/api";
@@ -19,5 +19,6 @@ api.menuchild.get({ link: route.params.menuName }).then((res) => {
     cdata.value = res.data;
     cdata.value.cids.unshift({ id: -1, name: "全部", homeshow: true });
   }
+  console.log(cdata.value);
 });
 </script>
