@@ -9,20 +9,7 @@
               <n-icon-wrapper :size="18" :border-radius="15">
                 <n-icon :size="13" :component="Calendar" />
               </n-icon-wrapper>
-              <n-tooltip trigger="hover">
-                <template #trigger>
-                  <n-time
-                    time-zone="Asia/Shanghai"
-                    :time="new Date(postData.created_at)"
-                    type="relative"
-                  />
-                </template>
-                <n-time
-                  time-zone="Asia/Shanghai"
-                  :time="new Date(postData.created_at)"
-                  format="yyyy-MM-dd HH:mm:ss"
-                />
-              </n-tooltip>
+              <TimerVue :t="postData.created_at" />
             </div>
             <div class="rightInfo">
               <div style="margin-right: 0.5rem">
@@ -118,6 +105,7 @@ import { Calendar, Book, PricetagsSharp } from "@vicons/ionicons5";
 import { computed } from "@vue/reactivity";
 import "@wangeditor/editor/dist/css/style.css"; // 引入 css
 import { Editor } from "@wangeditor/editor-for-vue";
+import TimerVue from "@/components/Timer.vue";
 const url = window.location.href;
 const dataStore = globalData();
 const route = useRoute();

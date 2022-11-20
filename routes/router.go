@@ -55,6 +55,11 @@ func InitRouter() {
 		router.GET("category", v1.GetCategory) //获取分类
 		//标签
 		router.GET("tags", v1.GetTags) //获取全部标签
+		//消息
+		router.POST("message", v1.AddMessage)   //留言
+		router.POST("question", v1.AddQuestion) //提问
+		router.GET("message", v1.GetMessage)    //留言
+		router.GET("question", v1.GetQuestion)  //提问
 	}
 	err := r.Run(utils.HttpPort)
 	if err != nil {

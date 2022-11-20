@@ -1,10 +1,12 @@
 package tool
 
 import (
+	"github.com/gin-gonic/gin"
 	"strconv"
 	"strings"
 )
 
+// SplitToIntList 字符串切割成int数组
 func SplitToIntList(str string, sep string) (intList []int) {
 	if str == "" {
 		return
@@ -25,4 +27,18 @@ func SplitToIntList(str string, sep string) (intList []int) {
 		intList = append(intList, int(val))
 	}
 	return
+}
+
+// PageTool 分页通用获取
+func PageTool(c *gin.Context) (int, int) {
+	pageSize, _ := strconv.Atoi(c.Query("pagesize")) //分页最大数
+	pageNum, _ := strconv.Atoi(c.Query("pagenum"))   //分页偏移量
+
+	if pageSize <= 0 || pageSize > 20 {
+		pageSize = 10
+	}
+	if pageNum <= 0 {
+		pageNum = -1
+	}
+	return pageSize, pageNum
 }

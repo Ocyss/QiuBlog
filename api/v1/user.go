@@ -27,7 +27,7 @@ func Login(c *gin.Context) {
 		ask.ErrParam(c)
 	}
 	code, uid, token := model.CheckLogin(&data)
-	c.SetCookie("token", token, 259200, "/", "localhost", false, false)
+	c.SetCookie("token", token, 259200, "/", c.Request.Referer(), false, false)
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"message": errmsg.GetErrMsg(code),

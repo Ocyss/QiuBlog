@@ -6,6 +6,7 @@ import (
 	"qiublog/model"
 	"qiublog/utils/ask"
 	"qiublog/utils/errmsg"
+	"qiublog/utils/tool"
 	"strconv"
 )
 
@@ -13,18 +14,10 @@ var code int
 
 // GetsArticle 获取文章列表
 func GetsArticle(c *gin.Context) {
-	pageSize, _ := strconv.Atoi(c.Query("pagesize")) //分页最大数
-	pageNum, _ := strconv.Atoi(c.Query("pagenum"))   //分页偏移量
-	cid, _ := strconv.Atoi(c.Query("cid"))           //分类ID
-	mid, _ := strconv.Atoi(c.Query("mid"))           //菜单ID
+	pageSize, pageNum := tool.PageTool(c)  //分页最大数,分页偏移量
+	cid, _ := strconv.Atoi(c.Query("cid")) //分类ID
+	mid, _ := strconv.Atoi(c.Query("mid")) //菜单ID
 	cids := model.GetMidCid(mid)
-
-	if pageSize <= 0 || pageSize > 20 {
-		pageSize = 10
-	}
-	if pageNum <= 0 {
-		pageNum = -1
-	}
 	data, total := model.GetsArticle(pageSize, pageNum, cid, cids)
 	code = errmsg.SUCCESS
 	c.JSON(http.StatusOK, gin.H{

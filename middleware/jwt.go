@@ -55,7 +55,7 @@ func CheckToken(token string) (*MyClaims, int) {
 func JwtToken() gin.HandlerFunc {
 	cRes := func(c *gin.Context, code int) {
 		c.JSON(http.StatusOK, gin.H{
-			"code":    code,
+			"status":  code,
 			"message": errmsg.GetErrMsg(code),
 		})
 		c.Abort()

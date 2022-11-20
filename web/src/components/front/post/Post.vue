@@ -14,20 +14,7 @@
           <n-icon-wrapper :size="18" :border-radius="15">
             <n-icon :size="13" :component="Calendar" />
           </n-icon-wrapper>
-          <n-tooltip trigger="hover" v-if="item.created_at">
-            <template #trigger>
-              <n-time
-                time-zone="Asia/Shanghai"
-                :time="new Date(item.created_at)"
-                type="relative"
-              />
-            </template>
-            <n-time
-              time-zone="Asia/Shanghai"
-              :time="new Date(item.created_at)"
-              format="yyyy-MM-dd HH:mm:ss"
-            />
-          </n-tooltip>
+          <TimerVue :t="item.created_at" />
         </div>
         <div class="rightInfo">
           <div style="margin-right: 0.5rem">
@@ -93,6 +80,7 @@ import { Calendar, Book, PricetagsSharp } from "@vicons/ionicons5";
 import { 随机风景API } from "@/settings/config.js";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import TimerVue from "@/components/Timer.vue";
 const router = useRouter();
 const imgSrc = ref("");
 const props = defineProps(["item"]);
