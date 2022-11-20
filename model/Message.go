@@ -5,13 +5,13 @@ import "qiublog/utils/errmsg"
 type (
 	Message struct {
 		Model
-		Name    string `gorm:"comment:昵称;not null" json:"name"`              //昵称
-		Qq      string `gorm:"comment:QQ" json:"qq"`                         //QQ
-		Email   string `gorm:"comment:邮箱" json:"email"`                      //邮箱
-		Content string `gorm:"comment:内容;not null" json:"content"`           //内容
-		Like    int    `gorm:"comment:点赞;not null" json:"like"`              //点赞
-		Check   bool   `gorm:"comment:审核状态;not null" json:"check,omitempty"` //审核
-		Show    bool   `gorm:"comment:显示;not null" json:"show,omitempty"`    //显示
+		Name    string `gorm:"comment:昵称;not null" json:"name"`    //昵称
+		Qq      string `gorm:"comment:QQ" json:"qq"`               //QQ
+		Email   string `gorm:"comment:邮箱" json:"email"`            //邮箱
+		Content string `gorm:"comment:内容;not null" json:"content"` //内容
+		Like    int    `gorm:"comment:点赞;not null" json:"like"`    //点赞
+		Check   bool   `gorm:"comment:审核状态;not null" json:"check"` //审核
+		Show    bool   `gorm:"comment:显示;not null" json:"show"`    //显示
 	}
 	Question struct {
 		Model

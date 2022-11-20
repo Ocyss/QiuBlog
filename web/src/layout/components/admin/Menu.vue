@@ -76,6 +76,20 @@ const menus = ref([
         RouterLink,
         {
           to: {
+            name: "message",
+          },
+        },
+        { default: () => "留言/问答" }
+      ),
+    key: "go-message",
+    icon: renderIcon(Settings),
+  },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
             name: "other",
           },
         },

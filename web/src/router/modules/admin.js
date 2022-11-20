@@ -25,6 +25,14 @@ const routes = [
         },
       },
       {
+        path: "message",
+        name: "message",
+        component: () => import("@/views/admin/MessageView.vue"),
+        meta: {
+          title: "留言/问答",
+        },
+      },
+      {
         path: "article",
         name: "article",
         component: () => import("@/views/admin/Article/ArticleView.vue"),
