@@ -13,6 +13,7 @@ func Register(c *gin.Context) {
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
 		ask.ErrParam(c)
+		return
 	}
 	code = model.Register(&data)
 	c.JSON(http.StatusOK, gin.H{
@@ -25,6 +26,7 @@ func Login(c *gin.Context) {
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
 		ask.ErrParam(c)
+		return
 	}
 	code, uid, token := model.CheckLogin(&data)
 	c.SetCookie("token", token, 259200, "/", c.Request.Referer(), false, false)

@@ -33,6 +33,7 @@ func GetArticle(c *gin.Context) {
 	aid, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		ask.ErrParam(c)
+		return
 	}
 	code, data := model.GetArticle(aid)
 	c.JSON(http.StatusOK, gin.H{

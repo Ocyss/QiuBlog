@@ -14,6 +14,7 @@ func AddMessage(c *gin.Context) {
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
 		ask.ErrParam(c)
+		return
 	}
 	code := model.AddMessage(&data)
 	c.JSON(http.StatusOK, gin.H{
@@ -27,6 +28,7 @@ func AddQuestion(c *gin.Context) {
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
 		ask.ErrParam(c)
+		return
 	}
 	code := model.AddQuestion(&data)
 	c.JSON(http.StatusOK, gin.H{
