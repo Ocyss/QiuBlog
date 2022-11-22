@@ -6,7 +6,7 @@
   <n-divider />
   <n-grid x-gap="12" y-gap="12" cols="1 m:2 l:3" responsive="screen">
     <n-gi v-for="item in content" :key="item.id">
-      <n-card v-if="item.show == true || item.show == undefined">
+      <n-card>
         <n-thing>
           <template #avatar>
             <n-avatar
@@ -179,7 +179,11 @@ function submitCallback() {
 }
 const params = { pagesize: 10, pagenum: 1 };
 api.message.getQuestion(params).then((res) => {
-  content.value.push(...res.data);
+  res.data.map((item) => {
+    if (item.show == true || item.show == undefined) {
+      content.value.push(item);
+    }
+  });
 });
 </script>
 
