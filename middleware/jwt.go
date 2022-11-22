@@ -52,13 +52,16 @@ func CheckToken(token string) (*MyClaims, int) {
 }
 
 // JwtToken jwt中间件
-func JwtToken() gin.HandlerFunc {
+// 参数： termination 是否中断(true:没权限直接静止访问,false:没权限只返回部分字段)
+func JwtToken(termination bool) gin.HandlerFunc {
 	cRes := func(c *gin.Context, code int) {
-		c.JSON(http.StatusOK, gin.H{
-			"status":  code,
-			"message": errmsg.GetErrMsg(code),
-		})
-		c.Abort()
+		if termination {
+			c.JSON(http.StatusOK, gin.H{
+				"status":  code,
+				"message": errmsg.GetErrMsg(code),
+			})
+			c.Abort()
+		}
 	}
 	return func(c *gin.Context) {
 		ckToken, err := c.Cookie("token")
@@ -82,6 +85,7 @@ func JwtToken() gin.HandlerFunc {
 			return
 		}
 		c.Set("id", key.Id)
+		c.Set("role", key.Role)
 		c.Next()
 	}
 }

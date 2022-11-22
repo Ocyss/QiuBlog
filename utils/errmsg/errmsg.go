@@ -27,6 +27,8 @@ const (
 	//code = 5000 Upload 上传类
 	ERROR_FILE_WRONG  = 5001
 	ERROR_CLASS_WRONG = 5002
+	//code = 6000 Message 消息类
+	ERROR_DE_APPROVE = 6001
 )
 
 var codemsg = map[int]string{
@@ -48,6 +50,7 @@ var codemsg = map[int]string{
 	ERROR_SET_UP:           "设置子菜单，更新错误",
 	ERROR_SET_RE:           "设置子菜单，删除错误",
 	ERROR_SET_SO:           "设置子菜单，排序错误",
+	ERROR_DE_APPROVE:       "不可反审核！",
 }
 
 func GetErrMsg(code int) string {

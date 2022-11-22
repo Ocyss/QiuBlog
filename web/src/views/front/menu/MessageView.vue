@@ -6,7 +6,7 @@
   <n-divider />
   <n-grid x-gap="12" y-gap="12" cols="1 s:2 m:3 l:4" responsive="screen">
     <n-gi v-for="item in content" :key="item.id">
-      <n-card>
+      <n-card v-if="item.show == true || item.show == undefined">
         <n-thing>
           <template #avatar>
             <n-avatar

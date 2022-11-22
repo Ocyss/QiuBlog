@@ -23,7 +23,7 @@ func InitRouter() {
 	}
 
 	auth := r.Group("api/v1")
-	auth.Use(middleware.JwtToken())
+	auth.Use(middleware.JwtToken(true))
 	{
 		//文章
 		auth.POST("article/add", v1.ReleaseArticle)  //发布文章
@@ -37,6 +37,10 @@ func InitRouter() {
 		auth.PUT("category/list", v1.ModifyCategorys) //批量修改分类
 		//上传
 		auth.POST("upload/image", v1.Upload) //上}传文件
+		//消息
+		auth.PUT("message/updata", v1.UpMessage)
+		auth.DELETE("message/del", v1.DelMessage)
+		auth.PUT("message/reply", v1.ReplyQuestio)
 	}
 
 	router := r.Group("api/v1")
@@ -56,10 +60,10 @@ func InitRouter() {
 		//标签
 		router.GET("tags", v1.GetTags) //获取全部标签
 		//消息
-		router.POST("message", v1.AddMessage)   //留言
-		router.POST("question", v1.AddQuestion) //提问
-		router.GET("message", v1.GetMessage)    //留言
-		router.GET("question", v1.GetQuestion)  //提问
+		router.POST("message", v1.AddMessage)                              //进行留言
+		router.POST("question", v1.AddQuestion)                            //进行提问
+		router.GET("message", middleware.JwtToken(false), v1.GetMessage)   //获取留言
+		router.GET("question", middleware.JwtToken(false), v1.GetQuestion) //获取提问
 	}
 	err := r.Run(utils.HttpPort)
 	if err != nil {

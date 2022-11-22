@@ -54,3 +54,25 @@ export const timeControl = (t) => {
     }
   );
 };
+
+export const railStyle = (
+  { focused, checked },
+  bg = "#d03050",
+  bs = "#d0305040",
+  ubg = "#1d46ff",
+  ubs = "#2080f040"
+) => {
+  const style = {};
+  if (checked) {
+    style.background = bg;
+    if (focused) {
+      style.boxShadow = `0 0 0 2px ${bs}`;
+    }
+  } else {
+    style.background = ubg;
+    if (focused) {
+      style.boxShadow = `0 0 0 2px ${ubs}`;
+    }
+  }
+  return style;
+};

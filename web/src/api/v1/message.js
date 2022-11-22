@@ -14,3 +14,27 @@ export const getMessage = (params) => {
 export const getQuestion = (params) => {
   return request({ url: "/api/v1/question", method: "get", params });
 };
+
+export const upMessage = (id, val, show, message) => {
+  return request({
+    url: "/api/v1/message/updata",
+    method: "put",
+    data: { id, val, show, message },
+  });
+};
+
+export const replyQuestion = (id, content) => {
+  return request({
+    url: "/api/v1/message/reply",
+    method: "put",
+    data: { id, content },
+  });
+};
+
+export const delMessage = (id, message) => {
+  return request({
+    url: "/api/v1/message/del",
+    method: "delete",
+    data: { id, message },
+  });
+};
