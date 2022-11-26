@@ -1,5 +1,5 @@
 <template>
-  <n-spin :show="PostSpinShow" style="min-height: 300px">
+  <n-spin class="postlist" :show="PostSpinShow" style="min-height: 300px">
     <n-tabs
       :bar-width="28"
       type="line"
@@ -25,6 +25,11 @@
       </n-tab-pane>
     </n-tabs>
     <template #description>加载中~~~~</template>
+    <n-pagination
+      v-model:page="page"
+      :page-count="pageCount"
+      @update:page="upPage"
+    />
   </n-spin>
 </template>
 
@@ -34,7 +39,9 @@ import PostVue from "./Post.vue";
 import api from "@/api";
 const PostSpinShow = ref(true);
 const props = defineProps(["cdata"]);
-
+const page = ref(1);
+const pageCount = ref(1);
+const cid = ref("-1");
 //各分类下的文章
 const PostData = ref({
   "-1": [{ id: -1 }, { id: -2 }, { id: -3 }],
@@ -43,7 +50,7 @@ const PostData = ref({
 //请求主页文章列表
 // c是分类请求,m是菜单请求
 function getPosts(id, ty = "c") {
-  const params = { pagesize: 10, pagenum: 1 };
+  const params = { pagesize: 6, pagenum: page.value };
   if (ty == "m" || id == "-1") {
     params.mid = props.cdata.id;
   } else if (ty == "c") {
@@ -56,14 +63,24 @@ function getPosts(id, ty = "c") {
       });
       return item;
     });
-
     PostSpinShow.value = false;
+    pageCount.value = Math.ceil(res.total / params.pagesize);
   });
 }
 
 getPosts("-1", "m");
 
+function upPage(p) {
+  if (cid.value == "-1") {
+    getPosts("-1", "m");
+  } else {
+    getPosts(cid.value, "c");
+  }
+}
 function changeCategory(val) {
+  cid.value = val;
+  page.value = 1;
+  pageCount.value = 1;
   PostSpinShow.value = true;
   if (PostData.value[val] == undefined) {
     getPosts(val, "c");
@@ -79,5 +96,13 @@ function changeCategory(val) {
   flex-direction: column;
   min-width: 200px;
   align-items: center;
+}
+
+.postlist {
+  :deep(.n-pagination) {
+    width: 80%;
+    margin: 0 auto;
+    justify-content: center;
+  }
 }
 </style>

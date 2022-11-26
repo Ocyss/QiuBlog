@@ -83,7 +83,7 @@ func GetsArticle(pageSize int, pageNum int, cid int, cids []uint) ([]Article, in
 		Where(where).
 		Order("created_at desc").
 		Limit(pageSize).
-		Offset((pageNum - 1) * 10).
+		Offset((pageNum - 1) * pageSize).
 		Find(&articles).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, 0
