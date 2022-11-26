@@ -19,6 +19,5 @@ api.menuchild.get({ link: route.params.menuName }).then((res) => {
     cdata.value = res.data;
     cdata.value.cids.unshift({ id: -1, name: "全部", homeshow: true });
   }
-  console.log(cdata.value);
 });
 </script>

@@ -20,7 +20,14 @@ const route = useRoute();
 const collapsed = ref(false);
 const router = useRouter();
 const message = useMessage();
+//当前菜单选择key
+const menusKey = ref("home");
 
+if (route.meta.menukey == undefined) {
+  menusKey.value = route.params.menuName;
+} else {
+  menusKey.value = route.meta.menukey;
+}
 //切换左侧菜单
 function clickMenuItem(key) {
   if (/http(s)?:/.test(key)) {
@@ -52,8 +59,6 @@ const menus = ref([
     ),
   },
 ]);
-//当前菜单选择key
-const menusKey = ref(route.path.split("/").at(-1));
 
 //请求菜单项
 api.menuchild.gets().then((res) => {
