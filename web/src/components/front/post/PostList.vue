@@ -77,6 +77,7 @@ function upPage(p) {
     getPosts(cid.value, "c");
   }
 }
+
 function changeCategory(val) {
   cid.value = val;
   page.value = 1;

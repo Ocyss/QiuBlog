@@ -6,31 +6,15 @@
       </n-button>
       <n-grid x-gap="12" y-gap="12" cols="2">
         <n-gi span="2">
-          <n-input
-            size="large"
-            v-model:value="content.title"
-            type="text"
-            placeholder="标题"
-          />
+          <n-input size="large" v-model:value="content.title" type="text" placeholder="标题" />
         </n-gi>
         <n-gi>
-          <n-input
-            v-model:value="content.desc"
-            type="textarea"
-            placeholder="描述"
-          />
+          <n-input v-model:value="content.desc" type="textarea" placeholder="描述" />
         </n-gi>
         <n-gi>
           <n-space vertical>
-            <n-cascader
-              v-model:value="content.cid"
-              placeholder="选择发布类别"
-              :options="menuoptions"
-              check-strategy="child"
-              expand-trigger="hover"
-              :show-path="true"
-              :filterable="true"
-            />
+            <n-cascader v-model:value="content.cid" placeholder="选择发布类别" :options="menuoptions" check-strategy="child"
+              expand-trigger="hover" :show-path="true" :filterable="true" />
             <!-- <n-input
               v-model:value="imageurl"
               type="text"
@@ -40,17 +24,8 @@
         </n-gi>
         <n-gi span="2">
           <n-space>
-            <n-upload
-              ref="uploadref"
-              action="/api/v1/upload/image"
-              :default-file-list="fileList"
-              list-type="image-card"
-              accept="image/*"
-              :data="{ class: 'Article' }"
-              :max="1"
-              with-credentials
-              :custom-request="customRequest"
-            >
+            <n-upload ref="uploadref" action="/api/v1/upload/image" :default-file-list="fileList" list-type="image-card"
+              accept="image/*" :data="{ class: 'Article' }" :max="1" with-credentials :custom-request="customRequest">
               <n-button>上传头图</n-button>
             </n-upload>
             <n-dynamic-tags v-model:value="tags" />
@@ -58,26 +33,11 @@
         </n-gi>
       </n-grid>
 
-      <Toolbar
-        class="weTool"
-        :editor="editorRef"
-        :defaultConfig="toolbarConfig"
-        :mode="mode"
-      />
-      <Editor
-        class="WeEditor"
-        style="height: 500px; overflow-y: hidden"
-        v-model="content.content"
-        :defaultConfig="editorConfig"
-        :mode="mode"
-        @onCreated="handleCreated"
-      />
+      <Toolbar class="weTool" :editor="editorRef" :defaultConfig="toolbarConfig" :mode="mode" />
+      <Editor class="WeEditor" style="height: 500px; overflow-y: hidden" v-model="content.content"
+        :defaultConfig="editorConfig" :mode="mode" @onCreated="handleCreated" />
 
-      <n-button
-        v-if="route.name == 'article-updata'"
-        type="success"
-        @click="save"
-      >
+      <n-button v-if="route.name == 'article-updata'" type="success" @click="save">
         保存
       </n-button>
       <n-button v-else type="success" @click="send">发布</n-button>
@@ -184,7 +144,7 @@ const customRequest = ({
     });
 };
 
-function send() {
+function send () {
   api.article.add(content.value).then((res) => {
     message.success("发布成功！！！");
     uploadref.value.clear();
@@ -205,7 +165,7 @@ function send() {
   });
 }
 
-function save() {
+function save () {
   api.article.put(route.params.id, content.value).then((res) => {
     message.success("保存成功！！！");
     router.push({ name: "article" });
@@ -238,7 +198,6 @@ onMounted(() => {
     });
   });
 
-  console.log(menuoptions.value);
   //判断是不是修改帖子
   if (route.name == "article-updata") {
     api.article.get(route.params.id).then((res) => {
@@ -271,19 +230,34 @@ onMounted(() => {
   top: 6px;
   left: 4px;
 }
+
+.WeEditor {
+  border: 1px solid var(--n-text-color)
+}
+
+.weTool {
+  border: 1px solid var(--n-text-color)
+}
 </style>
 
 <style lang="scss">
 :root,
 :host {
   // 编辑器
-  --w-e-textarea-bg-color: #333;
-  --w-e-textarea-color: #fff;
+  --w-e-textarea-bg-color: var(--n-color);
+  --w-e-textarea-color: var(--n-text-color); //编辑器默认颜色
+
   //工具栏
-  --w-e-toolbar-color: #fff;
-  --w-e-toolbar-bg-color: #333;
-  --w-e-toolbar-border-color: #666; //工具栏分割线
-  --w-e-toolbar-active-bg-color: #666; //选中颜色
-  --w-e-toolbar-active-color: #fff; //悬浮提示颜色
+  --w-e-toolbar-color: #faf8f8; // 字体颜色
+  --w-e-toolbar-bg-color: rgb(46, 45, 45); //背景颜色
+  --w-e-toolbar-active-color: rgb(241, 236, 236); //没选中提示颜色
+  --w-e-toolbar-active-bg-color: #3b3b3b; //选中背景颜色
+  --w-e-toolbar-disabled-color: rgb(119, 117, 117); //禁用字体颜色
+  --w-e-toolbar-border-color: #e8e8e8; //工具栏分割线
+
+
+  // modal - css vars
+  --w-e-modal-button-bg-color: #9af334; //选中背景
+  --w-e-modal-button-border-color: #fc0000; //没选中背景
 }
 </style>

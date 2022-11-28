@@ -27,7 +27,9 @@
                 <template #trigger>
                   <n-button quaternary circle @click="setName = element.name">
                     <template #icon>
-                      <n-icon><Pencil /></n-icon>
+                      <n-icon>
+                        <Pencil />
+                      </n-icon>
                     </template>
                   </n-button>
                 </template>
@@ -49,7 +51,11 @@
           <template #trigger>
             <n-button size="small" secondary strong>新建</n-button>
           </template>
-          <n-input v-model:value="newName" type="text" placeholder="输入name" />
+          <n-input
+            v-model:value="newData.name"
+            type="text"
+            placeholder="输入name"
+          />
         </n-popconfirm>
         <n-button size="small" secondary strong>重置</n-button>
       </n-space>
@@ -91,7 +97,7 @@ const message = useMessage();
 //菜单项
 const menuValue = ref({ id: 0, name: "主页", ename: "home", sort: -1 });
 const setName = ref(""); //修改的名字
-const newName = ref(""); //新建的菜单名
+const newData = ref({ name: "", homeshow: false, mid: 0 }); //新建的菜单名
 const drag = ref(false); //是否在拖动
 const cateSpin = ref(false); //是否显示加载中
 
@@ -102,6 +108,7 @@ const categoryChange = []; // 变动列表
 api.category.get().then((res) => {
   categoryList.value = res.data;
 });
+
 const CheckList = computed({
   get: () => {
     if (menuValue.value.id == 0) {
@@ -168,13 +175,11 @@ function setNamepositive(index) {
 }
 //添加分类
 function AddCategory() {
-  if (menuValue.value.name == "主页") {
-    uncheckedList.value.push({ name: newName.value });
-  } else {
-    CheckList.value.push({ name: newName.value });
-  }
-  categoryList.value.push({ name: newName.value, ty: "new" });
-  newName.value = "";
+  api.category.add(newData.value).then((res) => {
+    message.success("新建分类成功！");
+    categoryList.value.push({ ...newData.value, id: res.id });
+    newData.value = { name: "", homeshow: false, mid: 0 };
+  });
 }
 //修改菜单名
 function toggleMenu(data) {

@@ -15,7 +15,9 @@
           </n-notification-provider>
         </n-dialog-provider>
       </n-loading-bar-provider>
+      <n-global-style />
     </n-config-provider>
+
   </div>
 </template>
 

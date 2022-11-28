@@ -62,13 +62,7 @@
         </div>
       </div>
       <n-divider />
-      <div class="content">
-        <Editor
-          style="min-height: 320px"
-          v-model="postData.content"
-          :defaultConfig="editorConfig"
-          mode="simple"
-        />
+      <div class="content" v-html="postData.content">
       </div>
       <n-divider />
       <div class="copyright">
@@ -95,19 +89,16 @@
 
 <script setup>
 import frontVue from "@/layout/front.vue";
-import { ref, onMounted, reactive } from "vue";
+import { ref } from "vue";
 import api from "@/api";
 import { useRoute } from "vue-router";
 import { useMessage } from "naive-ui";
 import { 随机风景API } from "@/settings/config.js";
-import { globalData } from "@/store/modules/globalData.js";
 import { Calendar, Book, PricetagsSharp } from "@vicons/ionicons5";
 import { computed } from "@vue/reactivity";
 import "@wangeditor/editor/dist/css/style.css"; // 引入 css
-import { Editor } from "@wangeditor/editor-for-vue";
 import TimerVue from "@/components/Timer.vue";
 const url = window.location.href;
-const dataStore = globalData();
 const route = useRoute();
 const message = useMessage();
 const postData = ref({
@@ -123,7 +114,6 @@ const postData = ref({
   tags: [],
 });
 
-const editorConfig = { readOnly: true, scroll: false };
 
 const imgSrc = computed(() => {
   return postData.value.img ? postData.value.img : 随机风景API;
