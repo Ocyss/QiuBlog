@@ -7,7 +7,7 @@ import piniaPersist from "pinia-plugin-persist";
 import VueWechatTitle from "vue-wechat-title";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
 import hljs from "highlight.js";
-import "highlight.js/styles/atom-one-dark.css"; //样式
+import "highlight.js/styles/atom-one-dark.css";
 
 const app = createApp(App);
 //依赖注入cookies
