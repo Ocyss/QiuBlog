@@ -3,50 +3,47 @@
     <div class="login">
       <n-icon size="120" v-html="icon"></n-icon>
       <n-space vertical>
-        <n-space vertical v-if="login">
+        <n-space vertical v-if="loginty">
           <n-input v-model:value="loginData.username" placeholder="用户名">
             <template #prefix>
-              <n-icon :component="PersonCircle" />
+              <n-icon :component="PersonCircle"></n-icon>
             </template>
           </n-input>
-
           <n-input
             v-model:value="loginData.password"
             type="password"
             placeholder="密码"
           >
             <template #prefix>
-              <n-icon :component="LockClosed" />
+              <n-icon :component="LockClosed"></n-icon>
             </template>
           </n-input>
         </n-space>
         <n-space vertical v-else>
-          <n-input v-model:value="registerData.user" placeholder="用户名">
+          <n-input v-model:value="registerData.username" placeholder="用户名">
             <template #prefix>
-              <n-icon :component="PersonCircle" />
+              <n-icon :component="PersonCircle"></n-icon>
             </template>
           </n-input>
-
           <n-input
-            v-model:value="registerData.pwd"
+            v-model:value="registerData.password"
             type="password"
             placeholder="密码"
           >
             <template #prefix>
-              <n-icon :component="LockClosed" />
+              <n-icon :component="LockClosed"></n-icon>
             </template>
           </n-input>
           <n-input
-            v-model:value="registerData.twopwd"
+            v-model:value="registerData.password2"
             type="password"
             placeholder="再次密码"
           >
             <template #prefix>
-              <n-icon :component="LockClosed" />
+              <n-icon :component="LockClosed"></n-icon>
             </template>
           </n-input>
         </n-space>
-
         <n-space justify="space-around">
           <n-button type="info" @click="register">注册</n-button>
           <n-button type="info" @click="login">登陆</n-button>
