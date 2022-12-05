@@ -1,7 +1,9 @@
 <template>
   <div class="main">
     <n-list class="List" hoverable clickable bordered>
-      <template #header><h2>菜单子项：</h2></template>
+      <template #header>
+        <h2>菜单子项：</h2>
+      </template>
       <n-spin :show="setMenuShow">
         <n-list-item
           :class="menuValue.ename == 'home' ? 'checked' : ''"
@@ -44,12 +46,16 @@
                 <div>
                   <n-button quaternary circle @click="edit(index)">
                     <template #icon>
-                      <n-icon><Pencil /></n-icon>
+                      <n-icon>
+                        <Pencil />
+                      </n-icon>
                     </template>
                   </n-button>
                   <n-button quaternary circle @click="del(index)">
                     <template #icon>
-                      <n-icon><Trash /></n-icon>
+                      <n-icon>
+                        <Trash />
+                      </n-icon>
                     </template>
                   </n-button>
                 </div>
@@ -225,6 +231,7 @@ api.menuchild.gets().then((res) => {
 
 <style lang="scss" scoped>
 @import "./list.scss";
+
 .main {
   display: flex;
 }
@@ -240,6 +247,7 @@ api.menuchild.gets().then((res) => {
   margin-left: 20px;
   height: 85vh;
 }
+
 .checked {
   background-color: rgba(96, 152, 255, 0.3);
 }

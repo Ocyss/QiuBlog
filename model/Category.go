@@ -157,12 +157,15 @@ func GetSingleMenu(link string) (int, *GetSingleMenuTy) {
 }
 
 // AddCategory 添加分类
-func AddCategory(data *Category) int {
+func AddCategory(data *Category) (int, *uint) {
+	if *data.Mid == 0 {
+		data.Mid = nil
+	}
 	err := Db.Create(&data).Error
 	if err != nil {
-		return errmsg.ERROR
+		return errmsg.ERROR, nil
 	}
-	return errmsg.SUCCESS
+	return errmsg.SUCCESS, &data.ID
 }
 
 type GetCategoryTy struct {

@@ -13,10 +13,11 @@ import (
 func AddCategory(c *gin.Context) {
 	var data model.Category
 	_ = c.ShouldBindJSON(&data)
-	code = model.AddCategory(&data)
+	code, id := model.AddCategory(&data)
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"message": errmsg.GetErrMsg(code),
+		"id":      id,
 	})
 }
 

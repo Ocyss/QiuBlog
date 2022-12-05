@@ -17,6 +17,7 @@ func InitRouter() {
 		r.Static("/assets", "web/assets")
 		r.Static("favicons", "web/favicons")
 		r.Static("img", "web/img")
+		r.Static("effect", "web/effect")
 		r.GET("/", func(c *gin.Context) {
 			c.HTML(200, "index.html", nil)
 		})

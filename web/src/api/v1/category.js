@@ -17,3 +17,11 @@ export const put = (data) => {
     data,
   });
 };
+
+export const add = (data) => {
+  return request({
+    url: "/api/v1/category/add",
+    method: "post",
+    data,
+  });
+};
