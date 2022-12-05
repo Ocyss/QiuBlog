@@ -188,7 +188,7 @@ function toggleMenu(data) {
 //保存
 function save() {
   api.category.put(categoryChange).then((res) => {
-    console.log(res);
+    message.success("保存成功！");
   });
 }
 
