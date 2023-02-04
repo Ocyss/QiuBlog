@@ -2,37 +2,27 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"qiublog/model"
 	"qiublog/utils/ask"
-	"qiublog/utils/errmsg"
 )
 
-func Register(c *gin.Context) {
+func Register(c *gin.Context) (int, any) {
 	var data model.User
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
-		ask.ErrParam(c)
-		return
+		return ask.ErrParam()
 	}
-	code = model.Register(&data)
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": errmsg.GetErrMsg(code),
-	})
+	return model.Register(&data), nil
 }
-func Login(c *gin.Context) {
+func Login(c *gin.Context) (int, any) {
 	var data model.User
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
-		ask.ErrParam(c)
-		return
+		return ask.ErrParam()
 	}
 	code, uid, token := model.CheckLogin(&data)
 	c.SetCookie("token", token, 259200, "/", c.Request.Referer(), false, false)
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": errmsg.GetErrMsg(code),
-		"uid":     uid,
-	})
+	return code, gin.H{
+		"uid": uid,
+	}
 }

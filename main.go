@@ -1,6 +1,7 @@
 package main
 
 import (
+	"qiublog/db"
 	"qiublog/model"
 	"qiublog/routes"
 )
@@ -8,5 +9,6 @@ import (
 func main() {
 
 	model.InitDb()
+	db.InitRedis()
 	routes.InitRouter()
 }

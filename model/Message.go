@@ -1,6 +1,8 @@
 package model
 
-import "qiublog/utils/errmsg"
+import (
+	"qiublog/utils/errmsg"
+)
 
 type (
 	Message struct {

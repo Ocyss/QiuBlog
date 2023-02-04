@@ -2,13 +2,12 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"qiublog/model"
 	"qiublog/utils/errmsg"
 )
 
 // AddMenuchild 添加菜单子项
-func AddMenuchild(c *gin.Context) {
+func AddMenuchild(c *gin.Context) (int, any) {
 	var data model.Menuchild
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
@@ -16,36 +15,22 @@ func AddMenuchild(c *gin.Context) {
 	} else {
 		code = model.AddMenu(&data)
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": errmsg.GetErrMsg(code),
-	})
+	return code, nil
 }
 
 // GetMenuchild 获取菜单子项
-func GetMenuchild(c *gin.Context) {
-	data := model.GetMenu()
-	code = errmsg.SUCCESS
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": errmsg.GetErrMsg(code),
-		"data":    data,
-	})
+func GetMenuchild(c *gin.Context) (int, any) {
+	return errmsg.SUCCESS, model.GetMenu()
 }
 
 // GetSingleMenuItem 获取单菜单项
-func GetSingleMenuItem(c *gin.Context) {
+func GetSingleMenuItem(c *gin.Context) (int, any) {
 	MenuLink := c.Query("link")
-	code, data := model.GetSingleMenu(MenuLink)
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": errmsg.GetErrMsg(code),
-		"data":    data,
-	})
+	return model.GetSingleMenu(MenuLink)
 }
 
 // SetMenuchild 设置菜单子项
-func SetMenuchild(c *gin.Context) {
+func SetMenuchild(c *gin.Context) (int, any) {
 	var data []model.SetMenuChild
 	var da []model.Menuchild
 	err := c.ShouldBindJSON(&data)
@@ -56,9 +41,5 @@ func SetMenuchild(c *gin.Context) {
 	if code == errmsg.SUCCESS {
 		da = model.GetMenu()
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": errmsg.GetErrMsg(code),
-		"data":    da,
-	})
+	return code, da
 }

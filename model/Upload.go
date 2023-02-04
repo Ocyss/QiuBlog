@@ -11,7 +11,7 @@ import (
 	"qiublog/utils/errmsg"
 )
 
-var Oss = utils.Oss
+var Oss = utils.Config.Server.Oss
 
 func UpLoadFile(uploadName string, file multipart.File, fileSize int64) (string, int) {
 
@@ -25,10 +25,10 @@ func UpLoadFile(uploadName string, file multipart.File, fileSize int64) (string,
 }
 
 func uploadQiniu(uploadName string, file multipart.File, fileSize int64) (string, int) {
-	var AccessKey = utils.QiniuAccessKey
-	var SecretKey = utils.QiniuSecretKey
-	var Bucket = utils.QiniuBucket
-	var ImgUrl = utils.QiniuSever
+	var AccessKey = utils.Config.Oss.QiniuAccessKey
+	var SecretKey = utils.Config.Oss.QiniuSecretKey
+	var Bucket = utils.Config.Oss.QiniuBucket
+	var ImgUrl = utils.Config.Oss.QiniuSever
 	putPolicy := storage.PutPolicy{
 		Scope: Bucket,
 	}
@@ -52,10 +52,10 @@ func uploadQiniu(uploadName string, file multipart.File, fileSize int64) (string
 }
 
 func uploadAliyun(uploadName string, file multipart.File, fileSize int64) (string, int) {
-	var AliyunAccessKeyId = utils.AliyunAccessKeyId
-	var AliyunAccessKeySecret = utils.AliyunAccessKeySecret
-	var AliyunEndpoint = utils.AliyunEndpoint
-	var AliyunBucketName = utils.AliyunBucketName
+	var AliyunAccessKeyId = utils.Config.Oss.AliyunAccessKeyId
+	var AliyunAccessKeySecret = utils.Config.Oss.AliyunAccessKeySecret
+	var AliyunEndpoint = utils.Config.Oss.AliyunEndpoint
+	var AliyunBucketName = utils.Config.Oss.AliyunBucketName
 	client, err := oss.New(AliyunEndpoint, AliyunAccessKeyId, AliyunAccessKeySecret)
 	if err != nil {
 		return "", errmsg.ERROR

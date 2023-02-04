@@ -10,7 +10,7 @@
       trigger="hover"
       :interval="2000"
     >
-      <div class="article" v-for="(item, index) in 3" :key="item">
+      <div class="article" v-for="(item, index) in 0" :key="item">
         <n-image
           preview-disabled
           class="carousel-img"

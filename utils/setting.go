@@ -5,19 +5,73 @@ import (
 	"gopkg.in/ini.v1"
 )
 
-var (
+var Config ConfigStruct
+
+type ConfigStruct struct {
+	Server   server
+	Redis    redis
+	Database database
+	Oss      oss
+}
+
+func init() {
+	file, err := ini.Load("config/config.ini")
+	if err != nil {
+		panic(fmt.Sprintf("配置文件读取错误，请检查文件路径--%s", err))
+	}
+	LoadServer(file)
+	LoadRedis(file)
+	LoadData(file)
+	LoadOss(file)
+}
+
+type server struct {
 	AppMode  string
 	HttpPort string
 	Oss      string
 	JwtKey   string
+}
 
+func LoadServer(file *ini.File) {
+	Config.Server.AppMode = file.Section("server").Key("AppMode").MustString("debug")
+	Config.Server.HttpPort = file.Section("server").Key("HttpPort").MustString(":3000")
+	Config.Server.Oss = file.Section("server").Key("Oss").MustString("qiniu")
+	Config.Server.JwtKey = file.Section("server").Key("JwtKey").MustString("111")
+}
+
+type redis struct {
+	RedisHost     string
+	RedisPort     string
+	RedisPassword string
+	RedisDb       int
+}
+
+func LoadRedis(file *ini.File) {
+	Config.Redis.RedisHost = file.Section("redis").Key("RedisHost").MustString("localhost")
+	Config.Redis.RedisPort = file.Section("redis").Key("RedisPort").MustString("6379")
+	Config.Redis.RedisPassword = file.Section("redis").Key("RedisPassword").MustString("123456")
+	Config.Redis.RedisDb = file.Section("redis").Key("RedisDb").MustInt(0)
+}
+
+type database struct {
 	Db         string
 	DbHost     string
 	DbPort     string
 	DbUser     string
 	DbPassWord string
 	DbName     string
+}
 
+func LoadData(file *ini.File) {
+	Config.Database.Db = file.Section("database").Key("Db").MustString("mysql")
+	Config.Database.DbHost = file.Section("database").Key("DbHost").MustString("localhost")
+	Config.Database.DbPort = file.Section("database").Key("DbPort").MustString("3306")
+	Config.Database.DbUser = file.Section("database").Key("DbUser").MustString("root")
+	Config.Database.DbPassWord = file.Section("database").Key("DbPassWord").MustString("123456")
+	Config.Database.DbName = file.Section("database").Key("DbName").MustString("qiublog")
+}
+
+type oss struct {
 	QiniuAccessKey string
 	QiniuSecretKey string
 	QiniuBucket    string
@@ -27,45 +81,20 @@ var (
 	AliyunAccessKeySecret string
 	AliyunEndpoint        string
 	AliyunBucketName      string
-)
+}
 
-func init() {
-	file, err := ini.Load("config/config.ini")
-	if err != nil {
-		panic(fmt.Sprintf("配置文件读取错误，请检查文件路径--%s", err))
+func LoadOss(file *ini.File) {
+	switch Config.Server.Oss {
+	case "aliyun":
+		Config.Oss.AliyunAccessKeyId = file.Section("aliyun").Key("AccessKeyId").String()
+		Config.Oss.AliyunAccessKeySecret = file.Section("aliyun").Key("AccessKeySecret").String()
+		Config.Oss.AliyunEndpoint = file.Section("aliyun").Key("Endpoint").String()
+		Config.Oss.AliyunBucketName = file.Section("aliyun").Key("BucketName").String()
+	case "qiniu":
+		Config.Oss.QiniuAccessKey = file.Section("qiniu").Key("AccessKey").String()
+		Config.Oss.QiniuSecretKey = file.Section("qiniu").Key("SecretKey").String()
+		Config.Oss.QiniuBucket = file.Section("qiniu").Key("Bucket").String()
+		Config.Oss.QiniuSever = file.Section("qiniu").Key("QiniuSever").String()
 	}
-	LoadServer(file)
-	LoadData(file)
-	LoadQiniu(file)
-	LoadAliyun(file)
-}
 
-func LoadServer(file *ini.File) {
-	AppMode = file.Section("server").Key("AppMode").MustString("debug")
-	HttpPort = file.Section("server").Key("HttpPort").MustString(":3000")
-	Oss = file.Section("server").Key("Oss").MustString("qiniu")
-	JwtKey = file.Section("server").Key("JwtKey").MustString("111")
-}
-
-func LoadData(file *ini.File) {
-	Db = file.Section("database").Key("Db").MustString("mysql")
-	DbHost = file.Section("database").Key("DbHost").MustString("localhost")
-	DbPort = file.Section("database").Key("DbPort").MustString("3306")
-	DbUser = file.Section("database").Key("DbUser").MustString("root")
-	DbPassWord = file.Section("database").Key("DbPassWord").MustString("123456")
-	DbName = file.Section("database").Key("DbName").MustString("qiublog")
-}
-
-func LoadQiniu(file *ini.File) {
-	QiniuAccessKey = file.Section("qiniu").Key("AccessKey").String()
-	QiniuSecretKey = file.Section("qiniu").Key("SecretKey").String()
-	QiniuBucket = file.Section("qiniu").Key("Bucket").String()
-	QiniuSever = file.Section("qiniu").Key("QiniuSever").String()
-}
-
-func LoadAliyun(file *ini.File) {
-	AliyunAccessKeyId = file.Section("aliyun").Key("AccessKeyId").String()
-	AliyunAccessKeySecret = file.Section("aliyun").Key("AccessKeySecret").String()
-	AliyunEndpoint = file.Section("aliyun").Key("Endpoint").String()
-	AliyunBucketName = file.Section("aliyun").Key("BucketName").String()
 }

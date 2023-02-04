@@ -2,7 +2,6 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"qiublog/model"
 	"qiublog/utils/ask"
 	"qiublog/utils/errmsg"
@@ -26,35 +25,25 @@ type (
 	}
 )
 
-func AddMessage(c *gin.Context) {
+func AddMessage(c *gin.Context) (int, any) {
 	var data model.Message
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
-		ask.ErrParam(c)
-		return
+		return ask.ErrParam()
 	}
-	code := model.AddMessage(&data)
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": errmsg.GetErrMsg(code),
-	})
+	return model.AddMessage(&data), nil
 }
 
-func AddQuestion(c *gin.Context) {
+func AddQuestion(c *gin.Context) (int, any) {
 	var data model.Question
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
-		ask.ErrParam(c)
-		return
+		return ask.ErrParam()
 	}
-	code := model.AddQuestion(&data)
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": errmsg.GetErrMsg(code),
-	})
+	return model.AddQuestion(&data), nil
 }
 
-func GetMessage(c *gin.Context) {
+func GetMessage(c *gin.Context) (int, any) {
 	pageSize, pageNum := tool.PageTool(c) //分页最大数,分页偏移量
 	cRole, ok := c.Get("role")
 	role, _ := cRole.(int)
@@ -62,16 +51,13 @@ func GetMessage(c *gin.Context) {
 		role = -1
 	}
 	data, total := model.GetMessage(pageSize, pageNum, role)
-	code = errmsg.SUCCESS
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": errmsg.GetErrMsg(code),
-		"data":    data,
-		"total":   total,
-	})
+	return errmsg.SUCCESS, gin.H{
+		"data":  data,
+		"total": total,
+	}
 }
 
-func GetQuestion(c *gin.Context) {
+func GetQuestion(c *gin.Context) (int, any) {
 	pageSize, pageNum := tool.PageTool(c) //分页最大数,分页偏移量
 	cRole, ok := c.Get("role")
 	role, _ := cRole.(int)
@@ -79,57 +65,40 @@ func GetQuestion(c *gin.Context) {
 		role = -1
 	}
 	data, total := model.GetQuestion(pageSize, pageNum, role)
-	code = errmsg.SUCCESS
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": errmsg.GetErrMsg(code),
-		"data":    data,
-		"total":   total,
-	})
+	return errmsg.SUCCESS, gin.H{
+		"data":  data,
+		"total": total,
+	}
 }
 
-func UpMessage(c *gin.Context) {
+func UpMessage(c *gin.Context) (int, any) {
 	var data upData
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
-		ask.ErrParam(c)
-		return
+		return ask.ErrParam()
 	}
 	if !data.Show && data.Val == false {
 		code = errmsg.ERROR_DE_APPROVE
 	} else {
 		code = model.UpMessage(data.Id, data.Val, data.Show, data.Message)
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": errmsg.GetErrMsg(code),
-	})
+	return code, nil
 }
 
-func DelMessage(c *gin.Context) {
+func DelMessage(c *gin.Context) (int, any) {
 	var data delData
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
-		ask.ErrParam(c)
-		return
+		return ask.ErrParam()
 	}
-	code = model.DelMessage(data.Id, data.Message)
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": errmsg.GetErrMsg(code),
-	})
+	return model.DelMessage(data.Id, data.Message), nil
 }
 
-func ReplyQuestio(c *gin.Context) {
+func ReplyQuestio(c *gin.Context) (int, any) {
 	var data reply
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
-		ask.ErrParam(c)
-		return
+		return ask.ErrParam()
 	}
-	code = model.ReplyQuestio(data.Id, data.Content)
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": errmsg.GetErrMsg(code),
-	})
+	return model.ReplyQuestio(data.Id, data.Content), nil
 }

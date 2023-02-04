@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-var JwtKey = []byte(utils.JwtKey)
+var JwtKey = []byte(utils.Config.Server.JwtKey)
 var code int
 
 type MyClaims struct {

@@ -2,7 +2,6 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"qiublog/model"
 	"qiublog/utils/ask"
 	"qiublog/utils/errmsg"
@@ -10,52 +9,31 @@ import (
 )
 
 // AddCategory 添加分类
-func AddCategory(c *gin.Context) {
+func AddCategory(c *gin.Context) (int, any) {
 	var data model.Category
 	_ = c.ShouldBindJSON(&data)
 	code, id := model.AddCategory(&data)
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": errmsg.GetErrMsg(code),
-		"id":      id,
-	})
+	return code, gin.H{"id": id}
 }
 
 // GetCategory 获取分类
-func GetCategory(c *gin.Context) {
+func GetCategory(c *gin.Context) (int, any) {
 	show, err := strconv.ParseBool(c.Query("show"))
 	if err != nil {
-		ask.ErrParam(c)
-		return
+		return ask.ErrParam()
 	}
-	data := model.GetCategory(show)
-
-	code = errmsg.SUCCESS
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": errmsg.GetErrMsg(code),
-		"data":    data,
-	})
+	return errmsg.SUCCESS, model.GetCategory(show)
 }
 
 // GetTags 获取全部标签
-func GetTags(c *gin.Context) {
-	data := model.GetTags()
-	code = errmsg.SUCCESS
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": errmsg.GetErrMsg(code),
-		"data":    data,
-	})
+func GetTags(c *gin.Context) (int, any) {
+	return errmsg.SUCCESS, model.GetTags()
 }
 
 // ModifyCategorys 批量修改分类
-func ModifyCategorys(c *gin.Context) {
+func ModifyCategorys(c *gin.Context) (int, any) {
 	var data []model.Category
 	_ = c.ShouldBindJSON(&data)
 	code = model.ModifyCategorys(&data)
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"message": errmsg.GetErrMsg(code),
-	})
+	return code, nil
 }

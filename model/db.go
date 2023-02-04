@@ -20,7 +20,7 @@ type Model struct {
 
 func InitDb() {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		utils.DbUser, utils.DbPassWord, utils.DbHost, utils.DbPort, utils.DbName)
+		utils.Config.Database.DbUser, utils.Config.Database.DbPassWord, utils.Config.Database.DbHost, utils.Config.Database.DbPort, utils.Config.Database.DbName)
 	Db, err = gorm.Open(mysql.New(mysql.Config{
 		DSN:                       dsn,
 		DefaultStringSize:         256,  // string 类型字段的默认长度
