@@ -1,7 +1,11 @@
 package model
 
 import (
+	"context"
+	"encoding/json"
+	"fmt"
 	"gorm.io/gorm"
+	"qiublog/db"
 	"qiublog/utils/errmsg"
 	"time"
 )
@@ -69,35 +73,60 @@ func ModifyArticle(tx *gorm.DB, id int, data *Article) int {
 }
 
 // GetsArticle 获取文章列表
-func GetsArticle(pageSize int, pageNum int, cid int, cids []uint) ([]Article, int64) {
-	var articles []Article
-	var total int64
-	where := map[string]interface{}{}
-	if cid != 0 {
-		where["cid"] = cid
-	} else if cids != nil {
-		where["cid"] = cids
+func GetsArticle(pageSize int, pageNum int, cid int, cids []int) ([]Articles, int64) {
+	var article []Article
+	var articlesJson []byte
+	r := struct {
+		Data  []Articles `json:"data"`
+		Total int64      `json:"total"`
+	}{}
+	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
+	defer cancel()
+	RedisKey := fmt.Sprintf("articles;pageSize:%d;pageNum:%d;cid:%d;cids:%s;", pageSize, pageNum, cid, fmt.Sprint(cids))
+	articlesJson, err = db.Rdb.Get(ctx, RedisKey).Bytes()
+	if err != nil {
+		where := map[string]interface{}{}
+		if cid != 0 {
+			where["cid"] = cid
+		} else if cids != nil {
+			where["cid"] = cids
+		}
+		err = Db.
+			Preload("Tags").
+			Where(where).
+			Order("created_at desc").
+			Limit(pageSize).
+			Offset((pageNum - 1) * pageSize).
+			Find(&article).Error
+		if err == nil || err != gorm.ErrRecordNotFound {
+			Db.Model(&Article{}).Where(where).Count(&r.Total)
+			for _, v := range article {
+				r.Data = append(r.Data, Articles{v.ID, v.CreatedAt, v.UpdatedAt, v.Title, v.Img, v.Desc, v.Cid, v.Tags})
+			}
+		}
+		articlesJson, _ = json.Marshal(r)
+		db.Rdb.Set(ctx, RedisKey, articlesJson, 3*24*time.Hour) // 存3天
 	}
-	err := Db.
-		Preload("Tags").
-		Where(where).
-		Order("created_at desc").
-		Limit(pageSize).
-		Offset((pageNum - 1) * pageSize).
-		Find(&articles).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil, 0
-	}
-	Db.Model(&Article{}).Where(where).Count(&total)
-	return articles, total
+	_ = json.Unmarshal(articlesJson, &r)
+	return r.Data, r.Total
 }
 
 // GetArticle 获取单个文章
 func GetArticle(Aid int) (int, *Article) {
 	var data Article
-	err = Db.Preload("Tags").Where("id=?", Aid).Find(&data).Error
+	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
+	defer cancel()
+	redisKey := fmt.Sprintf("article;aid:%d;", Aid)
+	articleJson, err := db.Rdb.Get(ctx, redisKey).Bytes()
 	if err != nil {
-		return errmsg.ERROR, nil
+		err = Db.Preload("Tags").Where("id=?", Aid).Find(&data).Error
+		if err != nil {
+			return errmsg.ERROR, nil
+		}
+		articleJson, _ = json.Marshal(&data)
+		db.Rdb.Set(ctx, redisKey, articleJson, 3*24*time.Hour)
+	} else {
+		_ = json.Unmarshal(articleJson, &data)
 	}
 	return errmsg.SUCCESS, &data
 }

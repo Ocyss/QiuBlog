@@ -24,6 +24,14 @@
 import { useDesignSettingStore } from "@/store/modules/designSetting.js";
 import { zhCN, dateZhCN, darkTheme, enUS, dateEnUS } from "naive-ui";
 import { lighten } from "@/utils/index";
+import api from "@/api";
+import cookies from "vue-cookies";
+if (!cookies.get("mainuv")) {
+  api.statistics.mainuv().then(() => {
+    cookies.set("mainuv", "1", -1);
+  });
+}
+
 const designStore = useDesignSettingStore();
 
 const getThemeOverrides = computed(() => {

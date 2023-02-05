@@ -5,6 +5,5 @@ import (
 )
 
 func ErrParam() (int, any) {
-	code := errmsg.ERROR_PARAM
-	return code, nil
+	return errmsg.ERROR_PARAM, nil
 }

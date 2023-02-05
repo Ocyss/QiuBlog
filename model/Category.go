@@ -188,9 +188,9 @@ func GetCategory(homeshow bool) []GetCategoryTy {
 }
 
 // GetMidCid 根据mid获取所有cid
-func GetMidCid(mid int) []uint {
+func GetMidCid(mid int) []int {
 	var data []Category
-	var r []uint
+	var r []int
 	where := map[string]interface{}{}
 	if mid == 0 {
 		where["homeshow"] = true
@@ -206,7 +206,7 @@ func GetMidCid(mid int) []uint {
 		return nil
 	}
 	for _, item := range data {
-		r = append(r, item.ID)
+		r = append(r, int(item.ID))
 	}
 	return r
 }

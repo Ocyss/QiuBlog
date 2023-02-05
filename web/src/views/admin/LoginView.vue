@@ -61,7 +61,6 @@ import { useMessage } from "naive-ui";
 import { useRouter } from "vue-router";
 import api from "@/api";
 
-let cookies = inject("$cookies");
 const router = useRouter();
 const message = useMessage();
 const loginty = ref(true);

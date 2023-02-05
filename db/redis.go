@@ -8,7 +8,7 @@ import (
 )
 
 var Rdb *redis.Client
-var Ctx context.Context
+var ctx = context.Background()
 
 func InitRedis() {
 	Rdb = redis.NewClient(&redis.Options{
@@ -16,5 +16,10 @@ func InitRedis() {
 		Password: utils.Config.Redis.RedisPassword, // no password set
 		DB:       utils.Config.Redis.RedisDb,       // use default DB
 	})
-	Ctx = context.Background()
+
+	_, err := Rdb.Ping(ctx).Result()
+	//fmt.Println(pong, err)
+	if err != nil {
+		panic(fmt.Sprintf("连接redis出错，错误信息：%v", err))
+	}
 }

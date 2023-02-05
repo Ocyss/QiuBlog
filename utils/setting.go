@@ -8,10 +8,11 @@ import (
 var Config ConfigStruct
 
 type ConfigStruct struct {
-	Server   server
-	Redis    redis
-	Database database
-	Oss      oss
+	Server           server
+	Redis            redis
+	Database         database
+	Oss              oss
+	ConstructionTime int64
 }
 
 func init() {
@@ -19,6 +20,7 @@ func init() {
 	if err != nil {
 		panic(fmt.Sprintf("配置文件读取错误，请检查文件路径--%s", err))
 	}
+	Config.ConstructionTime = file.Section("statistics").Key("ConstructionTime").MustInt64(1662525548)
 	LoadServer(file)
 	LoadRedis(file)
 	LoadData(file)

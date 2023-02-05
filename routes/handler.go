@@ -16,7 +16,7 @@ func Handler() func(h MyHandler) gin.HandlerFunc {
 				"status":  code,
 				"message": errmsg.GetErrMsg(code),
 			}
-			if code == 200 {
+			if code == errmsg.SUCCESS {
 				//判断数据类型
 				if val, ok := data.(gin.H); ok {
 					for k, v := range val {

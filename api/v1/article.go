@@ -18,8 +18,7 @@ func GetsArticle(c *gin.Context) (int, any) {
 	mid, _ := strconv.Atoi(c.Query("mid")) //菜单ID
 	cids := model.GetMidCid(mid)
 	data, total := model.GetsArticle(pageSize, pageNum, cid, cids)
-	code = errmsg.SUCCESS
-	return code, gin.H{
+	return errmsg.SUCCESS, gin.H{
 		"data":  data,
 		"total": total,
 	}
