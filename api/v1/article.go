@@ -1,7 +1,10 @@
 package v1
 
 import (
+	"context"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"qiublog/db"
 	"qiublog/model"
 	"qiublog/utils/ask"
 	"qiublog/utils/errmsg"
@@ -18,9 +21,22 @@ func GetsArticle(c *gin.Context) (int, any) {
 	mid, _ := strconv.Atoi(c.Query("mid")) //菜单ID
 	cids := model.GetMidCid(mid)
 	data, total := model.GetsArticle(pageSize, pageNum, cid, cids)
+	//统计每个分类和菜单的访问次数
+	var miduv, ciduv int64
+	{
+		ctx := context.Background()
+		midUvKey := fmt.Sprintf("articles/uv/mid:%d;", mid)
+		cidUvKey := fmt.Sprintf("articles/uv/cid:%d;", cid)
+		db.Rdb.PFAdd(ctx, midUvKey, c.ClientIP())
+		miduv, _ = db.Rdb.PFCount(ctx, midUvKey).Result()
+		db.Rdb.PFAdd(ctx, cidUvKey, c.ClientIP())
+		ciduv, _ = db.Rdb.PFCount(ctx, cidUvKey).Result()
+	}
 	return errmsg.SUCCESS, gin.H{
-		"data":  data,
-		"total": total,
+		"data":   data,
+		"total":  total,
+		"cid_uv": ciduv,
+		"mid_uv": miduv,
 	}
 }
 
@@ -30,7 +46,19 @@ func GetArticle(c *gin.Context) (int, any) {
 	if err != nil {
 		return ask.ErrParam()
 	}
-	return model.GetArticle(aid)
+	var uv int64
+	//统计每篇文章的浏览量
+	{
+		ctx := context.Background()
+		articleUvKey := fmt.Sprintf("article/uv/aid:%d;", aid)
+		db.Rdb.PFAdd(ctx, articleUvKey, c.ClientIP())
+		uv, _ = db.Rdb.PFCount(ctx, articleUvKey).Result()
+	}
+	code, data := model.GetArticle(aid)
+	return code, gin.H{
+		"data": data,
+		"uv":   uv,
+	}
 }
 
 // ReleaseArticle 发布文章

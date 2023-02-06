@@ -1,8 +1,12 @@
 package model
 
 import (
-	"gorm.io/gorm"
+	"context"
+	"encoding/json"
+	"fmt"
+	"qiublog/db"
 	"qiublog/utils/errmsg"
+	"time"
 )
 
 // Category 分类表
@@ -88,6 +92,7 @@ func SetCate(dataL []SetCategory) int {
 func SetMenu(dataL []SetMenuChild) int {
 	tx := Db.Begin()
 	for _, data := range dataL {
+		menu := Menuchild{Sort: data.Sort, Name: data.Name, Ename: data.Ename, Logo: data.Logo, Link: data.Link}
 		switch data.Type {
 		case "sort":
 			err := tx.Model(&Menuchild{}).Where("id = ?", data.ID).Update("sort", data.Sort).Error
@@ -102,14 +107,13 @@ func SetMenu(dataL []SetMenuChild) int {
 				return errmsg.ERROR_SET_RE
 			}
 		case "new":
-			menu := Menuchild{Sort: data.Sort, Name: data.Name, Ename: data.Ename, Logo: data.Logo, Link: data.Link}
 			err := tx.Create(&menu).Error
 			if err != nil {
 				tx.Rollback()
 				return errmsg.ERROR_SET_NEW
 			}
 		case "updata":
-			err := tx.Model(&Menuchild{}).Where("id = ?", data.ID).Updates(Menuchild{Sort: data.Sort, Name: data.Name, Ename: data.Ename, Logo: data.Logo, Link: data.Link}).Error
+			err := tx.Model(&Menuchild{}).Where("id = ?", data.ID).Updates(menu).Error
 			if err != nil {
 				tx.Rollback()
 				return errmsg.ERROR_SET_UP
@@ -135,9 +139,15 @@ func AddMenu(data *Menuchild) int {
 // GetMenu 获取菜单子项
 func GetMenu() []Menuchild {
 	var data []Menuchild
-	err := Db.Order("parent_id asc").Order("sort asc").Find(&data).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil
+	ctx := context.Background()
+	key := "menus"
+	dataJson, err := db.Rdb.Get(ctx, key).Bytes()
+	if err != nil {
+		Db.Order("parent_id asc").Order("sort asc").Find(&data)
+		dataJson, _ = json.Marshal(data)
+		db.Rdb.Set(ctx, key, dataJson, 3*24*time.Hour)
+	} else {
+		_ = json.Unmarshal(dataJson, &data)
 	}
 	return data
 }
@@ -145,15 +155,26 @@ func GetMenu() []Menuchild {
 // GetSingleMenu 获取单菜单项
 func GetSingleMenu(link string) (int, *GetSingleMenuTy) {
 	var data GetSingleMenuTy
-	err := Db.Model(Menuchild{}).Where("link=?", link).Find(&data).Error
+	ctx := context.Background()
+	key := fmt.Sprintf("menu/link:%s", link)
+	dataJson, err := db.Rdb.Get(ctx, key).Bytes()
+	code := errmsg.SUCCESS
 	if err != nil {
-		return errmsg.ERROR, nil
+		err := Db.Model(Menuchild{}).Where("link=?", link).Find(&data).Error
+		if err != nil {
+			code = errmsg.ERROR
+		} else {
+			err = Db.Model(Category{}).Where("mid=?", data.ID).Find(&data.Cids).Error
+			if err != nil {
+				code = errmsg.ERROR
+			}
+		}
+		dataJson, _ = json.Marshal(data)
+		db.Rdb.Set(ctx, key, dataJson, 3*24*time.Hour)
+	} else {
+		_ = json.Unmarshal(dataJson, &data)
 	}
-	err = Db.Model(Category{}).Where("mid=?", data.ID).Find(&data.Cids).Error
-	if err != nil {
-		return errmsg.ERROR, nil
-	}
-	return errmsg.SUCCESS, &data
+	return code, &data
 }
 
 // AddCategory 添加分类
@@ -178,11 +199,17 @@ type GetCategoryTy struct {
 // GetCategory 获取分类
 func GetCategory(homeshow bool) []GetCategoryTy {
 	var data []GetCategoryTy
-	err := Db.Model(&Category{}).
-		Where(&Category{Homeshow: homeshow}).
-		Find(&data).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil
+	ctx := context.Background()
+	key := fmt.Sprintf("categorys/show:%v", homeshow)
+	dataJson, err := db.Rdb.Get(ctx, key).Bytes()
+	if err != nil {
+		Db.Model(&Category{}).
+			Where(&Category{Homeshow: homeshow}).
+			Find(&data)
+		dataJson, err = json.Marshal(data)
+		db.Rdb.Set(ctx, key, dataJson, 3*24*time.Hour)
+	} else {
+		_ = json.Unmarshal(dataJson, &data)
 	}
 	return data
 }
@@ -191,22 +218,31 @@ func GetCategory(homeshow bool) []GetCategoryTy {
 func GetMidCid(mid int) []int {
 	var data []Category
 	var r []int
-	where := map[string]interface{}{}
-	if mid == 0 {
-		where["homeshow"] = true
-	} else if mid > 0 {
-		where["mid"] = mid
-	} else if mid == -1 {
-		where["homeshow"] = false
-	} else {
-		return nil
-	}
-	err := Db.Where(where).Find(&data).Error
+	ctx := context.Background()
+	key := fmt.Sprintf("categorys/mid:%d", mid)
+	rJson, err := db.Rdb.Get(ctx, key).Bytes()
 	if err != nil {
-		return nil
-	}
-	for _, item := range data {
-		r = append(r, int(item.ID))
+		where := map[string]any{}
+		if mid == 0 {
+			where["homeshow"] = true
+		} else if mid > 0 {
+			where["mid"] = mid
+		} else if mid == -1 {
+			where["homeshow"] = false
+		} else {
+			return nil
+		}
+		err := Db.Where(where).Find(&data).Error
+		if err != nil {
+			return nil
+		}
+		for _, item := range data {
+			r = append(r, int(item.ID))
+		}
+		rJson, _ = json.Marshal(r)
+		db.Rdb.Set(ctx, key, rJson, 3*24*time.Hour)
+	} else {
+		_ = json.Unmarshal(rJson, &r)
 	}
 	return r
 }

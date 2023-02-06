@@ -9,9 +9,13 @@ import (
 	"time"
 )
 
+/*
+	访问量：每次访问 +1
+	浏览量：文章浏览60% +1
+*/
+
 func MainSetUV(c *gin.Context) (int, any) {
-	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
-	defer cancel()
+	ctx := context.Background()
 	err := db.Rdb.PFAdd(ctx, "main:uv", c.ClientIP()).Err()
 	if err != nil {
 		return errmsg.ERROR, nil

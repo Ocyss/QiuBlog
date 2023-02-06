@@ -1,5 +1,12 @@
 package model
 
+import (
+	"context"
+	"encoding/json"
+	"qiublog/db"
+	"time"
+)
+
 // Tags 标签
 type (
 	Tags struct {
@@ -15,11 +22,18 @@ type (
 	}
 )
 
+// GetTags 获取标签列表
 func GetTags() *[]ReqTags {
 	var data []ReqTags
-	err := Db.Model(Tags{}).Find(&data).Error
+	ctx := context.Background()
+	key := "tags"
+	dataJson, err := db.Rdb.Get(ctx, key).Bytes()
 	if err != nil {
-		return nil
+		Db.Model(Tags{}).Find(&data)
+		dataJson, _ = json.Marshal(data)
+		db.Rdb.Set(ctx, key, dataJson, 3*24*time.Hour)
+	} else {
+		_ = json.Unmarshal(dataJson, &data)
 	}
 	return &data
 }

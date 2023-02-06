@@ -77,12 +77,11 @@ func GetsArticle(pageSize int, pageNum int, cid int, cids []int) ([]Articles, in
 	var article []Article
 	var articlesJson []byte
 	r := struct {
-		Data  []Articles `json:"data"`
-		Total int64      `json:"total"`
+		Data  []Articles
+		Total int64
 	}{}
-	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
-	defer cancel()
-	RedisKey := fmt.Sprintf("articles;pageSize:%d;pageNum:%d;cid:%d;cids:%s;", pageSize, pageNum, cid, fmt.Sprint(cids))
+	ctx := context.Background()
+	RedisKey := fmt.Sprintf("articles/pageSize:%d;pageNum:%d;cid:%d;cids:%s;", pageSize, pageNum, cid, fmt.Sprint(cids))
 	articlesJson, err = db.Rdb.Get(ctx, RedisKey).Bytes()
 	if err != nil {
 		where := map[string]interface{}{}
@@ -114,17 +113,17 @@ func GetsArticle(pageSize int, pageNum int, cid int, cids []int) ([]Articles, in
 // GetArticle 获取单个文章
 func GetArticle(Aid int) (int, *Article) {
 	var data Article
-	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
-	defer cancel()
-	redisKey := fmt.Sprintf("article;aid:%d;", Aid)
-	articleJson, err := db.Rdb.Get(ctx, redisKey).Bytes()
+	ctx := context.Background()
+
+	articleKey := fmt.Sprintf("article/aid:%d;", Aid)
+	articleJson, err := db.Rdb.Get(ctx, articleKey).Bytes()
 	if err != nil {
 		err = Db.Preload("Tags").Where("id=?", Aid).Find(&data).Error
 		if err != nil {
 			return errmsg.ERROR, nil
 		}
 		articleJson, _ = json.Marshal(&data)
-		db.Rdb.Set(ctx, redisKey, articleJson, 3*24*time.Hour)
+		db.Rdb.Set(ctx, articleKey, articleJson, 3*24*time.Hour)
 	} else {
 		_ = json.Unmarshal(articleJson, &data)
 	}

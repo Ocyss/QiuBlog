@@ -6,6 +6,7 @@ import (
 	"qiublog/utils/ask"
 )
 
+// Register 注册
 func Register(c *gin.Context) (int, any) {
 	var data model.User
 	err := c.ShouldBindJSON(&data)
@@ -14,6 +15,8 @@ func Register(c *gin.Context) (int, any) {
 	}
 	return model.Register(&data), nil
 }
+
+// Login 登陆
 func Login(c *gin.Context) (int, any) {
 	var data model.User
 	err := c.ShouldBindJSON(&data)
