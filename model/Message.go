@@ -46,6 +46,7 @@ type (
 	Comment struct{}
 )
 
+// AddMessage 添加留言
 func AddMessage(data *Message) int {
 	err = Db.Create(data).Error
 	if err != nil {
@@ -54,6 +55,7 @@ func AddMessage(data *Message) int {
 	return errmsg.SUCCESS
 }
 
+// AddQuestion 添加提问
 func AddQuestion(data *Question) int {
 	err = Db.Create(data).Error
 	if err != nil {
@@ -62,6 +64,7 @@ func AddQuestion(data *Question) int {
 	return errmsg.SUCCESS
 }
 
+// GetMessage 获取留言
 func GetMessage(pageSize int, pageNum int, role int) (interface{}, int64) {
 	var data []Message
 	var datar []MessageR
@@ -89,6 +92,7 @@ func GetMessage(pageSize int, pageNum int, role int) (interface{}, int64) {
 	return &data, total
 }
 
+// GetQuestion 获取提问
 func GetQuestion(pageSize int, pageNum int, role int) (interface{}, int64) {
 	var data []Question
 	var datar []QuestionR
@@ -115,6 +119,7 @@ func GetQuestion(pageSize int, pageNum int, role int) (interface{}, int64) {
 	return &data, total
 }
 
+// UpMessage 更新留言
 func UpMessage(id uint, val bool, show bool, message bool) int {
 	var ty string
 	var table interface{}
@@ -135,6 +140,7 @@ func UpMessage(id uint, val bool, show bool, message bool) int {
 	return errmsg.SUCCESS
 }
 
+// DelMessage 删除留言
 func DelMessage(id uint, message bool) int {
 	var table interface{}
 	if message {
@@ -149,6 +155,7 @@ func DelMessage(id uint, message bool) int {
 	return errmsg.SUCCESS
 }
 
+// ReplyQuestio 回答
 func ReplyQuestio(id uint, content string) int {
 	err = Db.Model(&Question{}).Where(id).Update("reply", content).Error
 	if err != nil {

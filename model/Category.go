@@ -61,7 +61,7 @@ type GetSingleMenuTy struct {
 	} `gorm:"foreignkey:Mid" json:"cids"`
 }
 
-// SetCate  设置菜单子项
+// SetCate  设置分类
 func SetCate(dataL []SetCategory) int {
 	tx := Db.Begin()
 	for _, data := range dataL {
@@ -85,6 +85,10 @@ func SetCate(dataL []SetCategory) int {
 		}
 	}
 	tx.Commit()
+	ctx := context.Background()
+	db.Rdb.Del(ctx, "categorys")
+	db.Rdb.Del(ctx, "menus")
+	db.Rdb.Del(ctx, "menu")
 	return errmsg.SUCCESS
 }
 
@@ -123,7 +127,9 @@ func SetMenu(dataL []SetMenuChild) int {
 		}
 	}
 	tx.Commit()
-
+	ctx := context.Background()
+	db.Rdb.Del(ctx, "menus")
+	db.Rdb.Del(ctx, "menu")
 	return errmsg.SUCCESS
 }
 
@@ -133,6 +139,9 @@ func AddMenu(data *Menuchild) int {
 	if err != nil {
 		return errmsg.ERROR
 	}
+	ctx := context.Background()
+	db.Rdb.Del(ctx, "menus")
+	db.Rdb.Del(ctx, "menu")
 	return errmsg.SUCCESS
 }
 
@@ -153,11 +162,11 @@ func GetMenu() []Menuchild {
 }
 
 // GetSingleMenu 获取单菜单项
-func GetSingleMenu(link string) (int, *GetSingleMenuTy) {
+func GetSingleMenu(link string) (int, GetSingleMenuTy) {
 	var data GetSingleMenuTy
 	ctx := context.Background()
-	key := fmt.Sprintf("menu/link:%s", link)
-	dataJson, err := db.Rdb.Get(ctx, key).Bytes()
+	key := fmt.Sprintf("link:%s", link)
+	dataJson, err := db.Rdb.HGet(ctx, "menu", key).Bytes()
 	code := errmsg.SUCCESS
 	if err != nil {
 		err := Db.Model(Menuchild{}).Where("link=?", link).Find(&data).Error
@@ -170,11 +179,11 @@ func GetSingleMenu(link string) (int, *GetSingleMenuTy) {
 			}
 		}
 		dataJson, _ = json.Marshal(data)
-		db.Rdb.Set(ctx, key, dataJson, 3*24*time.Hour)
+		db.Rdb.HSet(ctx, "menu", key, dataJson)
 	} else {
 		_ = json.Unmarshal(dataJson, &data)
 	}
-	return code, &data
+	return code, data
 }
 
 // AddCategory 添加分类
@@ -200,14 +209,14 @@ type GetCategoryTy struct {
 func GetCategory(homeshow bool) []GetCategoryTy {
 	var data []GetCategoryTy
 	ctx := context.Background()
-	key := fmt.Sprintf("categorys/show:%v", homeshow)
-	dataJson, err := db.Rdb.Get(ctx, key).Bytes()
+	key := fmt.Sprintf("show:%v", homeshow)
+	dataJson, err := db.Rdb.HGet(ctx, "categorys", key).Bytes()
 	if err != nil {
 		Db.Model(&Category{}).
 			Where(&Category{Homeshow: homeshow}).
 			Find(&data)
 		dataJson, err = json.Marshal(data)
-		db.Rdb.Set(ctx, key, dataJson, 3*24*time.Hour)
+		db.Rdb.HSet(ctx, "categorys", key, dataJson)
 	} else {
 		_ = json.Unmarshal(dataJson, &data)
 	}
@@ -219,8 +228,8 @@ func GetMidCid(mid int) []int {
 	var data []Category
 	var r []int
 	ctx := context.Background()
-	key := fmt.Sprintf("categorys/mid:%d", mid)
-	rJson, err := db.Rdb.Get(ctx, key).Bytes()
+	key := fmt.Sprintf("mid:%d", mid)
+	rJson, err := db.Rdb.HGet(ctx, "categorys", key).Bytes()
 	if err != nil {
 		where := map[string]any{}
 		if mid == 0 {
@@ -240,7 +249,7 @@ func GetMidCid(mid int) []int {
 			r = append(r, int(item.ID))
 		}
 		rJson, _ = json.Marshal(r)
-		db.Rdb.Set(ctx, key, rJson, 3*24*time.Hour)
+		db.Rdb.HSet(ctx, "categorys", key, rJson)
 	} else {
 		_ = json.Unmarshal(rJson, &r)
 	}
@@ -258,5 +267,7 @@ func ModifyCategorys(data *[]Category) int {
 		}
 	}
 	tx.Commit()
+	ctx := context.Background()
+	db.Rdb.Del(ctx, "categorys")
 	return errmsg.SUCCESS
 }
