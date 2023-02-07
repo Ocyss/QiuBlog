@@ -19,24 +19,31 @@ func GetsArticle(c *gin.Context) (int, any) {
 	pageSize, pageNum := tool.PageTool(c)  //分页最大数,分页偏移量
 	cid, _ := strconv.Atoi(c.Query("cid")) //分类ID
 	mid, _ := strconv.Atoi(c.Query("mid")) //菜单ID
-	cids := model.GetMidCid(mid)
-	data, total := model.GetsArticle(pageSize, pageNum, cid, cids)
+	tid, _ := strconv.Atoi(c.Query("tid")) //标签ID
+	//cids := model.GetMidCid(mid)
+	data, total := model.GetsArticle(pageSize, pageNum, cid, mid, tid)
 	//统计每个分类和菜单的访问次数
-	var miduv, ciduv int64
+	var miduv, ciduv, tiduv int64
+	ctx := context.Background()
 	{
-		ctx := context.Background()
 		midUvKey := fmt.Sprintf("articles/uv/mid:%d;", mid)
-		cidUvKey := fmt.Sprintf("articles/uv/cid:%d;", cid)
 		db.Rdb.PFAdd(ctx, midUvKey, c.ClientIP())
 		miduv, _ = db.Rdb.PFCount(ctx, midUvKey).Result()
+		cidUvKey := fmt.Sprintf("articles/uv/cid:%d;", cid)
 		db.Rdb.PFAdd(ctx, cidUvKey, c.ClientIP())
 		ciduv, _ = db.Rdb.PFCount(ctx, cidUvKey).Result()
+		tidUvKey := fmt.Sprintf("articles/uv/tid:%d;", tid)
+		db.Rdb.PFAdd(ctx, tidUvKey, c.ClientIP())
+		tiduv, _ = db.Rdb.PFCount(ctx, tidUvKey).Result()
 	}
 	return errmsg.SUCCESS, gin.H{
-		"data":   data,
-		"total":  total,
-		"cid_uv": ciduv,
-		"mid_uv": miduv,
+		"data":  data,
+		"total": total,
+		"uv": gin.H{
+			"cid_uv": ciduv,
+			"mid_uv": miduv,
+			"tid_uv": tiduv,
+		},
 	}
 }
 
@@ -104,17 +111,4 @@ func ModifyArticle(c *gin.Context) (int, any) {
 // DeleteArticle 删除文章
 func DeleteArticle(c *gin.Context) (int, any) {
 	return 0, nil
-}
-
-// TagGetArticle  根据标签获取所有文章
-func TagGetArticle(c *gin.Context) (int, any) {
-	tagId, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		return ask.ErrParam()
-	}
-	data, total := model.TagGetArticle(tagId)
-	return errmsg.SUCCESS, gin.H{
-		"data":  data,
-		"total": total,
-	}
 }

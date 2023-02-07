@@ -47,9 +47,8 @@ func InitRouter() {
 	router := r.Group("api/v1")
 	{
 		//文章
-		router.GET("article/list", Handler()(v1.GetsArticle))      //获取文章列表
-		router.GET("article/:id", Handler()(v1.GetArticle))        //获取单个文章
-		router.GET("article/tag/:id", Handler()(v1.TagGetArticle)) //根据标签获取所有文章
+		router.GET("article/list", Handler()(v1.GetsArticle)) //获取文章列表
+		router.GET("article/:id", Handler()(v1.GetArticle))   //获取单个文章
 		//用户
 		router.POST("user/register", Handler()(v1.Register)) //注册用户
 		router.POST("user/login", Handler()(v1.Login))       //登陆用户

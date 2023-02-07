@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm"
 	"qiublog/db"
 	"qiublog/utils/errmsg"
+	"strconv"
 	"time"
 )
 
@@ -30,6 +31,10 @@ type (
 		Cid       *int      `json:"cid,omitempty"`
 		Tags      []Tags    `json:"tags"`
 	}
+	Coding struct {
+		Aids  []string
+		Total int64
+	}
 )
 
 // CreateArticle 添加文章
@@ -49,6 +54,9 @@ func CreateArticle(tx *gorm.DB, data *Article) (int, uint) {
 	if err != nil {
 		return errmsg.ERROR, 0
 	}
+	ctx := context.Background()
+	//删除所有缓存索引,保证数据一致
+	db.Rdb.Del(ctx, "articles")
 	return errmsg.SUCCESS, data.ID
 }
 
@@ -69,75 +77,102 @@ func ModifyArticle(tx *gorm.DB, id int, data *Article) int {
 	if err != nil {
 		return errmsg.ERROR
 	}
+	ctx := context.Background()
+	//保证数据一致性，直接删除缓存数据，下次自动从数据库获取最新数据
+	db.Rdb.HDel(ctx, "article", strconv.Itoa(id))
 	return errmsg.SUCCESS
 }
 
 // GetsArticle 获取文章列表
-func GetsArticle(pageSize int, pageNum int, cid int, cids []int) ([]Articles, int64) {
-	var article []Article
-	var articlesJson []byte
-	r := struct {
-		Data  []Articles
-		Total int64
-	}{}
+func GetsArticle(pageSize int, pageNum int, cid int, mid int, tid int) ([]Articles, int64) {
+	// 存在缓存中的json数据
+	var dataJson []byte
+	//需要返回的Articles
+	var res []Articles
+	//缓存中的格式
+	var data Coding
+
 	ctx := context.Background()
-	RedisKey := fmt.Sprintf("articles/pageSize:%d;pageNum:%d;cid:%d;cids:%s;", pageSize, pageNum, cid, fmt.Sprint(cids))
-	articlesJson, err = db.Rdb.Get(ctx, RedisKey).Bytes()
-	if err != nil {
-		where := map[string]interface{}{}
-		if cid != 0 {
-			where["cid"] = cid
-		} else if cids != nil {
-			where["cid"] = cids
-		}
-		err = Db.
-			Preload("Tags").
-			Where(where).
+	//根据key和条件，存进缓存
+	articlesHset := func(key string, where any) {
+		Db.
+			Model(Article{}).
+			Where("cid", where).
 			Order("created_at desc").
-			Limit(pageSize).
-			Offset((pageNum - 1) * pageSize).
-			Find(&article).Error
-		if err == nil || err != gorm.ErrRecordNotFound {
-			Db.Model(&Article{}).Where(where).Count(&r.Total)
-			for _, v := range article {
-				r.Data = append(r.Data, Articles{v.ID, v.CreatedAt, v.UpdatedAt, v.Title, v.Img, v.Desc, v.Cid, v.Tags})
-			}
-		}
-		articlesJson, _ = json.Marshal(r)
-		db.Rdb.Set(ctx, RedisKey, articlesJson, 3*24*time.Hour) // 存3天
+			Pluck("id", &data.Aids).
+			Count(&data.Total)
+		dataJson, _ = json.Marshal(data)
+		db.Rdb.HSet(ctx, "articles", key, dataJson)
 	}
-	_ = json.Unmarshal(articlesJson, &r)
-	return r.Data, r.Total
+	//根据分类或者菜单获取文章列表
+	if cid != 0 {
+		cidKey := fmt.Sprintf("cid:%d", cid)
+		dataJson, err = db.Rdb.HGet(ctx, "articles", cidKey).Bytes()
+		if err != nil {
+			articlesHset(cidKey, cid)
+		}
+	} else if tid != 0 {
+		tidKey := fmt.Sprintf("tid:%d", tid)
+		dataJson, err = db.Rdb.HGet(ctx, "articles", tidKey).Bytes()
+		if err != nil {
+			var tdata Tags
+			Db.Preload("Article.Tags").Take(&tdata, tid)
+			for _, v := range tdata.Article {
+				data.Aids = append(data.Aids, strconv.Itoa(int(v.ID)))
+			}
+			dataJson, _ = json.Marshal(data)
+			db.Rdb.HSet(ctx, "articles", tidKey, dataJson)
+			fmt.Println(tidKey, data)
+		}
+	} else {
+		midKey := fmt.Sprintf("mid:%d", mid)
+		dataJson, err = db.Rdb.HGet(ctx, "articles", midKey).Bytes()
+		if err != nil {
+			articlesHset(midKey, GetMidCid(mid))
+		}
+	}
+
+	_ = json.Unmarshal(dataJson, &data)
+	//防止越界
+	var aids []string
+	if pageNum+pageSize > len(data.Aids) {
+		aids = data.Aids[pageNum-1:]
+	} else {
+		aids = data.Aids[pageNum-1 : pageNum-1+pageSize]
+	}
+	for _, v := range aids {
+		var d Articles
+		var dd Article
+		articleJson, err := db.Rdb.HGet(ctx, "article", v).Bytes()
+		if err != nil {
+			Db.Preload("Tags").Take(&dd, v)
+			articleJson, _ = json.Marshal(dd)
+			db.Rdb.HSet(ctx, "article", v, articleJson)
+		} else {
+			_ = json.Unmarshal(articleJson, &dd)
+		}
+		//优化，列表不返回文章内容
+		d = Articles{dd.ID, dd.CreatedAt, dd.UpdatedAt, dd.Title, dd.Img, dd.Desc, dd.Cid, dd.Tags}
+		res = append(res, d)
+	}
+
+	return res, data.Total
 }
 
 // GetArticle 获取单个文章
 func GetArticle(Aid int) (int, *Article) {
 	var data Article
 	ctx := context.Background()
-
-	articleKey := fmt.Sprintf("article/aid:%d;", Aid)
-	articleJson, err := db.Rdb.Get(ctx, articleKey).Bytes()
+	articleJson, err := db.Rdb.HGet(ctx, "article", strconv.Itoa(Aid)).Bytes()
 	if err != nil {
 		err = Db.Preload("Tags").Where("id=?", Aid).Find(&data).Error
 		if err != nil {
 			return errmsg.ERROR, nil
 		}
 		articleJson, _ = json.Marshal(&data)
-		db.Rdb.Set(ctx, articleKey, articleJson, 3*24*time.Hour)
+		db.Rdb.HSet(ctx, "article", strconv.Itoa(Aid), articleJson)
 	} else {
 		_ = json.Unmarshal(articleJson, &data)
 	}
 	return errmsg.SUCCESS, &data
-}
-
-// TagGetArticle  根据标签获取所有文章
-func TagGetArticle(tagId int) (*Tags, int64) {
-	var tag Tags
-	var total int64
-	err = Db.Preload("Article.Tags").Find(&tag, tagId).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil, 0
-	}
-	total = Db.Model(&Tags{}).Association("Article").Count()
-	return &tag, total
 }
