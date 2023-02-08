@@ -30,9 +30,10 @@ type (
 		Desc      string    `json:"desc"`
 		Cid       *int      `json:"cid,omitempty"`
 		Tags      []Tags    `json:"tags"`
+		Uv        int64     `json:"uv"`
 	}
 	Coding struct {
-		Aids  []string
+		Ids   []string
 		Total int64
 	}
 )
@@ -87,19 +88,19 @@ func ModifyArticle(tx *gorm.DB, id int, data *Article) int {
 func GetsArticle(pageSize int, pageNum int, cid int, mid int, tid int) ([]Articles, int64) {
 	// 存在缓存中的json数据
 	var dataJson []byte
-	//需要返回的Articles
-	var res []Articles
 	//缓存中的格式
 	var data Coding
+	//需要返回的Articles
+	res := make([]Articles, 0)
 
 	ctx := context.Background()
 	//根据key和条件，存进缓存
-	articlesHset := func(key string, where any) {
+	articlesHset := func(key string, where map[string]interface{}) {
 		Db.
 			Model(Article{}).
-			Where("cid", where).
+			Where(where).
 			Order("created_at desc").
-			Pluck("id", &data.Aids).
+			Pluck("id", &data.Ids).
 			Count(&data.Total)
 		dataJson, _ = json.Marshal(data)
 		db.Rdb.HSet(ctx, "articles", key, dataJson)
@@ -109,7 +110,7 @@ func GetsArticle(pageSize int, pageNum int, cid int, mid int, tid int) ([]Articl
 		cidKey := fmt.Sprintf("cid:%d", cid)
 		dataJson, err = db.Rdb.HGet(ctx, "articles", cidKey).Bytes()
 		if err != nil {
-			articlesHset(cidKey, cid)
+			articlesHset(cidKey, map[string]interface{}{"cid": cid})
 		}
 	} else if tid != 0 {
 		tidKey := fmt.Sprintf("tid:%d", tid)
@@ -118,7 +119,7 @@ func GetsArticle(pageSize int, pageNum int, cid int, mid int, tid int) ([]Articl
 			var tdata Tags
 			Db.Preload("Article.Tags").Take(&tdata, tid)
 			for _, v := range tdata.Article {
-				data.Aids = append(data.Aids, strconv.Itoa(int(v.ID)))
+				data.Ids = append(data.Ids, strconv.Itoa(int(v.ID)))
 			}
 			dataJson, _ = json.Marshal(data)
 			db.Rdb.HSet(ctx, "articles", tidKey, dataJson)
@@ -128,22 +129,31 @@ func GetsArticle(pageSize int, pageNum int, cid int, mid int, tid int) ([]Articl
 		midKey := fmt.Sprintf("mid:%d", mid)
 		dataJson, err = db.Rdb.HGet(ctx, "articles", midKey).Bytes()
 		if err != nil {
-			articlesHset(midKey, GetMidCid(mid))
+			if mid == -2 {
+				articlesHset(midKey, nil)
+			} else {
+				articlesHset(midKey, map[string]interface{}{"cid": GetMidCid(mid)})
+			}
 		}
 	}
 
 	_ = json.Unmarshal(dataJson, &data)
 	//防止越界
 	var aids []string
-	if pageNum+pageSize > len(data.Aids) {
-		aids = data.Aids[pageNum-1:]
+	if pageNum > len(data.Ids) {
+		aids = nil
+	} else if pageNum == -1 {
+		aids = data.Ids
+	} else if pageNum+pageSize > len(data.Ids) {
+		aids = data.Ids[pageNum-1:]
 	} else {
-		aids = data.Aids[pageNum-1 : pageNum-1+pageSize]
+		aids = data.Ids[pageNum-1 : pageNum-1+pageSize]
 	}
 	for _, v := range aids {
 		var d Articles
 		var dd Article
 		articleJson, err := db.Rdb.HGet(ctx, "article", v).Bytes()
+		articleUv, _ := db.Rdb.PFCount(ctx, fmt.Sprintf("article/uv/aid:%s;", v)).Result()
 		if err != nil {
 			Db.Preload("Tags").Take(&dd, v)
 			articleJson, _ = json.Marshal(dd)
@@ -152,7 +162,7 @@ func GetsArticle(pageSize int, pageNum int, cid int, mid int, tid int) ([]Articl
 			_ = json.Unmarshal(articleJson, &dd)
 		}
 		//优化，列表不返回文章内容
-		d = Articles{dd.ID, dd.CreatedAt, dd.UpdatedAt, dd.Title, dd.Img, dd.Desc, dd.Cid, dd.Tags}
+		d = Articles{dd.ID, dd.CreatedAt, dd.UpdatedAt, dd.Title, dd.Img, dd.Desc, dd.Cid, dd.Tags, articleUv}
 		res = append(res, d)
 	}
 

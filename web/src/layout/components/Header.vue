@@ -1,21 +1,31 @@
 <template>
   <div class="layout-header">
     <div class="menuLeft">
-      <n-icon size="27" @click="() => $emit('collapsed')" style="">
-        <MenuSharp />
-      </n-icon>
-      <n-icon size="25" @click="shareShow = true">
-        <ShareSocialOutline />
-      </n-icon>
+      <div>
+        <n-icon size="27" @click="() => $emit('collapsed')" style="">
+          <MenuSharp />
+        </n-icon>
+      </div>
+      <div>
+        <n-icon size="25" @click="shareShow = true">
+          <ShareSocialOutline />
+        </n-icon>
+      </div>
     </div>
     <div class="menuRight">
-      <n-switch v-model:value="darkMode" :rail-style="railStyle">
-        <template #checked>下班</template>
-        <template #unchecked>上班</template>
-        <template #icon>{{ darkMode ? "🌛" : "🌞" }}</template>
-      </n-switch>
-      <n-icon size="25" @click="locale = !locale"><Language /></n-icon>
-      <n-icon size="25"><ColorPalette /></n-icon>
+      <div>
+        <n-switch v-model:value="darkMode" :rail-style="railStyle">
+          <template #checked>下班</template>
+          <template #unchecked>上班</template>
+          <template #icon>{{ darkMode ? "🌛" : "🌞" }}</template>
+        </n-switch>
+      </div>
+      <div>
+        <n-icon size="25" @click="locale = !locale"><Language /></n-icon>
+      </div>
+      <div>
+        <n-icon size="25"><ColorPalette /></n-icon>
+      </div>
     </div>
     <n-modal v-model:show="shareShow">
       <vue-qrcode :value="url" :options="{ width: 300 }"></vue-qrcode>
@@ -82,12 +92,18 @@ const railStyle = ({ focused, checked }) => {
   display: flex;
   align-items: center;
   padding-left: 15px;
+  div {
+    margin: 0 3px;
+  }
 }
 
 .menuRight {
   display: flex;
   align-items: center;
   padding-right: 25px;
+  div {
+    margin: 0 3px;
+  }
 }
 
 .n-icon {

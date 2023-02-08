@@ -26,12 +26,34 @@ export default {
   img {
     margin-top: 1rem;
     width: auto;
+    height: 160px;
   }
   .big {
-    height: 120px;
+    animation-name: gbig;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
   }
   .small {
-    height: 60px;
+    animation-name: gsmall;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+  }
+}
+
+@keyframes gsmall {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.4);
+  }
+}
+@keyframes gbig {
+  0% {
+    transform: scale(0.4);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 </style>

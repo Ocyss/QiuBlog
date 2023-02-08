@@ -22,6 +22,10 @@
   .avatar {
     width: 50%;
     height: auto;
+    transition: all 0.8s;
+  }
+  .avatar:hover {
+    transform: rotate(360deg);
   }
 }
 .text {
@@ -35,6 +39,7 @@
   .word {
     font-size: 1rem;
     white-space: nowrap;
+    text-shadow: 0px 0px 5px #00ffff, 0px 0px 15px #00ffff, 0px 0px 25px #00ffff;
   }
 }
 </style>

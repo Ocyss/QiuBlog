@@ -1,6 +1,6 @@
 <template>
   <frontVue>
-    <div style="padding: 20px">
+    <div class="main">
       <div class="cover">
         <img :src="imgSrc" :alt="postData.title" loading="lazy" />
         <div class="info">
@@ -62,8 +62,7 @@
         </div>
       </div>
       <n-divider />
-      <div class="content" v-html="postData.content">
-      </div>
+      <div class="content" v-html="postData.content"></div>
       <n-divider />
       <div class="copyright">
         <strong>本文链接：</strong>
@@ -114,7 +113,6 @@ const postData = ref({
   tags: [],
 });
 
-
 const imgSrc = computed(() => {
   return postData.value.img ? postData.value.img : 随机风景API;
 });
@@ -133,6 +131,10 @@ api.category.get().then((res) => {
 </script>
 
 <style lang="scss" scoped>
+.main {
+  padding: 20px;
+  max-width: 900px;
+}
 .cover {
   width: 100%;
   position: relative;

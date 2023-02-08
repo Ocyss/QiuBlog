@@ -41,9 +41,12 @@ func SetToken(id uint, username string, role int) (string, int) {
 
 // CheckToken 验证token
 func CheckToken(token string) (*MyClaims, int) {
-	setToken, _ := jwt.ParseWithClaims(token, &MyClaims{}, func(token *jwt.Token) (interface{}, error) {
+	setToken, err := jwt.ParseWithClaims(token, &MyClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return JwtKey, nil
 	})
+	if err != nil {
+		return nil, errmsg.ERROR
+	}
 	if key, ok := setToken.Claims.(*MyClaims); ok && setToken.Valid {
 		return key, errmsg.SUCCESS
 	} else {

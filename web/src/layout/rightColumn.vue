@@ -11,7 +11,7 @@
       bordered
       class="layoutSide"
       :content-style="{ padding: '0.5rem' }"
-      width="30%"
+      width=""
       v-if="!settingStore.isMobile"
     >
       <slot name="column"></slot>

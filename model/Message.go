@@ -1,6 +1,10 @@
 package model
 
 import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"qiublog/db"
 	"qiublog/utils/errmsg"
 )
 
@@ -65,58 +69,106 @@ func AddQuestion(data *Question) int {
 }
 
 // GetMessage 获取留言
-func GetMessage(pageSize int, pageNum int, role int) (interface{}, int64) {
-	var data []Message
-	var datar []MessageR
-	var total int64
-	where := map[string]interface{}{}
-	if role == -1 {
-		where["show"] = true
-		where["check"] = true
-	}
-	err = Db.
-		Model(&Message{}).
-		Where(where).
-		Order("created_at desc").
-		Limit(pageSize).
-		Offset((pageNum - 1) * 10).
-		Find(&data).
-		Find(&datar).Error
+func GetMessage(pageSize int, pageNum int, admin bool) ([]any, int64) {
+	var data Coding
+	var ids []string
+	var dataJson []byte
+	res := make([]any, 0)
+	ctx := context.Background()
+	key := fmt.Sprintf("admin:%v", admin)
+	dataJson, err := db.Rdb.HGet(ctx, "messages", key).Bytes()
 	if err != nil {
-		return nil, 0
+		var messageData Message
+		where := map[string]interface{}{"show": true, "check": true}
+		if admin {
+			where["show"] = false
+			where["check"] = false
+		}
+		Db.
+			Model(&Message{}).
+			Where(where).
+			Order("created_at desc").
+			Find(&messageData)
+		dataJson, _ = json.Marshal(messageData)
+		db.Rdb.HSet(ctx, "messages", key, dataJson)
+	} else {
+		_ = json.Unmarshal(dataJson, &data)
 	}
-	Db.Model(&Message{}).Count(&total)
-	if role == -1 {
-		return &datar, total
+	if pageSize+pageNum > len(data.Ids) {
+		ids = data.Ids[pageNum-1:]
+	} else {
+		ids = data.Ids[pageNum-1 : pageSize+pageNum-1]
 	}
-	return &data, total
+	for _, v := range ids {
+		var m Message
+		mJson, err := db.Rdb.HGet(ctx, "message", v).Bytes()
+		if err != nil {
+			Db.Take(&m, v)
+			mJson, _ = json.Marshal(m)
+			db.Rdb.HSet(ctx, "message", v, mJson)
+		} else {
+			_ = json.Unmarshal(mJson, &m)
+		}
+		if admin {
+			res = append(res, m)
+		} else {
+			res = append(res, MessageR{m.Model, m.Name, m.Qq, m.Email, m.Content, m.Like})
+		}
+	}
+
+	return res, data.Total
 }
 
 // GetQuestion 获取提问
-func GetQuestion(pageSize int, pageNum int, role int) (interface{}, int64) {
-	var data []Question
-	var datar []QuestionR
-	var total int64
-	where := map[string]interface{}{}
-	if role == -1 {
-		where["show"] = true
-		where["check"] = true
-	}
-	err = Db.
-		Model(&Question{}).
-		Where(where).
-		Order("created_at desc").
-		Limit(pageSize).
-		Offset((pageNum - 1) * 10).
-		Find(&data).Find(&datar).Error
+func GetQuestion(pageSize int, pageNum int, admin bool) ([]any, int64) {
+	var data Coding
+	var ids []string
+	var dataJson []byte
+	res := make([]any, 0)
+	ctx := context.Background()
+	key := fmt.Sprintf("admin:%v", admin)
+	dataJson, err := db.Rdb.HGet(ctx, "questions", key).Bytes()
 	if err != nil {
-		return nil, 0
+		var messageData Question
+		where := map[string]interface{}{"show": true, "check": true}
+		if admin {
+			where["show"] = false
+			where["check"] = false
+		}
+		Db.
+			Model(&Question{}).
+			Where(where).
+			Order("created_at desc").
+			Find(&messageData)
+		dataJson, _ = json.Marshal(messageData)
+		db.Rdb.HSet(ctx, "questions", key, dataJson)
+	} else {
+		_ = json.Unmarshal(dataJson, &data)
 	}
-	Db.Model(&Question{}).Count(&total)
-	if role == -1 {
-		return &datar, total
+	if pageSize+pageNum > len(data.Ids) {
+		ids = data.Ids[pageNum-1:]
+	} else {
+		ids = data.Ids[pageNum-1 : pageSize+pageNum-1]
 	}
-	return &data, total
+
+	for _, v := range ids {
+		var q Question
+		mJson, err := db.Rdb.HGet(ctx, "question", v).Bytes()
+		if err != nil {
+			Db.Take(&q, v)
+			mJson, _ = json.Marshal(q)
+			db.Rdb.HSet(ctx, "question", v, mJson)
+		} else {
+			_ = json.Unmarshal(mJson, &q)
+		}
+		if admin {
+			res = append(res, q)
+		} else {
+			res = append(res, QuestionR{q.Model, q.Name, q.Qq, q.Email, q.Question, q.Reply, q.Like})
+		}
+	}
+
+	return res, data.Total
 }
 
 // UpMessage 更新留言

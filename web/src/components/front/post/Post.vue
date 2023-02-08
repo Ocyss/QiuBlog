@@ -25,7 +25,7 @@
             >
               <n-icon :size="13" :component="Book" />
             </n-icon-wrapper>
-            1.5K阅读
+            {{ item.uv }}阅读
           </div>
           <div v-if="item.cname">
             <n-icon-wrapper

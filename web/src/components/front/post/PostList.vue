@@ -1,6 +1,7 @@
 <template>
   <n-spin class="postlist" :show="PostSpinShow" style="min-height: 300px">
     <n-tabs
+      ref="tabs"
       :bar-width="28"
       type="line"
       class="custom-tabs"
@@ -26,8 +27,8 @@
     </n-tabs>
     <template #description>加载中~~~~</template>
     <n-pagination
-      v-model:page="page"
-      :page-count="pageCount"
+      v-model:page="page[cid]"
+      :page-count="pageCount[cid]"
       @update:page="upPage"
     />
   </n-spin>
@@ -39,18 +40,17 @@ import PostVue from "./Post.vue";
 import api from "@/api";
 const PostSpinShow = ref(true);
 const props = defineProps(["cdata"]);
-const page = ref(1);
-const pageCount = ref(1);
+const page = ref({ "-1": 1 });
+const pageCount = ref({ "-1": 1 });
 const cid = ref("-1");
-//各分类下的文章
-const PostData = ref({
-  "-1": [{ id: -1 }, { id: -2 }, { id: -3 }],
-});
+const tabs = ref(null);
 
+//各分类下的文章
+const PostData = ref({});
 //请求主页文章列表
 // c是分类请求,m是菜单请求
 function getPosts(id, ty = "c") {
-  const params = { pagesize: 6, pagenum: page.value };
+  const params = { pagesize: 6, pagenum: page.value[cid.value] };
   if (ty == "m" || id == "-1") {
     params.mid = props.cdata.id;
   } else if (ty == "c") {
@@ -63,26 +63,29 @@ function getPosts(id, ty = "c") {
       });
       return item;
     });
+    pageCount.value[cid.value] = Math.ceil(res.total / params.pagesize);
     PostSpinShow.value = false;
-    pageCount.value = Math.ceil(res.total / params.pagesize);
   });
 }
 
 getPosts("-1", "m");
 
 function upPage(p) {
+  PostData.value[cid.value] = [];
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
   if (cid.value == "-1") {
-    getPosts("-1", "m");
+    getPosts(cid.value, "m");
   } else {
     getPosts(cid.value, "c");
   }
 }
 
 function changeCategory(val) {
-  cid.value = val;
-  page.value = 1;
-  pageCount.value = 1;
   PostSpinShow.value = true;
+  cid.value = val;
   if (PostData.value[val] == undefined) {
     getPosts(val, "c");
   } else {

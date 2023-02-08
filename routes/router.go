@@ -60,10 +60,10 @@ func InitRouter() {
 		//标签
 		router.GET("tags", Handler()(v1.GetTags)) //获取全部标签
 		//消息
-		router.POST("message", Handler()(v1.AddMessage))                              //进行留言
-		router.POST("question", Handler()(v1.AddQuestion))                            //进行提问
-		router.GET("message", middleware.JwtToken(false), Handler()(v1.GetMessage))   //获取留言
-		router.GET("question", middleware.JwtToken(false), Handler()(v1.GetQuestion)) //获取提问
+		router.POST("message", Handler()(v1.AddMessage))   //进行留言
+		router.POST("question", Handler()(v1.AddQuestion)) //进行提问
+		router.GET("message", Handler()(v1.GetMessage))    //获取留言
+		router.GET("question", Handler()(v1.GetQuestion))  //获取提问
 		//统计
 		router.POST("statistics/set/mainuv", Handler()(v1.MainSetUV))
 		router.GET("statistics", Handler()(v1.GetStatistics))

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	"qiublog/db"
+	"qiublog/model"
 	"qiublog/utils"
 	"qiublog/utils/errmsg"
 	"time"
@@ -25,18 +26,33 @@ func MainSetUV(c *gin.Context) (int, any) {
 
 func GetStatistics(c *gin.Context) (int, any) {
 	var (
-		articleCount int64
-		mainUV       int64
-		wordsTotal   int64
-		elapsedTime  int64
-		lastUpdated  int64
+		err          error
+		articleCount int64 //文章总数
+		mainUV       int64 //浏览量
+		wordsTotal   int64 //文章总字数
+		elapsedTime  int64 //建站时间
+		lastUpdated  int64 //最后更新时间
 	)
 	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
 	defer cancel()
-	articleCount, _ = db.Rdb.Get(ctx, "main:ac").Int64()
+	articleCount, err = db.Rdb.Get(ctx, "main:ac").Int64()
+	if err != nil {
+		model.Db.Model(model.Article{}).Count(&articleCount)
+		db.Rdb.Set(ctx, "main:ac", articleCount, 3*24*time.Hour)
+	}
 	mainUV, _ = db.Rdb.PFCount(ctx, "main:uv").Result()
-	wordsTotal, _ = db.Rdb.Get(ctx, "main:wt").Int64()
-	lastUpdated, _ = db.Rdb.Get(ctx, "main:lut").Int64()
+	wordsTotal, err = db.Rdb.Get(ctx, "main:wt").Int64()
+	if err != nil {
+		model.Db.Raw("SELECT char_length(content) FROM article").Scan(&wordsTotal)
+		db.Rdb.Set(ctx, "main:wt", wordsTotal, 3*24*time.Hour)
+	}
+	lastUpdated, err = db.Rdb.Get(ctx, "main:lut").Int64()
+	if err != nil {
+		var ar model.Article
+		model.Db.Model(model.Article{}).Order("updated_at desc").Take(&ar)
+		lastUpdated = ar.UpdatedAt.Unix()
+		db.Rdb.Set(ctx, "main:lut", lastUpdated, 3*24*time.Hour)
+	}
 	elapsedTime = utils.Config.ConstructionTime
 	return errmsg.SUCCESS, gin.H{
 		"data": gin.H{

@@ -15,7 +15,9 @@
     <template #header>
       <HeaderVue @collapsed="collapsed = !collapsed" :collapsed="collapsed" />
     </template>
-    <div style="min-height: 93vh"><slot name="default"></slot></div>
+    <div class="content" style="min-height: 93vh">
+      <slot name="default"></slot>
+    </div>
   </layoutVue>
 </template>
 
@@ -40,5 +42,9 @@ const collapsed = computed({
   width: 100%;
   display: flex;
   flex-direction: column;
+}
+.content {
+  display: flex;
+  justify-content: center;
 }
 </style>

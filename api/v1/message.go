@@ -45,12 +45,8 @@ func AddQuestion(c *gin.Context) (int, any) {
 
 func GetMessage(c *gin.Context) (int, any) {
 	pageSize, pageNum := tool.PageTool(c) //分页最大数,分页偏移量
-	cRole, ok := c.Get("role")
-	role, _ := cRole.(int)
-	if !ok {
-		role = -1
-	}
-	data, total := model.GetMessage(pageSize, pageNum, role)
+	_, admin := tool.IsAdmin(c)
+	data, total := model.GetMessage(pageSize, pageNum, admin)
 	return errmsg.SUCCESS, gin.H{
 		"data":  data,
 		"total": total,
@@ -59,12 +55,8 @@ func GetMessage(c *gin.Context) (int, any) {
 
 func GetQuestion(c *gin.Context) (int, any) {
 	pageSize, pageNum := tool.PageTool(c) //分页最大数,分页偏移量
-	cRole, ok := c.Get("role")
-	role, _ := cRole.(int)
-	if !ok {
-		role = -1
-	}
-	data, total := model.GetQuestion(pageSize, pageNum, role)
+	_, admin := tool.IsAdmin(c)
+	data, total := model.GetQuestion(pageSize, pageNum, admin)
 	return errmsg.SUCCESS, gin.H{
 		"data":  data,
 		"total": total,
