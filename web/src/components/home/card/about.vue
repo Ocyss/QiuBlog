@@ -5,12 +5,22 @@
     </div>
     <div class="text">
       <div class="name">- - -</div>
-      <div class="word">故事很短，满是遗憾。</div>
+      <div class="word">
+        {{
+          designStore.getLocale
+            ? "故事很短，满是遗憾。"
+            : "Now is better than never."
+        }}
+      </div>
     </div>
   </n-card>
 </template>
 
-<script setup></script>
+<script setup>
+import { useDesignSettingStore } from "@/store/modules/designSetting.js";
+
+const designStore = useDesignSettingStore();
+</script>
 
 <style lang="scss" scoped>
 .img {

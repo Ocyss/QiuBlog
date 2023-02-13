@@ -10,11 +10,11 @@
       trigger="hover"
       :interval="2000"
     >
-      <div class="article" v-for="(item, index) in 0" :key="item">
+      <div class="article" v-for="data in datas" :key="data">
         <n-image
           preview-disabled
           class="carousel-img"
-          :src="随机美女API + `wcnm=${index}`"
+          :src="data"
           object-fit="cover"
         />
       </div>
@@ -25,17 +25,32 @@
 
 <script setup>
 import PostListVue from "@/components/front/post/PostList.vue";
-import { ref } from "vue";
-import { 随机美女API } from "@/settings/config.js";
+import { ref, computed } from "vue";
 import api from "@/api";
+import { useDesignSettingStore } from "@/store/modules/designSetting.js";
 
+const designStore = useDesignSettingStore();
+const datas = ref([
+  "https://qiu-blog.oss-cn-hangzhou.aliyuncs.com/Article/1676282445541866800.webp",
+  "https://qiu-blog.oss-cn-hangzhou.aliyuncs.com/Article/1676282445542375600.webp",
+  "https://qiu-blog.oss-cn-hangzhou.aliyuncs.com/Article/1676282445542950200.webp",
+  "https://qiu-blog.oss-cn-hangzhou.aliyuncs.com/Article/1676282445544555700.webp",
+]);
 //帖子分类数据
 const cdata = ref({
   ename: "home",
   id: 0,
   link: "home",
   name: "主页",
-  cids: [{ id: -1, name: "全部", homeshow: true }],
+  cids: [
+    {
+      id: -1,
+      name: computed(() => {
+        return designStore.getLocale ? "全部" : "All";
+      }),
+      homeshow: true,
+    },
+  ],
 });
 
 api.category.get().then((res) => {

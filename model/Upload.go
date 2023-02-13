@@ -13,18 +13,18 @@ import (
 
 var Oss = utils.Config.Server.Oss
 
-func UpLoadFile(uploadName string, file multipart.File, fileSize int64) (string, int) {
+func UpLoadFile(uploadName string, file multipart.File, fileSize int64) (int, string) {
 
 	if Oss == "qiniu" {
 		return uploadQiniu(uploadName, file, fileSize)
 	} else if Oss == "aliyun" {
 		return uploadAliyun(uploadName, file, fileSize)
 	} else {
-		return "", errmsg.ERROR
+		return errmsg.ERROR, ""
 	}
 }
 
-func uploadQiniu(uploadName string, file multipart.File, fileSize int64) (string, int) {
+func uploadQiniu(uploadName string, file multipart.File, fileSize int64) (int, string) {
 	var AccessKey = utils.Config.Oss.QiniuAccessKey
 	var SecretKey = utils.Config.Oss.QiniuSecretKey
 	var Bucket = utils.Config.Oss.QiniuBucket
@@ -45,30 +45,30 @@ func uploadQiniu(uploadName string, file multipart.File, fileSize int64) (string
 	ret := storage.PutRet{}
 	err := formUploader.Put(context.Background(), &ret, upToken, uploadName, file, fileSize, &putExtra)
 	if err != nil {
-		return "", errmsg.ERROR
+		return errmsg.ERROR, ""
 	}
 	url := ImgUrl + ret.Key
-	return url, errmsg.SUCCESS
+	return errmsg.SUCCESS, url
 }
 
-func uploadAliyun(uploadName string, file multipart.File, fileSize int64) (string, int) {
+func uploadAliyun(uploadName string, file multipart.File, fileSize int64) (int, string) {
 	var AliyunAccessKeyId = utils.Config.Oss.AliyunAccessKeyId
 	var AliyunAccessKeySecret = utils.Config.Oss.AliyunAccessKeySecret
 	var AliyunEndpoint = utils.Config.Oss.AliyunEndpoint
 	var AliyunBucketName = utils.Config.Oss.AliyunBucketName
 	client, err := oss.New(AliyunEndpoint, AliyunAccessKeyId, AliyunAccessKeySecret)
 	if err != nil {
-		return "", errmsg.ERROR
+		return errmsg.ERROR, ""
 	}
 	// 获取存储空间。
 	bucket, err := client.Bucket(AliyunBucketName)
 	if err != nil {
-		return "", errmsg.ERROR
+		return errmsg.ERROR, ""
 	}
 	err = bucket.PutObject(uploadName, file)
 	if err != nil {
-		return "", errmsg.ERROR
+		return errmsg.ERROR, ""
 	}
 	//拼接链接,默认使用https
-	return fmt.Sprintf("https://%s.%s/%s", AliyunBucketName, AliyunEndpoint, uploadName), errmsg.SUCCESS
+	return errmsg.SUCCESS, fmt.Sprintf("https://%s.%s/%s", AliyunBucketName, AliyunEndpoint, uploadName)
 }

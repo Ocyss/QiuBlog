@@ -25,7 +25,8 @@
             >
               <n-icon :size="13" :component="Book" />
             </n-icon-wrapper>
-            {{ item.uv }}阅读
+            &nbsp;{{ item.uv }}
+            {{ designStore.getLocale ? "阅读" : "pageview" }}
           </div>
           <div v-if="item.cname">
             <n-icon-wrapper
@@ -81,6 +82,9 @@ import { 随机风景API } from "@/settings/config.js";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import TimerVue from "@/components/Timer.vue";
+import { useDesignSettingStore } from "@/store/modules/designSetting.js";
+
+const designStore = useDesignSettingStore();
 const router = useRouter();
 const imgSrc = ref("");
 const props = defineProps(["item"]);
@@ -149,6 +153,12 @@ a {
   border-radius: 0.5rem;
   overflow: hidden;
   position: relative;
+  box-sizing: border-box;
+}
+.main:hover {
+  box-shadow: 0px 0px 6px var(--n-tab-text-color),
+    0px 0px 6px var(--n-tab-text-color), 0px 0px 6px var(--n-tab-text-color),
+    0px 0px 6px var(--n-tab-text-color);
 }
 .right {
   flex-direction: row-reverse;

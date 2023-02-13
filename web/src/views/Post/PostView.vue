@@ -20,7 +20,7 @@
                 >
                   <n-icon :size="13" :component="Book" />
                 </n-icon-wrapper>
-                1.5K阅读
+                {{ uv }}阅读
               </div>
               <div v-if="category">
                 <n-icon-wrapper
@@ -62,7 +62,13 @@
         </div>
       </div>
       <n-divider />
-      <div class="content" v-html="postData.content"></div>
+      <div class="content">
+        <md-editor
+          v-model="postData.content"
+          preview-only
+          :theme="designStore.getDarkTheme ? `dark` : `light`"
+        />
+      </div>
       <n-divider />
       <div class="copyright">
         <strong>本文链接：</strong>
@@ -95,11 +101,17 @@ import { useMessage } from "naive-ui";
 import { 随机风景API } from "@/settings/config.js";
 import { Calendar, Book, PricetagsSharp } from "@vicons/ionicons5";
 import { computed } from "@vue/reactivity";
-import "@wangeditor/editor/dist/css/style.css"; // 引入 css
 import TimerVue from "@/components/Timer.vue";
+import MdEditor from "md-editor-v3";
+import "md-editor-v3/lib/style.css";
+import { useDesignSettingStore } from "@/store/modules/designSetting.js";
+
+const designStore = useDesignSettingStore();
+
 const url = window.location.href;
 const route = useRoute();
 const message = useMessage();
+const uv = ref(0);
 const postData = ref({
   id: -1,
   created_at: "2000-01-01T00:00:00+08:00",
@@ -121,6 +133,7 @@ const category = ref({ name: "" });
 
 api.article.get(route.params.pid).then((res) => {
   postData.value = res.data;
+  uv.value = res.uv;
 });
 
 api.category.get().then((res) => {
@@ -133,7 +146,8 @@ api.category.get().then((res) => {
 <style lang="scss" scoped>
 .main {
   padding: 20px;
-  max-width: 900px;
+  max-width: 1000px;
+  width: 80%;
 }
 .cover {
   width: 100%;
@@ -189,5 +203,10 @@ api.category.get().then((res) => {
     text-decoration: none;
     color: rgb(255, 47, 47);
   }
+}
+
+.md-editor-dark {
+  --md-bk-color: rgb(16, 16, 20) !important;
+  --md-color: rgba(255, 255, 255, 0.9) !important;
 }
 </style>

@@ -1,5 +1,9 @@
 <template>
-  <n-card class="comment" title="最新留言" size="small">
+  <n-card
+    class="comment"
+    :title="designStore.getLocale ? '最新留言' : 'latest message'"
+    size="small"
+  >
     <div class="subitem" v-for="item in data" :key="item.id">
       <n-avatar
         round
@@ -25,6 +29,8 @@
 import { ref } from "vue";
 import { randomRgb } from "@/utils";
 import api from "@/api";
+import { useDesignSettingStore } from "@/store/modules/designSetting.js";
+const designStore = useDesignSettingStore();
 const data = ref([]);
 
 api.message.getMessage({ pagesize: 6, pagenum: 1 }).then((res) => {

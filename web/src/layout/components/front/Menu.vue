@@ -15,7 +15,9 @@ import { ref, h, onBeforeMount } from "vue";
 import { NIcon, useMessage } from "naive-ui";
 import { RouterLink, useRouter, useRoute } from "vue-router";
 import api from "@/api";
+import { useDesignSettingStore } from "@/store/modules/designSetting.js";
 
+const designStore = useDesignSettingStore();
 const route = useRoute();
 const collapsed = ref(false);
 const router = useRouter();
@@ -51,7 +53,7 @@ const menus = ref([
             name: "home",
           },
         },
-        { default: () => "主页" }
+        { default: () => (designStore.getLocale ? "主页" : "Home") }
       ),
     key: "home",
     icon: renderIcon(
@@ -75,7 +77,7 @@ api.menuchild.gets().then((res) => {
               },
             },
           },
-          { default: () => item.name }
+          { default: () => (designStore.getLocale ? item.name : item.ename) }
         ),
       key: item.link,
       icon: renderIcon(item.logo),
@@ -92,7 +94,7 @@ api.menuchild.gets().then((res) => {
               name: "menuQa",
             },
           },
-          { default: () => "问答" }
+          { default: () => (designStore.getLocale ? "问答" : "Q&A") }
         ),
       key: "qa",
       icon: renderIcon(
@@ -108,7 +110,7 @@ api.menuchild.gets().then((res) => {
               name: "menuMessage",
             },
           },
-          { default: () => "留言" }
+          { default: () => (designStore.getLocale ? "留言" : "Message") }
         ),
       key: "message",
       icon: renderIcon(
@@ -124,7 +126,7 @@ api.menuchild.gets().then((res) => {
               name: "menuAbout",
             },
           },
-          { default: () => "关于" }
+          { default: () => (designStore.getLocale ? "关于" : "About") }
         ),
       key: "about",
       icon: renderIcon(

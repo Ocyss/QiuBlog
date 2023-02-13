@@ -1,5 +1,10 @@
 <template>
-  <n-card class="comment" title="标签云" size="small" ref="card">
+  <n-card
+    class="comment"
+    :title="designStore.getLocale ? '标签云' : 'tag cloud'"
+    size="small"
+    ref="card"
+  >
     <svg
       :width="TagData.lengh"
       :height="TagData.lengh"
@@ -39,7 +44,8 @@
 import { ref, onMounted } from "vue";
 import api from "@/api";
 import { randomRgb } from "@/utils";
-import { tagDark } from "naive-ui";
+import { useDesignSettingStore } from "@/store/modules/designSetting.js";
+const designStore = useDesignSettingStore();
 let timer = null;
 const card = ref(null);
 const tags = ref([]);

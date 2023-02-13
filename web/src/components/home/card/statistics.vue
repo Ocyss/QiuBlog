@@ -1,25 +1,35 @@
 <template>
-  <n-card class="statistics" title="统计信息" size="small">
+  <n-card
+    class="statistics"
+    :title="designStore.getLocale ? '统计信息' : 'statistics'"
+    size="small"
+  >
     <div class="main">
       <div class="mainUv">
-        <div>浏览量:</div>
+        <div>{{ designStore.getLocale ? "浏览量" : "Page_View" }}:</div>
         <div>{{ data.main_uv }}</div>
       </div>
       <div class="wordsTotal">
-        <div>总字数:</div>
+        <div>{{ designStore.getLocale ? "总字数" : "Words_Total" }}:</div>
         <div>{{ data.words_total }}</div>
       </div>
       <div class="articleCount">
-        <div>文章数量:</div>
+        <div>{{ designStore.getLocale ? "文章数量" : "Article_Count" }}:</div>
         <div>{{ data.article_count }}</div>
       </div>
       <div class="lastUpdated">
-        <div>最后更新于:</div>
+        <div>{{ designStore.getLocale ? "最后更新于" : "Last_Updated" }}:</div>
         <n-time unix :time="data.last_updated" type="relative" />
       </div>
       <div class="elapsedTime">
-        <div>已稳点运行:</div>
-        <div>{{ dates }}</div>
+        <div>{{ designStore.getLocale ? "已稳点运行" : "Run_Time" }}:</div>
+        <div>
+          {{
+            designStore.getLocale
+              ? `${date.d}天${date.h}时${date.m}分${date.s}秒`
+              : `${date.d} d ${date.h} h ${date.m} m ${date.s} s`
+          }}
+        </div>
       </div>
     </div>
   </n-card>
@@ -28,27 +38,54 @@
 <script setup>
 import { ref } from "vue";
 import api from "@/api";
+import { useDesignSettingStore } from "@/store/modules/designSetting.js";
+const designStore = useDesignSettingStore();
 const data = ref({
   article_count: 0,
   words_total: 0,
   main_uv: 0,
   last_updated: 0,
 });
-let date = Math.round(new Date().getTime() / 1000);
+let date = ref({
+  cur: Math.round(new Date().getTime() / 1000),
+  d: 0,
+  h: 0,
+  m: 0,
+  s: 0,
+});
+
 const dates = ref("");
+
 api.statistics.statistics().then((res) => {
   if (res.status == 200) {
     data.value = res.data;
-    date = date - res.data.elapsed_time;
+    date.value.cur = date.value.cur - res.data.elapsed_time;
+    date.value.d = parseInt(date.value.cur / 86400);
+    date.value.h = parseInt((date.value.cur - date.value.d * 86400) / 3600);
+    date.value.m = parseInt(
+      (date.value.cur - date.value.d * 86400 - date.value.h * 3600) / 60
+    );
+    date.value.s =
+      date.value.cur -
+      date.value.d * 86400 -
+      date.value.h * 3600 -
+      date.value.m * 60;
   }
 });
 setInterval(() => {
-  date++;
-  let day = parseInt(date / 86400);
-  let hour = parseInt((date - day * 86400) / 3600);
-  let minute = parseInt((date - day * 86400 - hour * 3600) / 60);
-  let second = date - day * 86400 - hour * 3600 - minute * 60;
-  dates.value = `${day}天${hour}时${minute}分${second}秒`;
+  date.value.s++;
+  if (date.value.s >= 60) {
+    date.value.s = 0;
+    date.value.m++;
+    if (date.value.m >= 60) {
+      date.value.m = 0;
+      date.value.h++;
+      if (date.value.h >= 60) {
+        date.value.h = 0;
+        date.value.d++;
+      }
+    }
+  }
 }, 1000);
 </script>
 

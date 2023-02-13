@@ -15,8 +15,12 @@
     <div class="menuRight">
       <div>
         <n-switch v-model:value="darkMode" :rail-style="railStyle">
-          <template #checked>下班</template>
-          <template #unchecked>上班</template>
+          <template #checked>
+            {{ designStore.getLocale ? "下班" : "LowerClass" }}
+          </template>
+          <template #unchecked>
+            {{ designStore.getLocale ? "上班" : "UpperClass" }}
+          </template>
           <template #icon>{{ darkMode ? "🌛" : "🌞" }}</template>
         </n-switch>
       </div>
