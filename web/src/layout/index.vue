@@ -30,10 +30,10 @@
       </n-layout-header>
       <n-layout-content class="layout-content">
         <slot name="default"></slot>
-        <Footer />
       </n-layout-content>
     </n-layout>
   </n-layout>
+  <Footer />
 </template>
 
 <script setup>
@@ -103,20 +103,8 @@ onMounted(() => {
   transition: all 0.2s ease-in-out;
 }
 
-.layout-sider-fix {
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-
 .layout-content {
   flex: auto;
   height: 93vh;
-}
-
-.leftMenu {
-  width: 100%;
-  background-color: $color;
-  height: 100%;
 }
 </style>

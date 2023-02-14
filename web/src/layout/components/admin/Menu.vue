@@ -15,7 +15,13 @@ import { ref, h, onBeforeMount } from "vue";
 import { NIcon, useMessage } from "naive-ui";
 import { RouterLink, useRoute, useRouter } from "vue-router";
 import { renderIcon } from "@/utils";
-import { Home, ReaderSharp, Settings, Timer } from "@vicons/ionicons5";
+import {
+  Home,
+  ReaderSharp,
+  Settings,
+  Timer,
+  Chatbubbles,
+} from "@vicons/ionicons5";
 const router = useRouter();
 const route = useRoute();
 
@@ -82,7 +88,7 @@ const menus = ref([
         { default: () => "留言/问答" }
       ),
     key: "go-message",
-    icon: renderIcon(Settings),
+    icon: renderIcon(Chatbubbles),
   },
   {
     label: () =>
@@ -93,7 +99,7 @@ const menus = ref([
             name: "other",
           },
         },
-        { default: () => "其他设置" }
+        { default: () => "分类管理" }
       ),
     key: "go-other",
     icon: renderIcon(Settings),

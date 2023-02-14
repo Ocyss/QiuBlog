@@ -5,23 +5,23 @@ go 1.19
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.5+incompatible
 	github.com/gin-gonic/gin v1.8.1
+	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/redis/go-redis/v9 v9.0.2
+	gopkg.in/hlandau/passlib.v1 v1.0.11
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/mysql v1.3.6
 	gorm.io/gorm v1.23.8
+
 )
 
 require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
-	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
-	github.com/hlandau/passlib v1.0.11 // indirect
-	github.com/redis/go-redis/v9 v9.0.2 // indirect
-	golang.org/x/sync v0.0.0-20201207232520-09787c993a3a // indirect
+	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
 	golang.org/x/time v0.1.0 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	gopkg.in/hlandau/easymetric.v1 v1.0.0 // indirect
 	gopkg.in/hlandau/measurable.v1 v1.0.1 // indirect
-	gopkg.in/hlandau/passlib.v1 v1.0.11 // indirect
 )
 
 require (

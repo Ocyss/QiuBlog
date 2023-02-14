@@ -1,5 +1,5 @@
 <template>
-  <div class="logo">
+  <div class="logo" @mousedown="start" @mouseup="stop">
     <img
       src="/favicons/android-icon-192x192.png"
       alt=""
@@ -8,11 +8,28 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "logo",
-  props: ["collapsed"],
-};
+<script setup>
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+let presstimer = null;
+const props = defineProps(["collapsed"]);
+function start() {
+  if (presstimer != null) {
+    clearTimeout(presstimer);
+    presstimer = null;
+  }
+  presstimer = setTimeout(() => {
+    router.push({ name: "admin" });
+  }, 3000);
+}
+
+function stop() {
+  if (presstimer != null) {
+    clearTimeout(presstimer);
+    presstimer = null;
+  }
+}
 </script>
 
 <style lang="scss" scoped>

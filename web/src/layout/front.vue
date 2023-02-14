@@ -3,13 +3,15 @@
     <template #sider>
       <div class="leftMenu" style="position: absolute">
         <LogoVue :collapsed="collapsed" />
-        <MenuVue @clickMenuItem="" />
+        <MenuVue />
+        <FriendChainVue :collapsed="collapsed" />
       </div>
     </template>
     <template #drawer>
       <div class="leftMenu" style="position: absolute">
         <LogoVue :collapsed="false" />
-        <MenuVue @clickMenuItem="" />
+        <MenuVue />
+        <FriendChainVue :collapsed="false" />
       </div>
     </template>
     <template #header>
@@ -26,6 +28,7 @@ import MenuVue from "./components/front/Menu.vue";
 import LogoVue from "./components/Logo.vue";
 import HeaderVue from "./components/Header.vue";
 import layoutVue from "./index.vue";
+import FriendChainVue from "./components/front/FriendChain.vue";
 import { projectSetting } from "@/store/modules/projectSetting";
 const settingStore = projectSetting();
 //是否折叠

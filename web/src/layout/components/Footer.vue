@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div>页脚，呵a呵呵呵呵呵</div>
 </template>
 
 <script setup>

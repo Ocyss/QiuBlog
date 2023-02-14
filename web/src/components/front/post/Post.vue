@@ -159,6 +159,11 @@ a {
   box-shadow: 0px 0px 6px var(--n-tab-text-color),
     0px 0px 6px var(--n-tab-text-color), 0px 0px 6px var(--n-tab-text-color),
     0px 0px 6px var(--n-tab-text-color);
+  .img {
+    img {
+      transform: translate(3px, 3px) scale(1.05) rotate(0deg);
+    }
+  }
 }
 .right {
   flex-direction: row-reverse;
@@ -172,6 +177,7 @@ a {
   -webkit-clip-path: polygon(0 0, 100% 0, 94% 100%, 0 100%);
   clip-path: polygon(0 0, 100% 0, 94% 100%, 0 100%);
   img {
+    transition: all 0.4s;
     width: 100%;
     height: 100%;
     object-fit: cover;

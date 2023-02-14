@@ -16,10 +16,10 @@ import { NIcon, useMessage } from "naive-ui";
 import { RouterLink, useRouter, useRoute } from "vue-router";
 import api from "@/api";
 import { useDesignSettingStore } from "@/store/modules/designSetting.js";
-
+const props = defineProps(["collapsed"]);
 const designStore = useDesignSettingStore();
 const route = useRoute();
-const collapsed = ref(false);
+
 const router = useRouter();
 const message = useMessage();
 //当前菜单选择key
