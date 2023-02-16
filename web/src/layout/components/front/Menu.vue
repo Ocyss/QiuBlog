@@ -15,9 +15,8 @@ import { ref, h, onBeforeMount } from "vue";
 import { NIcon, useMessage } from "naive-ui";
 import { RouterLink, useRouter, useRoute } from "vue-router";
 import api from "@/api";
-import { useDesignSettingStore } from "@/store/modules/designSetting.js";
 const props = defineProps(["collapsed"]);
-const designStore = useDesignSettingStore();
+const designStore = inject("designStore");
 const route = useRoute();
 
 const router = useRouter();

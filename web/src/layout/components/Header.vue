@@ -45,10 +45,9 @@ import {
   ShareSocialOutline,
   MenuSharp,
 } from "@vicons/ionicons5";
-import { useDesignSettingStore } from "@/store/modules/designSetting.js";
 
 const shareShow = ref(false);
-const designStore = useDesignSettingStore();
+const designStore = inject("designStore");
 
 const url = window.location.href;
 //暗黑模式

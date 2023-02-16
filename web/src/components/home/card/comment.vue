@@ -29,8 +29,7 @@
 import { ref } from "vue";
 import { randomRgb } from "@/utils";
 import api from "@/api";
-import { useDesignSettingStore } from "@/store/modules/designSetting.js";
-const designStore = useDesignSettingStore();
+const designStore = inject("designStore");
 const data = ref([]);
 
 api.message.getMessage({ pagesize: 6, pagenum: 1 }).then((res) => {

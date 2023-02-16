@@ -69,9 +69,7 @@
 </template>
 
 <script setup>
-import { useDesignSettingStore } from "@/store/modules/designSetting.js";
-
-const designStore = useDesignSettingStore();
+const designStore = inject("designStore");
 </script>
 
 <style scoped>

@@ -82,9 +82,7 @@ import { useRouter, useRoute } from "vue-router";
 import MdEditor from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
 import api from "@/api";
-import { useDesignSettingStore } from "@/store/modules/designSetting.js";
-
-const designStore = useDesignSettingStore();
+const designStore = inject("designStore");
 const router = useRouter();
 const route = useRoute();
 const message = useMessage();

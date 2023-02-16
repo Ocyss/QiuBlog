@@ -1,25 +1,21 @@
 <template>
   <n-card class="about">
     <div class="img">
-      <img class="avatar" src="/img/avatar.png" alt="" />
+      <img class="avatar" src="/static/img/avatar.png" alt="" />
     </div>
     <div class="text">
-      <div class="name">- - -</div>
-      <div class="word">
-        {{
-          designStore.getLocale
-            ? "故事很短，满是遗憾。"
-            : "Now is better than never."
-        }}
+      <div class="name">{{ config.userInfo.name }}</div>
+      <div class="motto">
+        {{ config.userInfo.motto[designStore.judgeLocale] }}
       </div>
     </div>
   </n-card>
 </template>
 
 <script setup>
-import { useDesignSettingStore } from "@/store/modules/designSetting.js";
-
-const designStore = useDesignSettingStore();
+import { inject } from "vue";
+const config = inject("config");
+const designStore = inject("designStore");
 </script>
 
 <style lang="scss" scoped>
@@ -46,7 +42,7 @@ const designStore = useDesignSettingStore();
   .name {
     font-size: 2rem;
   }
-  .word {
+  .motto {
     font-size: 1rem;
     white-space: nowrap;
     text-shadow: 0px 0px 5px #00ffff, 0px 0px 15px #00ffff, 0px 0px 25px #00ffff;

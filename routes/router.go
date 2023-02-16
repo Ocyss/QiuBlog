@@ -14,10 +14,8 @@ func InitRouter() {
 	r.Use(gin.Recovery())
 	if utils.Config.Server.AppMode == "release" {
 		r.LoadHTMLGlob("web/index.html")
-		r.Static("/assets", "web/assets")
-		r.Static("favicons", "web/favicons")
-		r.Static("img", "web/img")
-		r.Static("effect", "web/effect")
+		r.Static("assets", "web/assets")
+		r.Static("static", "web/static")
 		r.GET("/", func(c *gin.Context) {
 			c.HTML(200, "index.html", nil)
 		})

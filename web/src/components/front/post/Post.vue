@@ -82,9 +82,8 @@ import { 随机风景API } from "@/settings/config.js";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import TimerVue from "@/components/Timer.vue";
-import { useDesignSettingStore } from "@/store/modules/designSetting.js";
 
-const designStore = useDesignSettingStore();
+const designStore = inject("designStore");
 const router = useRouter();
 const imgSrc = ref("");
 const props = defineProps(["item"]);

@@ -104,9 +104,8 @@ import { computed } from "@vue/reactivity";
 import TimerVue from "@/components/Timer.vue";
 import MdEditor from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
-import { useDesignSettingStore } from "@/store/modules/designSetting.js";
 
-const designStore = useDesignSettingStore();
+const designStore = inject("designStore");
 
 const url = window.location.href;
 const route = useRoute();

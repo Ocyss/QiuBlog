@@ -1,10 +1,6 @@
 <template>
   <div class="logo" @mousedown="start" @mouseup="stop">
-    <img
-      src="/favicons/android-icon-192x192.png"
-      alt=""
-      :class="collapsed ? 'small' : 'big'"
-    />
+    <img src="/static/img/logo.png" :class="collapsed ? 'small' : 'big'" />
   </div>
 </template>
 

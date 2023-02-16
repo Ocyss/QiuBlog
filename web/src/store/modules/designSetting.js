@@ -25,6 +25,9 @@ export const useDesignSettingStore = defineStore({
     getLocale() {
       return this.locale;
     },
+    judgeLocale() {
+      return this.locale ? 0 : 1;
+    },
   },
   actions: {
     setDarkTheme(value) {

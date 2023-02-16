@@ -1,10 +1,10 @@
 <template>
   <div id="app" v-wechat-title="$route.meta.title">
     <n-config-provider
-      :locale="getLocale"
-      :theme="getDarkTheme"
+      :locale="designStore.getLocale ? zhCN : enUS"
+      :theme="designStore.darkTheme ? darkTheme : undefined"
       :theme-overrides="getThemeOverrides"
-      :date-locale="getDateLocale"
+      :date-locale="designStore.getLocale ? dateZhCN : dateEnUS"
     >
       <n-loading-bar-provider>
         <n-dialog-provider>
@@ -21,18 +21,22 @@
 </template>
 
 <script setup>
+import { provide } from "vue";
 import { useDesignSettingStore } from "@/store/modules/designSetting.js";
 import { zhCN, dateZhCN, darkTheme, enUS, dateEnUS } from "naive-ui";
 import { lighten } from "@/utils/index";
 import api from "@/api";
 import cookies from "vue-cookies";
+import axios from "axios";
+
 if (!cookies.get("mainuv")) {
   api.statistics.mainuv().then(() => {
     cookies.set("mainuv", "1", -1);
   });
 }
-
 const designStore = useDesignSettingStore();
+provide("config", useConfig);
+provide("designStore", designStore);
 
 const getThemeOverrides = computed(() => {
   const appTheme = designStore.appTheme;
@@ -48,15 +52,6 @@ const getThemeOverrides = computed(() => {
     },
   };
 });
-
-const getDarkTheme = computed(() =>
-  designStore.darkTheme ? darkTheme : undefined
-);
-
-const getLocale = computed(() => (designStore.locale ? zhCN : enUS));
-const getDateLocale = computed(() =>
-  designStore.locale ? dateZhCN : dateEnUS
-);
 </script>
 
 <style lang="scss" scoped>

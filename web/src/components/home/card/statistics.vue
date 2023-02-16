@@ -38,8 +38,7 @@
 <script setup>
 import { ref } from "vue";
 import api from "@/api";
-import { useDesignSettingStore } from "@/store/modules/designSetting.js";
-const designStore = useDesignSettingStore();
+const designStore = inject("designStore");
 const data = ref({
   article_count: 0,
   words_total: 0,

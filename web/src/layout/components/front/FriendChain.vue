@@ -1,13 +1,16 @@
 <template>
   <div class="main" v-if="!collapsed">
     <h2>友链</h2>
-    <a target="_blank" href="http://www.vcabin.cn/#/home/index">如沐春风</a>
+    <a target="_blank" v-for="fc in config.friendChain" :href="fc.href">
+      {{ fc.name }}
+    </a>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
 const props = defineProps(["collapsed"]);
+const config = inject("config");
 </script>
 
 <style scoped lang="scss">

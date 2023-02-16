@@ -8,8 +8,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useDesignSettingStore } from "@/store/modules/designSetting.js";
-const designStore = useDesignSettingStore();
+const designStore = inject("designStore");
 </script>
 
 <style scoped lang="scss"></style>
