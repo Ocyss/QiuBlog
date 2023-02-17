@@ -153,6 +153,7 @@ a {
   overflow: hidden;
   position: relative;
   box-sizing: border-box;
+  transition: all 0.3s;
 }
 .main:hover {
   box-shadow: 0px 0px 6px var(--n-tab-text-color),

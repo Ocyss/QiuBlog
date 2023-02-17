@@ -17,7 +17,7 @@
     <template #header>
       <HeaderVue @collapsed="collapsed = !collapsed" :collapsed="collapsed" />
     </template>
-    <div class="content" style="min-height: 93vh">
+    <div class="content" style="min-height: 95vh; padding-top: 5vh">
       <slot name="default"></slot>
     </div>
   </layoutVue>
@@ -29,13 +29,12 @@ import LogoVue from "./components/Logo.vue";
 import HeaderVue from "./components/Header.vue";
 import layoutVue from "./index.vue";
 import FriendChainVue from "./components/front/FriendChain.vue";
-import { projectSetting } from "@/store/modules/projectSetting";
-const settingStore = projectSetting();
+const settingStore = inject("projectStore");
 //是否折叠
 const collapsed = computed({
-  get: () => settingStore.getCollapsed,
+  get: () => settingStore.collapsed,
   set: (val) => {
-    settingStore.setCollapsed(val);
+    settingStore.collapsed = val;
   },
 });
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <n-layout class="layout" has-sider>
+  <n-layout class="layout" has-sider position="absolute">
     <n-layout-sider
       v-if="!isMobile"
       show-trigger="arrow-circle"
@@ -25,33 +25,36 @@
       <slot name="drawer" :collapsed="collapsed"></slot>
     </n-drawer>
     <n-layout>
-      <n-layout-header class="layout-header" bordered>
+      <n-layout-header class="layout-header" bordered position="absolute">
         <slot name="header" :collapsed="collapsed"></slot>
       </n-layout-header>
       <n-layout-content class="layout-content">
         <slot name="default"></slot>
       </n-layout-content>
+      <n-layout-footer class="layout-footer">
+        <Footer />
+      </n-layout-footer>
     </n-layout>
   </n-layout>
-  <Footer />
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { projectSetting } from "@/store/modules/projectSetting";
 import Footer from "./components/Footer.vue";
-const settingStore = projectSetting();
+const settingStore = inject("projectStore");
 
 //是否手机模式，宽度小于700
 const isMobile = computed({
-  get: () => settingStore.getIsMobile,
-  set: (val) => settingStore.setIsMobile(val),
+  get: () => settingStore.isMobile,
+  set: (val) => {
+    settingStore.isMobile = val;
+  },
 });
 //是否折叠
 const collapsed = computed({
-  get: () => settingStore.getCollapsed,
+  get: () => settingStore.collapsed,
   set: (val) => {
-    settingStore.setCollapsed(val);
+    settingStore.collapsed = val;
   },
 });
 //是否显示侧抽屉
@@ -104,7 +107,10 @@ onMounted(() => {
 }
 
 .layout-content {
-  flex: auto;
-  height: 93vh;
+  min-height: 95vh;
+}
+
+.layout-header {
+  z-index: 20;
 }
 </style>

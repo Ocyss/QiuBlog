@@ -81,14 +81,14 @@ const railStyle = ({ focused, checked }) => {
 
 <style lang="scss" scoped>
 .layout-header {
-  height: 7vh;
+  height: 5vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0;
   transition: all 0.2s ease-in-out;
   width: 100%;
-  z-index: 500;
+  z-index: 10000;
 }
 
 .menuLeft {

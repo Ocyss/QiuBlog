@@ -98,7 +98,7 @@ const mouseout = (index) => {
   timer = setInterval(() => {
     rotateX();
     rotateY();
-  }, 12);
+  }, 30);
 };
 //移入SVG
 const svgMouseover = () => {
@@ -120,7 +120,7 @@ let watchWidthTimer = null;
 //让标签云自适应
 const watchWidth = () => {
   if (watchWidthTimer) {
-    return;
+    clearInterval(watchWidthTimer);
   }
   //使用节流器
   watchWidthTimer = setTimeout(() => {
@@ -140,7 +140,7 @@ const watchWidth = () => {
       });
       watchWidthTimer = null;
     }
-  }, 20);
+  }, 50);
 };
 
 onMounted(() => {

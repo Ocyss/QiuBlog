@@ -21,13 +21,12 @@
 </template>
 
 <script setup>
-import { provide } from "vue";
 import { useDesignSettingStore } from "@/store/modules/designSetting.js";
+import { useProjectSettingStore } from "@/store/modules/projectSetting.js";
 import { zhCN, dateZhCN, darkTheme, enUS, dateEnUS } from "naive-ui";
 import { lighten } from "@/utils/index";
 import api from "@/api";
 import cookies from "vue-cookies";
-import axios from "axios";
 
 if (!cookies.get("mainuv")) {
   api.statistics.mainuv().then(() => {
@@ -37,6 +36,7 @@ if (!cookies.get("mainuv")) {
 const designStore = useDesignSettingStore();
 provide("config", useConfig);
 provide("designStore", designStore);
+provide("projectStore", useProjectSettingStore());
 
 const getThemeOverrides = computed(() => {
   const appTheme = designStore.appTheme;
@@ -67,17 +67,13 @@ const getThemeOverrides = computed(() => {
 <style lang="scss">
 @import "styles/index.scss";
 
-body {
-  overflow-y: hidden;
-
-  overflow-x: hidden;
-}
 * {
   margin: 0;
   padding: 0;
 }
 ::-webkit-scrollbar {
   width: 5px;
+  background: rgb(248, 230, 239);
 }
 
 ::-webkit-scrollbar-thumb {

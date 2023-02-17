@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-export const projectSetting = defineStore({
+export const useProjectSettingStore = defineStore({
   id: "app-project-setting",
   state: () => {
     return {
@@ -8,31 +8,19 @@ export const projectSetting = defineStore({
       isMobile: false,
       // 侧栏是否折叠
       collapsed: false,
+      // 是否自动下一页
+      autuLoad: false,
     };
   },
-  getters: {
-    getIsMobile() {
-      return this.isMobile;
-    },
-    getCollapsed() {
-      return this.collapsed;
-    },
-  },
-  actions: {
-    setIsMobile(value) {
-      this.isMobile = value;
-    },
-    setCollapsed(value) {
-      this.collapsed = value;
-    },
-  },
+  getters: {},
+  actions: {},
   persist: {
     enabled: true,
     strategies: [
       {
         key: "Setting",
         storage: localStorage,
-        paths: ["collapsed", "darkMode"],
+        paths: ["collapsed", "darkMode", "autuLoad"],
       },
     ],
   },

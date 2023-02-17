@@ -8,7 +8,6 @@
     </n-layout-content>
 
     <n-layout-sider
-      bordered
       class="layoutSide"
       :content-style="{ padding: '0.5rem' }"
       width=""
@@ -22,8 +21,7 @@
 <script setup>
 import { ref } from "vue";
 
-import { projectSetting } from "@/store/modules/projectSetting";
-const settingStore = projectSetting();
+const settingStore = inject("projectStore");
 </script>
 
 <style lang="scss" scoped>

@@ -15,6 +15,8 @@
 import frontVue from "@/layout/front.vue";
 import rightColumnVue from "@/layout/rightColumn.vue";
 import rightContentVue from "@/components/home/rightContent.vue";
+import { ref } from "vue";
+const affixRef = ref(null);
 </script>
 
 <style lang="scss" scoped></style>

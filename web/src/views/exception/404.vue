@@ -25,7 +25,7 @@ onMounted(() => {
 <style scoped lang="scss">
 .main {
   width: 100%;
-  min-height: 93vh;
+  min-height: 95vh;
   display: flex;
   justify-content: center;
   align-items: center;

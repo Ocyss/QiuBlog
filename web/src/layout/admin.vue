@@ -24,9 +24,7 @@ import MenuVue from "./components/admin/Menu.vue";
 import HeaderVue from "./components/Header.vue";
 import LogoVue from "./components/Logo.vue";
 import layoutVue from "./index.vue";
-
-import { projectSetting } from "@/store/modules/projectSetting";
-const settingStore = projectSetting();
+const settingStore = inject("projectStore");
 //是否折叠
 const collapsed = computed({
   get: () => settingStore.getCollapsed,

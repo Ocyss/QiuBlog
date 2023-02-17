@@ -144,10 +144,10 @@ func GetsArticle(pageSize int, pageNum int, cid int, mid int, tid int) ([]Articl
 		aids = nil
 	} else if pageNum == -1 {
 		aids = data.Ids
-	} else if pageNum+pageSize > len(data.Ids) {
+	} else if pageNum*pageSize > len(data.Ids) {
 		aids = data.Ids[pageNum-1:]
 	} else {
-		aids = data.Ids[pageNum-1 : pageNum-1+pageSize]
+		aids = data.Ids[(pageNum-1)*pageSize : pageNum*pageSize]
 	}
 	for _, v := range aids {
 		var d Articles
