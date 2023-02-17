@@ -1,9 +1,9 @@
 <template>
   <frontVue>
     <rightColumnVue>
-      <template #content>
+      <div class="content">
         <RouterView :key="$route.fullPath" />
-      </template>
+      </div>
       <template #column>
         <rightContentVue />
       </template>
@@ -19,4 +19,9 @@ import { ref } from "vue";
 const affixRef = ref(null);
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.content {
+  width: 100%;
+  max-width: 768px;
+}
+</style>

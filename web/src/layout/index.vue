@@ -31,16 +31,13 @@
       <n-layout-content class="layout-content">
         <slot name="default"></slot>
       </n-layout-content>
-      <n-layout-footer class="layout-footer">
-        <Footer />
-      </n-layout-footer>
     </n-layout>
   </n-layout>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
-import Footer from "./components/Footer.vue";
+
 const settingStore = inject("projectStore");
 
 //是否手机模式，宽度小于700
