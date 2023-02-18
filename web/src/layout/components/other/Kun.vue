@@ -1,14 +1,16 @@
 <template>
   <div class="kun">
     <!-- ???小黑子是吧??? -->
-    <div class="chick"></div>
-    <div class="wing"></div>
-    <div class="beak"></div>
-    <div class="eye"></div>
-    <div class="blush"></div>
-    <div class="feather"></div>
-    <div class="left-leg"></div>
-    <div class="right-leg"></div>
+    <div class="chick">
+      <div class="feather"></div>
+      <div class="blush"></div>
+      <div class="wing"></div>
+      <div class="beak"></div>
+      <div class="eye"></div>
+
+      <div class="left-leg"></div>
+      <div class="right-leg"></div>
+    </div>
   </div>
 </template>
 
@@ -23,12 +25,12 @@
 
 .chick {
   position: absolute;
-  height: 16.25%;
-  width: 25%;
+  height: 42.25%;
+  width: 66.8%;
   background-color: #ffec02;
   border-radius: 100px 100px 0 0;
-  top: 2.5%;
-  left: -1%;
+  top: 0%;
+  left: 34%;
   animation: chick-walk 1.3s infinite;
   &:before {
     content: "";
@@ -48,12 +50,12 @@
 }
 
 .wing {
-  height: 9.25%;
-  width: 18.5%;
+  height: 63.25%;
+  width: 70.5%;
   background-color: #ffce00;
   position: absolute;
-  top: 18.75%;
-  left: -10%;
+  top: 86.75%;
+  left: -41%;
   border-radius: 10px 10px 74px 74px;
   transform-origin: right;
   animation: wing 0.8s infinite;
@@ -67,23 +69,23 @@
 .beak {
   position: absolute;
   background-color: #f17c00;
-  height: 10%;
-  width: 10%;
+  height: 48%;
+  width: 41%;
   border-radius: 5px;
-  top: 12.5%;
-  left: 17%;
+  top: 58.5%;
+  left: 70%;
   transform: skewX(30deg) rotate(-25deg);
   z-index: -1;
 }
 
 .left-leg,
 .right-leg {
-  height: 12.5%;
-  width: 3.25%;
+  height: 73.5%;
+  width: 13.25%;
   background-color: #f17c00;
   position: absolute;
-  top: 31.5%;
-  left: 6.75%;
+  top: 180.5%;
+  left: 28.75%;
   transform-origin: top;
   transform: rotate(-45deg);
   animation: walk 1s infinite;
@@ -114,18 +116,18 @@
 
 .eye {
   background-color: #1c1c1c;
-  height: 5%;
-  width: 5%;
+  height: 30%;
+  width: 21%;
   position: absolute;
-  top: 13.75%;
-  left: 16.25%;
+  top: 45.75%;
+  left: 64.25%;
   border-radius: 20px;
   transform-origin: bottom;
   animation: blink 2s infinite;
   @keyframes blink {
     30% {
-      height: 2px;
-      top: 15%;
+      height: 6%;
+      top: 55%;
     }
   }
 }
@@ -133,19 +135,20 @@
 .blush {
   background-color: rgba(241, 124, 0, 0.5);
   position: absolute;
-  height: 3.75%;
-  width: 3.75%;
+  height: 28.75%;
+  width: 18.75%;
   border-radius: 50%;
-  top: 17%;
-  left: 11.5%;
+  top: 64%;
+  left: 40%;
 }
 .feather {
-  height: 8.75%;
-  width: 3%;
+  height: 68.75%;
+  width: 13%;
   border-radius: 35px;
   background-color: #ffec02;
   position: absolute;
-  left: 7.5%;
+  left: 30.5%;
+  top: -28%;
   transform: rotate(-15deg);
   &:before {
     content: "";

@@ -154,11 +154,14 @@ a {
   position: relative;
   box-sizing: border-box;
   transition: all 0.3s;
+  box-shadow: 0px 0px 3px var(--n-tab-text-color),
+    0px 0px 3px var(--n-tab-text-color), 0px 0px 3px var(--n-tab-text-color),
+    0px 0px 3px var(--n-tab-text-color);
 }
 .main:hover {
-  box-shadow: 0px 0px 6px var(--n-tab-text-color),
-    0px 0px 6px var(--n-tab-text-color), 0px 0px 6px var(--n-tab-text-color),
-    0px 0px 6px var(--n-tab-text-color);
+  box-shadow: 0px 0px 12px var(--n-tab-text-color),
+    0px 0px 12px var(--n-tab-text-color), 0px 0px 12px var(--n-tab-text-color),
+    0px 0px 12px var(--n-tab-text-color);
   .img {
     img {
       transform: translate(3px, 3px) scale(1.05) rotate(0deg);

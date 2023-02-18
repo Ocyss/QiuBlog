@@ -71,11 +71,16 @@ const getThemeOverrides = computed(() => {
   margin: 0;
   padding: 0;
 }
+
 ::-webkit-scrollbar {
   width: 5px;
   background: rgb(248, 230, 239);
 }
-
+@media screen and (max-width: 700px) {
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
+}
 ::-webkit-scrollbar-thumb {
   background: rgb(255, 76, 162);
 }

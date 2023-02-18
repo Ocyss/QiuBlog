@@ -2,12 +2,9 @@
   <n-layout has-sider sider-placement="right">
     <n-layout-content
       class="layoutContent"
-      :content-style="{ padding: '0.5rem' }"
+      :content-style="{ padding: '1rem' }"
     >
-      <div class="layoutContentMain">
-        <slot name="default"></slot>
-        <Footer style="width: 100%" />
-      </div>
+      <slot name="default"></slot>
     </n-layout-content>
 
     <n-layout-sider
@@ -23,7 +20,7 @@
 
 <script setup>
 import { ref } from "vue";
-import Footer from "./components/Footer.vue";
+
 const settingStore = inject("projectStore");
 </script>
 
@@ -35,15 +32,15 @@ const settingStore = inject("projectStore");
   align-items: center;
   :deep(.n-layout-scroll-container) {
     width: 100%;
-    padding: 0px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
   }
 }
 
-.layoutContentMain {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+.layoutSide {
+  max-width: 320px;
+  width: 23%;
 }
 </style>
