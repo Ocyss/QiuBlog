@@ -20,7 +20,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useIntersectionObserver } from "@vueuse/core";
-import { defineEmits } from "vue";
 
 const emit = defineEmits(["upage", "load"]);
 const button = ref(null);

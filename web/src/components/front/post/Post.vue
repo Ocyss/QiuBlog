@@ -26,7 +26,7 @@
               <n-icon :size="13" :component="Book" />
             </n-icon-wrapper>
             &nbsp;{{ item.uv }}
-            {{ designStore.getLocale ? "阅读" : "pageview" }}
+            {{ designStore.getLocale ? "阅读" : "RDG" }}
           </div>
           <div v-if="item.cname">
             <n-icon-wrapper
@@ -78,18 +78,18 @@
 
 <script setup>
 import { Calendar, Book, PricetagsSharp } from "@vicons/ionicons5";
-import { 随机风景API } from "@/settings/config.js";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import TimerVue from "@/components/Timer.vue";
 
 const designStore = inject("designStore");
+const config = inject("config");
 const router = useRouter();
 const imgSrc = ref("");
 const props = defineProps(["item"]);
 //渲染判断，无头图则采用随机api
 if (props.item.img == "") {
-  imgSrc.value = 随机风景API + `wcnm=${props.index}`;
+  imgSrc.value = config.global.randomImgApi + `wcnm=${props.index}`;
 } else {
   imgSrc.value = props.item.img;
 }
@@ -127,27 +127,30 @@ a {
     align-items: center;
   }
   .title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 600;
   }
   .contentMain {
-    font-size: 1rem;
-    -webkit-line-clamp: 4;
+    font-size: 0.8rem;
+    -webkit-line-clamp: 2;
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    text-indent: 2rem;
+    text-indent: 1rem;
+    a {
+      white-space: break-spaces;
+    }
   }
   .tags {
     overflow: hidden;
   }
 }
 .main {
-  margin: 20px 0px;
+  margin: 13px 0px;
   display: flex;
   width: 95%;
   max-width: 800px;
-  height: 14.5rem;
+  height: 10.5rem;
   background-color: #fff;
   border-radius: 0.5rem;
   overflow: hidden;
@@ -157,17 +160,18 @@ a {
   box-shadow: 0px 0px 3px var(--n-tab-text-color),
     0px 0px 3px var(--n-tab-text-color), 0px 0px 3px var(--n-tab-text-color),
     0px 0px 3px var(--n-tab-text-color);
-}
-.main:hover {
-  box-shadow: 0px 0px 12px var(--n-tab-text-color),
-    0px 0px 12px var(--n-tab-text-color), 0px 0px 12px var(--n-tab-text-color),
-    0px 0px 12px var(--n-tab-text-color);
-  .img {
-    img {
-      transform: translate(3px, 3px) scale(1.05) rotate(0deg);
+  &:hover {
+    box-shadow: 0px 0px 12px var(--n-tab-text-color),
+      0px 0px 12px var(--n-tab-text-color), 0px 0px 12px var(--n-tab-text-color),
+      0px 0px 12px var(--n-tab-text-color);
+    .img {
+      img {
+        transform: translate(3px, 3px) scale(1.05) rotate(0deg);
+      }
     }
   }
 }
+
 .right {
   flex-direction: row-reverse;
   .img {
@@ -176,7 +180,7 @@ a {
   }
 }
 .img {
-  width: 33.333333%;
+  width: 52%;
   -webkit-clip-path: polygon(0 0, 100% 0, 94% 100%, 0 100%);
   clip-path: polygon(0 0, 100% 0, 94% 100%, 0 100%);
   img {

@@ -69,7 +69,9 @@ const getThemeOverrides = computed(() => {
 
 * {
   margin: 0;
+
   padding: 0;
+  white-space: nowrap;
 }
 
 ::-webkit-scrollbar {

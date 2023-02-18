@@ -98,7 +98,6 @@ import { ref } from "vue";
 import api from "@/api";
 import { useRoute } from "vue-router";
 import { useMessage } from "naive-ui";
-import { 随机风景API } from "@/settings/config.js";
 import { Calendar, Book, PricetagsSharp } from "@vicons/ionicons5";
 import { computed } from "@vue/reactivity";
 import TimerVue from "@/components/Timer.vue";
@@ -106,7 +105,7 @@ import MdEditor from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
 
 const designStore = inject("designStore");
-
+const config = inject("config");
 const url = window.location.href;
 const route = useRoute();
 const message = useMessage();
@@ -125,7 +124,7 @@ const postData = ref({
 });
 
 const imgSrc = computed(() => {
-  return postData.value.img ? postData.value.img : 随机风景API;
+  return postData.value.img ? postData.value.img : config.global.randomImgApi;
 });
 
 const category = ref({ name: "" });

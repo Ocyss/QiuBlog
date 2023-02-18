@@ -6,4 +6,5 @@ const useConfig = {
   friendChain: [
     { name: "如沐春风", href: "http://www.vcabin.cn/#/home/index" },
   ],
+  global: { randomImgApi: "https://api.btstu.cn/sjbz/api.php?" },
 };

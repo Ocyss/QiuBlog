@@ -22,12 +22,10 @@ const config = inject("config");
 }
 a,
 a:focus {
-  color: aliceblue;
+  color: var(--n-title-text-color);
   text-decoration: none;
-}
-
-a:hover {
-  cursor: pointer;
-  color: rgb(138, 192, 239);
+  &:hover {
+    text-decoration: underline;
+  }
 }
 </style>
