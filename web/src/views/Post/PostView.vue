@@ -202,9 +202,4 @@ api.category.get().then((res) => {
     color: rgb(255, 47, 47);
   }
 }
-
-.md-editor-dark {
-  --md-bk-color: rgb(16, 16, 20) !important;
-  --md-color: rgba(255, 255, 255, 0.9) !important;
-}
 </style>

@@ -15,6 +15,7 @@
 <script setup>
 import { inject } from "vue";
 const config = inject("config");
+
 const designStore = inject("designStore");
 </script>
 

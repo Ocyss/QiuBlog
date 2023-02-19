@@ -3,6 +3,7 @@
     <rightColumnVue>
       <div class="content">
         <RouterView :key="$route.fullPath" />
+        <n-back-top :right="100" />
       </div>
       <template #column>
         <rightContentVue />

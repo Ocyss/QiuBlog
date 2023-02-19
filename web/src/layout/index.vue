@@ -41,6 +41,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import Footer from "./components/Footer.vue";
+
 const settingStore = inject("projectStore");
 
 //是否手机模式，宽度小于700
@@ -108,6 +109,7 @@ onMounted(() => {
 
 .layout-content {
   min-height: 95vh;
+  padding-top: 5vh;
 }
 
 .layout-header {

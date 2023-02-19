@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-wechat-title="$route.meta.title">
+  <div id="app" v-wechat-title="$route.meta.title" v-if="useConfig">
     <n-config-provider
       :locale="designStore.getLocale ? zhCN : enUS"
       :theme="designStore.darkTheme ? darkTheme : undefined"
@@ -27,6 +27,13 @@ import { zhCN, dateZhCN, darkTheme, enUS, dateEnUS } from "naive-ui";
 import { lighten } from "@/utils/index";
 import api from "@/api";
 import cookies from "vue-cookies";
+import { ref } from "vue";
+import axios from "axios";
+const useConfig = ref(null);
+
+axios.get("static/config.json5").then((res) => {
+  useConfig.value = new Function("return " + res.data)();
+});
 
 if (!cookies.get("mainuv")) {
   api.statistics.mainuv().then(() => {
@@ -34,6 +41,7 @@ if (!cookies.get("mainuv")) {
   });
 }
 const designStore = useDesignSettingStore();
+
 provide("config", useConfig);
 provide("designStore", designStore);
 provide("projectStore", useProjectSettingStore());
@@ -85,5 +93,20 @@ const getThemeOverrides = computed(() => {
 }
 ::-webkit-scrollbar-thumb {
   background: rgb(255, 76, 162);
+}
+.md-editor-dark,
+.md-editor-light {
+  transition: all 0.2s ease-in-out;
+  --md-bk-color: var(--n-color) !important;
+  --md-color: var(--n-title-text-color) !important;
+  --md-theme-color: var(--n-title-text-color) !important;
+}
+.md-editor {
+  .default-theme * {
+    white-space: break-spaces;
+  }
+  .default-theme img {
+    border-width: 0px !important;
+  }
 }
 </style>

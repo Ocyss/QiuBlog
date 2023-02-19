@@ -1,7 +1,12 @@
 <template>
   <div class="main" v-if="!collapsed">
     <h2>友链</h2>
-    <a target="_blank" v-for="fc in config.friendChain" :href="fc.href">
+    <a
+      v-if="config"
+      target="_blank"
+      v-for="fc in config.friendChain"
+      :href="fc.href"
+    >
       {{ fc.name }}
     </a>
   </div>

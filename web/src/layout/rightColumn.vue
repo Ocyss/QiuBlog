@@ -28,12 +28,10 @@ const settingStore = inject("projectStore");
 .layoutContent {
   width: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
   :deep(.n-layout-scroll-container) {
     width: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
   }

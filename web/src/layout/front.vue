@@ -17,7 +17,7 @@
     <template #header>
       <HeaderVue @collapsed="collapsed = !collapsed" :collapsed="collapsed" />
     </template>
-    <div class="content" style="min-height: 95vh; padding-top: 5vh">
+    <div class="content" style="min-height: 95vh">
       <slot name="default"></slot>
     </div>
   </layoutVue>
@@ -29,6 +29,7 @@ import LogoVue from "./components/Logo.vue";
 import HeaderVue from "./components/Header.vue";
 import layoutVue from "./index.vue";
 import FriendChainVue from "./components/front/FriendChain.vue";
+
 const settingStore = inject("projectStore");
 //是否折叠
 const collapsed = computed({

@@ -64,7 +64,7 @@ const PostData = ref({});
 //请求主页文章列表
 // c是分类请求,m是菜单请求
 function getPosts() {
-  const params = { pagesize: 6, pagenum: page.value[cid.value] };
+  const params = { pagesize: 10, pagenum: page.value[cid.value] };
   if (cid.value == "-1") {
     params.mid = props.cdata.id;
   } else {
