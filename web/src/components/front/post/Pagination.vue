@@ -1,6 +1,11 @@
 <template>
   <div class="main">
-    <n-button ref="button" type="primary" @click="emit('load')">
+    <n-button
+      v-if="page[cid] < pageCount[cid]"
+      ref="button"
+      type="primary"
+      @click="emit('load')"
+    >
       加载···
     </n-button>
     <n-pagination
