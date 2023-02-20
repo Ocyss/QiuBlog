@@ -1,7 +1,8 @@
 <template>
-  <div ref="mainRef" class="main">
+  <div class="main">
     <aboutVue />
-    <n-affix :trigger-top="200" position="absolute" :listen-to="() => mainRef">
+
+    <n-affix v-if="scrollableEl" :trigger-top="60" :listen-to="scrollableEl">
       <commentVue />
       <popularVue />
       <statisticsVue />
@@ -16,9 +17,9 @@ import commentVue from "./card/comment.vue";
 import popularVue from "./card/popular.vue";
 import statisticsVue from "./card/statistics.vue";
 import tagCloudVue from "./card/tagCloud.vue";
-import { ref } from "vue";
+
 const props = defineProps(["affixRef"]);
-const mainRef = ref(null);
+const scrollableEl = inject("scrollableEl");
 </script>
 
 <style lang="scss" scoped>
@@ -32,6 +33,7 @@ const mainRef = ref(null);
 
 .main {
   position: relative;
+
   .n-affix {
     width: 100%;
   }

@@ -57,7 +57,7 @@ const props = defineProps(["cdata"]);
 const page = ref({ "-1": 1 });
 const pageCount = ref({ "-1": 1 });
 const cid = ref("-1");
-const tabs = ref(null);
+const tabs = ref(void 0);
 const settingStore = inject("projectStore");
 //各分类下的文章
 const PostData = ref({});

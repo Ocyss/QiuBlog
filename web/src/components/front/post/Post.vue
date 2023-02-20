@@ -84,12 +84,13 @@ import TimerVue from "@/components/Timer.vue";
 
 const designStore = inject("designStore");
 const config = inject("config");
+
 const router = useRouter();
 const imgSrc = ref("");
 const props = defineProps(["item"]);
 //渲染判断，无头图则采用随机api
 if (props.item.img == "") {
-  imgSrc.value = config.global.randomImgApi + `wcnm=${props.index}`;
+  imgSrc.value = config.value.global.randomImgApi + `wcnm=${props.index}`;
 } else {
   imgSrc.value = props.item.img;
 }
@@ -189,7 +190,6 @@ a {
     height: 100%;
     object-fit: cover;
   }
-  z-index: 2;
 }
 .bgimg {
   z-index: 0;

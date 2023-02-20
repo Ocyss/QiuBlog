@@ -63,11 +63,7 @@
       </div>
       <n-divider />
       <div class="content">
-        <md-editor
-          v-model="postData.content"
-          preview-only
-          :theme="designStore.getDarkTheme ? `dark` : `light`"
-        />
+        <editorVue v-if="postData.content" :content="postData.content" />
       </div>
       <n-divider />
       <div class="copyright">
@@ -101,10 +97,8 @@ import { useMessage } from "naive-ui";
 import { Calendar, Book, PricetagsSharp } from "@vicons/ionicons5";
 import { computed } from "@vue/reactivity";
 import TimerVue from "@/components/Timer.vue";
-import MdEditor from "md-editor-v3";
-import "md-editor-v3/lib/style.css";
+import editorVue from "@/components/editor.vue";
 
-const designStore = inject("designStore");
 const config = inject("config");
 const url = window.location.href;
 const route = useRoute();
@@ -124,7 +118,9 @@ const postData = ref({
 });
 
 const imgSrc = computed(() => {
-  return postData.value.img ? postData.value.img : config.global.randomImgApi;
+  return postData.value.img
+    ? postData.value.img
+    : config.value.global.randomImgApi;
 });
 
 const category = ref({ name: "" });

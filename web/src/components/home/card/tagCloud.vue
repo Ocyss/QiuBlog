@@ -46,7 +46,7 @@ import api from "@/api";
 import { randomRgb } from "@/utils";
 const designStore = inject("designStore");
 let timer = null;
-const card = ref(null);
+const card = ref(void 0);
 const tags = ref([]);
 const cos = Math.cos(Math.PI / 360);
 const sin = Math.sin(Math.PI / 360);

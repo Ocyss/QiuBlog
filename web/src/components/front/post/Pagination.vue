@@ -27,7 +27,7 @@ import { ref, onMounted } from "vue";
 import { useIntersectionObserver } from "@vueuse/core";
 
 const emit = defineEmits(["upage", "load"]);
-const button = ref(null);
+const button = ref(void 0);
 const props = defineProps(["page", "cid", "pageCount"]);
 const settingStore = inject("projectStore");
 

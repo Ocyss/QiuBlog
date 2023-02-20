@@ -29,7 +29,7 @@ import api from "@/api";
 import cookies from "vue-cookies";
 import { ref } from "vue";
 import axios from "axios";
-const useConfig = ref(null);
+const useConfig = ref(void 0);
 
 axios.get("static/config.json5").then((res) => {
   useConfig.value = new Function("return " + res.data)();
@@ -83,7 +83,7 @@ const getThemeOverrides = computed(() => {
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 3px;
   background: rgb(248, 230, 239);
 }
 @media screen and (max-width: 700px) {
@@ -94,6 +94,7 @@ const getThemeOverrides = computed(() => {
 ::-webkit-scrollbar-thumb {
   background: rgb(255, 76, 162);
 }
+
 .md-editor-dark,
 .md-editor-light {
   transition: all 0.2s ease-in-out;

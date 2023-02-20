@@ -1,4 +1,5 @@
 <template>
+  <n-back-top v-if="scrollableEl" :listen-to="scrollableEl" right="20%" />
   <n-layout class="layout" has-sider position="absolute">
     <n-layout-sider
       v-if="!isMobile"
@@ -24,7 +25,7 @@
     >
       <slot name="drawer" :collapsed="collapsed"></slot>
     </n-drawer>
-    <n-layout>
+    <n-layout ref="layoutRef">
       <n-layout-header class="layout-header" bordered position="absolute">
         <slot name="header" :collapsed="collapsed"></slot>
       </n-layout-header>
@@ -43,6 +44,11 @@ import { ref, onMounted } from "vue";
 import Footer from "./components/Footer.vue";
 
 const settingStore = inject("projectStore");
+//获取内layout元素
+const layoutRef = ref(void 0);
+//获取可滚动元素，注入方便其他组件监听
+const scrollableEl = ref(void 0);
+provide("scrollableEl", scrollableEl);
 
 //是否手机模式，宽度小于700
 const isMobile = computed({
@@ -84,6 +90,8 @@ onMounted(() => {
   window.addEventListener("resize", watchWidth);
   window["$loading"] = useLoadingBar();
   window["$loading"].finish();
+  //将可滚动元素赋值
+  scrollableEl.value = layoutRef.value?.scrollableElRef;
 });
 </script>
 

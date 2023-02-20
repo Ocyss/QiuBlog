@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 const settingStore = inject("projectStore");
 </script>
