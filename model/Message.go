@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"qiublog/db"
 	"qiublog/utils/errmsg"
+	"qiublog/utils/tool"
+	"strconv"
 )
 
 type (
@@ -71,34 +73,28 @@ func AddQuestion(data *Question) int {
 // GetMessage 获取留言
 func GetMessage(pageSize int, pageNum int, admin bool) ([]any, int64) {
 	var data Coding
-	var ids []string
 	var dataJson []byte
 	res := make([]any, 0)
 	ctx := context.Background()
 	key := fmt.Sprintf("admin:%v", admin)
 	dataJson, err := db.Rdb.HGet(ctx, "messages", key).Bytes()
 	if err != nil {
-		var messageData Message
-		where := map[string]interface{}{"show": true, "check": true}
-		if admin {
-			where["show"] = false
-			where["check"] = false
+		where := map[string]interface{}{}
+		if !admin {
+			where["show"] = true
+			where["check"] = true
 		}
 		Db.
 			Model(&Message{}).
 			Where(where).
 			Order("created_at desc").
-			Find(&messageData)
-		dataJson, _ = json.Marshal(messageData)
+			Pluck("id", &data.Ids)
+		dataJson, _ = json.Marshal(data)
 		db.Rdb.HSet(ctx, "messages", key, dataJson)
 	} else {
 		_ = json.Unmarshal(dataJson, &data)
 	}
-	if pageSize+pageNum > len(data.Ids) {
-		ids = data.Ids[pageNum-1:]
-	} else {
-		ids = data.Ids[pageNum-1 : pageSize+pageNum-1]
-	}
+	ids := tool.PageIds(pageNum, pageSize, data.Ids)
 	for _, v := range ids {
 		var m Message
 		mJson, err := db.Rdb.HGet(ctx, "message", v).Bytes()
@@ -122,34 +118,28 @@ func GetMessage(pageSize int, pageNum int, admin bool) ([]any, int64) {
 // GetQuestion 获取提问
 func GetQuestion(pageSize int, pageNum int, admin bool) ([]any, int64) {
 	var data Coding
-	var ids []string
 	var dataJson []byte
 	res := make([]any, 0)
 	ctx := context.Background()
 	key := fmt.Sprintf("admin:%v", admin)
 	dataJson, err := db.Rdb.HGet(ctx, "questions", key).Bytes()
 	if err != nil {
-		var messageData Question
-		where := map[string]interface{}{"show": true, "check": true}
-		if admin {
-			where["show"] = false
-			where["check"] = false
+		where := map[string]interface{}{}
+		if !admin {
+			where["show"] = true
+			where["check"] = true
 		}
 		Db.
 			Model(&Question{}).
 			Where(where).
 			Order("created_at desc").
-			Find(&messageData)
-		dataJson, _ = json.Marshal(messageData)
-		db.Rdb.HSet(ctx, "questions", key, dataJson)
+			Pluck("id", &data.Ids)
+		dataJson, _ = json.Marshal(data)
+		db.Rdb.HSet(ctx, "messages", key, dataJson)
 	} else {
 		_ = json.Unmarshal(dataJson, &data)
 	}
-	if pageSize+pageNum > len(data.Ids) {
-		ids = data.Ids[pageNum-1:]
-	} else {
-		ids = data.Ids[pageNum-1 : pageSize+pageNum-1]
-	}
+	ids := tool.PageIds(pageNum, pageSize, data.Ids)
 
 	for _, v := range ids {
 		var q Question
@@ -175,35 +165,49 @@ func GetQuestion(pageSize int, pageNum int, admin bool) ([]any, int64) {
 func UpMessage(id uint, val bool, show bool, message bool) int {
 	var ty string
 	var table interface{}
+	var key string
 	if show {
 		ty = "show"
 	} else {
 		ty = "check"
 	}
+	ctx := context.Background()
 	if message {
+		key = "message"
 		table = &Message{}
 	} else {
+		key = "question"
 		table = &Question{}
 	}
 	err = Db.Model(table).Where(id).Update(ty, val).Error
 	if err != nil {
 		return errmsg.ERROR
 	}
+	db.Rdb.HDel(ctx, key+"s", "admin:true")
+	db.Rdb.HDel(ctx, key+"s", "admin:false")
+	db.Rdb.HDel(ctx, key, strconv.Itoa(int(id)))
 	return errmsg.SUCCESS
 }
 
 // DelMessage 删除留言
 func DelMessage(id uint, message bool) int {
 	var table interface{}
+	var key string
+	ctx := context.Background()
 	if message {
+		key = "message"
 		table = &Message{}
 	} else {
+		key = "question"
 		table = &Question{}
 	}
 	err = Db.Delete(table, id).Error
 	if err != nil {
 		return errmsg.ERROR
 	}
+	db.Rdb.HDel(ctx, key+"s", "admin:true")
+	db.Rdb.HDel(ctx, key+"s", "admin:false")
+	db.Rdb.HDel(ctx, key, strconv.Itoa(int(id)))
 	return errmsg.SUCCESS
 }
 

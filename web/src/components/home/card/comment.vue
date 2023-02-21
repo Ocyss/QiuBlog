@@ -8,7 +8,11 @@
       <n-avatar
         round
         :size="35"
-        :src="`http://q.qlogo.cn/headimg_dl?dst_uin=${item.qq}&spec=640&img_type=jpg`"
+        :src="
+          item.qq
+            ? `http://q.qlogo.cn/headimg_dl?dst_uin=${item.qq}&spec=640&img_type=jpg`
+            : `https://api.multiavatar.com/${item.content}.png`
+        "
       />
       <div class="text">
         <div class="name">

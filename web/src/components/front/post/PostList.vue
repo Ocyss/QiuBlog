@@ -25,12 +25,14 @@
               自动加载
             </n-checkbox>
           </div>
+
           <PostVue
             v-for="(item, index) in PostData[citem.id]"
             :class="index % 2 === 0 ? 'left' : 'right'"
             :key="item"
             :item="item"
           />
+
           <Pagination
             :page="page"
             :cid="citem.id"
@@ -59,6 +61,7 @@ const pageCount = ref({ "-1": 1 });
 const cid = ref("-1");
 const tabs = ref(void 0);
 const settingStore = inject("projectStore");
+const backTopRef = inject("backTopRef");
 //各分类下的文章
 const PostData = ref({});
 //请求主页文章列表
@@ -90,6 +93,8 @@ function getPosts() {
 getPosts();
 
 function upPage(p) {
+  //返回顶部
+  backTopRef.value.handleClick();
   PostData.value[cid.value] = [];
   getPosts();
 }

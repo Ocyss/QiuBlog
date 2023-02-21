@@ -2,6 +2,7 @@ package v1
 
 import (
 	"context"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"qiublog/db"
 	"qiublog/model"
@@ -27,11 +28,11 @@ func MainSetUV(c *gin.Context) (int, any) {
 func GetStatistics(c *gin.Context) (int, any) {
 	var (
 		err          error
-		articleCount int64 //文章总数
-		mainUV       int64 //浏览量
-		wordsTotal   int64 //文章总字数
-		elapsedTime  int64 //建站时间
-		lastUpdated  int64 //最后更新时间
+		articleCount int64   //文章总数
+		mainUV       int64   //浏览量
+		wordsTotal   float64 //文章总字数
+		elapsedTime  int64   //建站时间
+		lastUpdated  int64   //最后更新时间
 	)
 	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
 	defer cancel()
@@ -41,9 +42,10 @@ func GetStatistics(c *gin.Context) (int, any) {
 		db.Rdb.Set(ctx, "main:ac", articleCount, 3*24*time.Hour)
 	}
 	mainUV, _ = db.Rdb.PFCount(ctx, "main:uv").Result()
-	wordsTotal, err = db.Rdb.Get(ctx, "main:wt").Int64()
+	wordsTotal, err = db.Rdb.Get(ctx, "main:wt").Float64()
 	if err != nil {
-		model.Db.Raw("SELECT char_length(content) FROM article").Scan(&wordsTotal)
+		sql := fmt.Sprintf("select ROUND(DATA_LENGTH/80000,2) from information_schema.TABLES where table_schema='%s' and table_name='article';", utils.Config.Database.DbName)
+		model.Db.Raw(sql).Scan(&wordsTotal)
 		db.Rdb.Set(ctx, "main:wt", wordsTotal, 3*24*time.Hour)
 	}
 	lastUpdated, err = db.Rdb.Get(ctx, "main:lut").Int64()

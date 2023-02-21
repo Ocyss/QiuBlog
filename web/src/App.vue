@@ -79,9 +79,11 @@ const getThemeOverrides = computed(() => {
   margin: 0;
 
   padding: 0;
-  white-space: nowrap;
 }
-
+img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
 ::-webkit-scrollbar {
   width: 3px;
   background: rgb(248, 230, 239);

@@ -5,21 +5,12 @@ import { createPinia } from "pinia";
 import piniaPersist from "pinia-plugin-persist";
 import VueWechatTitle from "vue-wechat-title";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
-import hljs from "highlight.js";
-import "highlight.js/styles/atom-one-dark.css";
 
 const app = createApp(App);
 
 app.use(VueWechatTitle);
-app.component(VueQrcode.name, VueQrcode);
 
-//创建v-highlight全局指令
-app.directive("highlight", function (el) {
-  let blocks = el.querySelectorAll("pre code");
-  blocks.forEach((block) => {
-    hljs.highlightBlock(block);
-  });
-});
+app.component(VueQrcode.name, VueQrcode);
 
 // 挂载状态管理
 const pinia = createPinia();

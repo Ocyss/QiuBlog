@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm"
 	"qiublog/db"
 	"qiublog/utils/errmsg"
+	"qiublog/utils/tool"
 	"strconv"
 	"time"
 )
@@ -139,17 +140,8 @@ func GetsArticle(pageSize int, pageNum int, cid int, mid int, tid int) ([]Articl
 
 	_ = json.Unmarshal(dataJson, &data)
 	//防止越界
-	var aids []string
-	if pageNum > len(data.Ids) || (pageNum-1)*pageSize > len(data.Ids) {
-		aids = nil
-	} else if pageNum == -1 {
-		aids = data.Ids
-	} else if pageNum*pageSize > len(data.Ids) {
-		aids = data.Ids[(pageNum-1)*pageSize:]
-	} else {
-		aids = data.Ids[(pageNum-1)*pageSize : pageNum*pageSize]
-	}
-	for _, v := range aids {
+	ids := tool.PageIds(pageNum, pageSize, data.Ids)
+	for _, v := range ids {
 		var d Articles
 		var dd Article
 		articleJson, err := db.Rdb.HGet(ctx, "article", v).Bytes()

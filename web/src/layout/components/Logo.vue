@@ -1,5 +1,5 @@
 <template>
-  <div class="logo" @mousedown="start" @mouseup="stop">
+  <div class="logo" @mousedown="start" @mouseup="stop" @mouseout="stop">
     <img src="/static/img/logo.png" :class="collapsed ? 'small' : 'big'" />
   </div>
 </template>

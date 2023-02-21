@@ -113,6 +113,9 @@ a {
   justify-content: space-between;
   letter-spacing: 0.06rem;
   .information {
+    * {
+      white-space: nowrap;
+    }
     display: flex;
     align-items: center;
     justify-content: space-between;

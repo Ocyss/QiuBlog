@@ -7,15 +7,18 @@
     <div class="main">
       <div class="mainUv">
         <div>{{ designStore.getLocale ? "浏览量" : "Page_View" }}:</div>
-        <div>{{ data.main_uv }}</div>
+        <div><n-number-animation :to="data.main_uv" /></div>
       </div>
       <div class="wordsTotal">
         <div>{{ designStore.getLocale ? "总字数" : "Words_Total" }}:</div>
-        <div>{{ data.words_total }}</div>
+        <div>
+          <n-number-animation :to="data.words_total" :precision="2" />
+          w
+        </div>
       </div>
       <div class="articleCount">
         <div>{{ designStore.getLocale ? "文章数量" : "Article_Count" }}:</div>
-        <div>{{ data.article_count }}</div>
+        <div><n-number-animation :to="data.article_count" /></div>
       </div>
       <div class="lastUpdated">
         <div>{{ designStore.getLocale ? "最后更新于" : "Last_Updated" }}:</div>

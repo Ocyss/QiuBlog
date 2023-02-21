@@ -1,12 +1,12 @@
 const routes = [
   {
-    path: "/admin",
+    path: "/adminadminadminadminadminadminadminadmin",
     name: "admin",
     meta: {
       title: "后台管理",
     },
     component: () => import("@/views/AdminView.vue"),
-    redirect: "/admin/dashboard",
+    redirect: "/adminadminadminadminadminadminadminadmin/dashboard",
     children: [
       {
         path: "dashboard",
@@ -59,7 +59,7 @@ const routes = [
     ],
   },
   {
-    path: "/login",
+    path: "/loginloginloginloginloginlogin",
     name: "login",
     meta: {
       title: "登录",

@@ -35,10 +35,24 @@ func PageTool(c *gin.Context) (int, int) {
 	pageNum, _ := strconv.Atoi(c.Query("pagenum"))   //分页偏移量
 
 	if pageSize <= 0 || pageSize > 20 {
-		pageSize = 6
+		pageSize = 10
 	}
 	if pageNum <= 0 {
 		pageNum = 1
 	}
 	return pageSize, pageNum
+}
+
+func PageIds(pageNum, pageSize int, dataIds []string) (ids []string) {
+	n := len(dataIds)
+	if pageNum > n || (pageNum-1)*pageSize > n {
+		ids = nil
+	} else if pageNum == -1 {
+		ids = dataIds
+	} else if pageNum*pageSize > n {
+		ids = dataIds[(pageNum-1)*pageSize:]
+	} else {
+		ids = dataIds[(pageNum-1)*pageSize : pageNum*pageSize]
+	}
+	return
 }
