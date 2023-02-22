@@ -14,7 +14,7 @@
   </n-tabs>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import api from "@/api";
 import { ref, h } from "vue";
 import messageVue from "@/components/admin/message/message.vue";

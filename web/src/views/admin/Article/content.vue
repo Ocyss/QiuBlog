@@ -75,14 +75,14 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from "vue";
+<script setup lang="ts">
+import { ref, onMounted, inject, computed } from "vue";
 import { useMessage } from "naive-ui";
 import { useRouter, useRoute } from "vue-router";
 import MdEditor from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
 import api from "@/api";
-const designStore = inject("designStore");
+const designStore: any = inject("designStore");
 const router = useRouter();
 const route = useRoute();
 const message = useMessage();
@@ -112,12 +112,7 @@ function send() {
     uploadref.value.clear();
     tags.value = [];
     content.value = {
-      tags: computed({
-        get: () =>
-          tags.value.map((item) => {
-            return { name: item };
-          }),
-      }),
+      tags: null,
       cid: "",
       desc: "",
       title: "",

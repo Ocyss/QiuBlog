@@ -109,8 +109,8 @@
   </div>
 </template>
 
-<script setup>
-import { onMounted, ref } from "vue";
+<script setup lang="ts">
+import { Ref, onMounted, ref } from "vue";
 import draggable from "vuedraggable";
 import { Pencil, Trash } from "@vicons/ionicons5";
 import menueditVue from "./menuedit.vue";
@@ -135,7 +135,7 @@ const newvalue = ref({
   logo: "",
   link: "",
 });
-const editvalue = ref({});
+const editvalue: Ref<any> = ref({});
 let savedata = [];
 const setMenuShow = ref(false);
 const message = useMessage();

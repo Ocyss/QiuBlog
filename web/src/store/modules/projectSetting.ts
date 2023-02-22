@@ -20,7 +20,7 @@ export const useProjectSettingStore = defineStore({
       {
         key: "Setting",
         storage: localStorage,
-        paths: ["collapsed", "darkMode", "autuLoad"],
+        paths: ["collapsed", "autuLoad"],
       },
     ],
   },

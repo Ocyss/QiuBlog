@@ -21,16 +21,16 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from "vue";
+<script setup lang="ts">
+import { ref, computed, inject } from "vue";
 import MdEditor from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
-const editorRef = ref(void 0);
 const props = defineProps(["content"]);
-const scrollableEl = inject("scrollableEl");
+const editorRef = ref(void 0);
 const contentRef = ref(props.content);
 const MdCatalog = MdEditor.MdCatalog;
-const designStore = inject("designStore");
+const scrollableEl: any = inject("scrollableEl");
+const designStore: any = inject("designStore");
 
 const getTheme = computed(() => {
   return designStore.getDarkTheme ? `dark` : `light`;

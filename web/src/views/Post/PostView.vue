@@ -88,18 +88,17 @@
   </frontVue>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import frontVue from "@/layout/front.vue";
-import { ref } from "vue";
+import { ref, inject, computed } from "vue";
 import api from "@/api";
 import { useRoute } from "vue-router";
 import { useMessage } from "naive-ui";
 import { Calendar, Book, PricetagsSharp } from "@vicons/ionicons5";
-import { computed } from "@vue/reactivity";
 import TimerVue from "@/components/Timer.vue";
 import editorVue from "@/components/editor.vue";
 
-const config = inject("config");
+const config: any = inject("config");
 const url = window.location.href;
 const route = useRoute();
 const message = useMessage();

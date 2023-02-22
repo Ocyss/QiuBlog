@@ -17,12 +17,12 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from "vue";
+<script setup lang="ts">
+import { ref, onMounted, inject } from "vue";
 import axios from "axios";
 import editor from "@/components/editor.vue";
 
-const designStore = inject("designStore");
+const designStore: any = inject("designStore");
 const contentRef = ref({
   author: "",
   project: "",

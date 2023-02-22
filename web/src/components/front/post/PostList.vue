@@ -48,8 +48,8 @@
   </n-spin>
 </template>
 
-<script setup>
-import { ref } from "vue";
+<script setup lang="ts">
+import { inject, ref } from "vue";
 import PostVue from "./Post.vue";
 import api from "@/api";
 import Pagination from "./Pagination.vue";
@@ -58,17 +58,27 @@ const PostSpinShow = ref(true);
 const props = defineProps(["cdata"]);
 const page = ref({ "-1": 1 });
 const pageCount = ref({ "-1": 1 });
-const cid = ref("-1");
+const cid = ref(-1);
 const tabs = ref(void 0);
-const settingStore = inject("projectStore");
-const backTopRef = inject("backTopRef");
+const settingStore: any = inject("projectStore");
+const backTopRef: any = inject("backTopRef");
 //各分类下的文章
 const PostData = ref({});
 //请求主页文章列表
 // c是分类请求,m是菜单请求
 function getPosts() {
-  const params = { pagesize: 10, pagenum: page.value[cid.value] };
-  if (cid.value == "-1") {
+  const params: {
+    pagesize: number;
+    pagenum: number;
+    cid: number;
+    mid: number;
+  } = {
+    pagesize: 10,
+    pagenum: page.value[cid.value],
+    cid: null,
+    mid: null,
+  };
+  if (cid.value == -1) {
     params.mid = props.cdata.id;
   } else {
     params.cid = cid.value;
@@ -108,7 +118,7 @@ function changeCategory(val) {
   PostSpinShow.value = true;
   cid.value = val;
   if (PostData.value[val] == undefined) {
-    getPosts(val, "c");
+    getPosts();
   } else {
     PostSpinShow.value = false;
   }

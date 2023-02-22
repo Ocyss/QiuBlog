@@ -20,31 +20,32 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useDesignSettingStore } from "@/store/modules/designSetting.js";
 import { useProjectSettingStore } from "@/store/modules/projectSetting.js";
 import { zhCN, dateZhCN, darkTheme, enUS, dateEnUS } from "naive-ui";
 import { lighten } from "@/utils/index";
 import api from "@/api";
-import cookies from "vue-cookies";
-import { ref } from "vue";
+import { provide, ref, computed, inject } from "vue";
 import axios from "axios";
+import type { VueCookies } from "vue-cookies";
 const useConfig = ref(void 0);
-
-axios.get("static/config.json5").then((res) => {
-  useConfig.value = new Function("return " + res.data)();
-});
-
-if (!cookies.get("mainuv")) {
-  api.statistics.mainuv().then(() => {
-    cookies.set("mainuv", "1", -1);
-  });
-}
+const $cookies = inject<VueCookies>("$cookies");
 const designStore = useDesignSettingStore();
 
 provide("config", useConfig);
 provide("designStore", designStore);
 provide("projectStore", useProjectSettingStore());
+
+axios.get("static/config.json5").then((res) => {
+  useConfig.value = new Function("return " + res.data)();
+});
+
+if (!$cookies.get("mainuv")) {
+  api.statistics.mainuv().then(() => {
+    $cookies.set("mainuv", "1", -1);
+  });
+}
 
 const getThemeOverrides = computed(() => {
   const appTheme = designStore.appTheme;

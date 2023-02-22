@@ -55,7 +55,7 @@
   </n-tabs>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import menuList from "@/components/admin/other/menulist.vue";
 </script>
 

@@ -1,7 +1,6 @@
-import { h, unref } from "vue";
+import { h, unref, CSSProperties } from "vue";
 import { NIcon, NTag, NTooltip, NTime } from "naive-ui";
 import { cloneDeep } from "lodash-es";
-
 //Nicon封装
 export function renderIcon(icon) {
   return () => h(NIcon, null, { default: () => h(icon) });
@@ -62,7 +61,7 @@ export const railStyle = (
   ubg = "#1d46ff",
   ubs = "#2080f040"
 ) => {
-  const style = {};
+  const style: CSSProperties = {};
   if (checked) {
     style.background = bg;
     if (focused) {

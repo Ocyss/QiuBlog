@@ -38,17 +38,17 @@
   </n-card>
 </template>
 
-<script setup>
-import { ref } from "vue";
+<script setup lang="ts">
+import { ref, inject, Ref } from "vue";
 import api from "@/api";
-const designStore = inject("designStore");
-const data = ref({
+const designStore: any = inject("designStore");
+const data: Ref<any> = ref({
   article_count: 0,
   words_total: 0,
   main_uv: 0,
   last_updated: 0,
 });
-let date = ref({
+let date: Ref<any> = ref({
   cur: Math.round(new Date().getTime() / 1000),
   d: 0,
   h: 0,
@@ -62,9 +62,9 @@ api.statistics.statistics().then((res) => {
   if (res.status == 200) {
     data.value = res.data;
     date.value.cur = date.value.cur - res.data.elapsed_time;
-    date.value.d = parseInt(date.value.cur / 86400);
-    date.value.h = parseInt((date.value.cur - date.value.d * 86400) / 3600);
-    date.value.m = parseInt(
+    date.value.d = Math.round(date.value.cur / 86400);
+    date.value.h = Math.round((date.value.cur - date.value.d * 86400) / 3600);
+    date.value.m = Math.round(
       (date.value.cur - date.value.d * 86400 - date.value.h * 3600) / 60
     );
     date.value.s =

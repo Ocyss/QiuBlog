@@ -1,5 +1,8 @@
 <template>
-  <div class="login_main" :style="`background-image: url(${随机风景API})`">
+  <div
+    class="login_main"
+    :style="`background-image: url(${config.global.randomImgApi})`"
+  >
     <div class="login">
       <n-icon size="120" v-html="icon"></n-icon>
       <n-space vertical>
@@ -53,14 +56,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, inject } from "vue";
-import { 随机风景API } from "@/settings/config";
 import { PersonCircle, LockClosed } from "@vicons/ionicons5";
 import { useMessage } from "naive-ui";
 import { useRouter } from "vue-router";
 import api from "@/api";
 
+const config: any = inject("config");
 const router = useRouter();
 const message = useMessage();
 const loginty = ref(true);

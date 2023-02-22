@@ -5,10 +5,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from "vue";
 import lottie from "lottie-web";
-import err404 from "@/assets/exception/404.json";
+import * as err404 from "@/assets/exception/404.json";
 //https://www.iconfont.cn/lotties/detail?spm=a313x.7781069.1998910419.d9df05512&cid=39334
 onMounted(() => {
   const jsonAnimation = lottie.loadAnimation({

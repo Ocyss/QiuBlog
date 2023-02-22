@@ -12,10 +12,10 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
+<script setup lang="ts">
+import { ref, inject } from "vue";
 const props = defineProps(["collapsed"]);
-const config = inject("config");
+const config: any = inject("config");
 </script>
 
 <style scoped lang="scss">

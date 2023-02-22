@@ -12,7 +12,7 @@
   </frontVue>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import frontVue from "@/layout/front.vue";
 import rightColumnVue from "@/layout/rightColumn.vue";
 import rightContentVue from "@/components/home/rightContent.vue";

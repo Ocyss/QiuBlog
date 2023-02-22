@@ -8,36 +8,37 @@
     :pagination="{
       pageSize: 10,
     }"
-    :row-props="rowProps"
   />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import api from "@/api";
 import { ref, h } from "vue";
 import { timeControl } from "@/utils";
 import { NAvatar, NButton, NSwitch } from "naive-ui";
 import { railStyle } from "@/utils";
+import moment from "moment";
 import { useMessage, useDialog } from "naive-ui";
+import type { DataTableColumns } from "naive-ui";
+type Song = {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  name: string;
+  qq: string;
+  email: string;
+  content: string;
+  like: number;
+  check: boolean;
+  show: boolean;
+};
+
 const message = useMessage();
 const dialog = useDialog();
 const Data = ref([]);
-const rowProps = (row) => {
-  return {
-    onContextmenu: (e) => {
-      e.preventDefault();
-      dropdown.value.showDropdown = false;
-      nextTick().then(() => {
-        dropdown.value.showDropdown = true;
-        dropdown.value.x = e.clientX;
-        dropdown.value.y = e.clientY;
-        dropdown.value.row = row;
-      });
-    },
-  };
-};
+
 let loading = false;
-const cols = reactive([
+const cols: DataTableColumns<Song> = [
   {
     title: "ID",
     key: "id",
@@ -53,7 +54,7 @@ const cols = reactive([
       return timeControl(row.created_at);
     },
     sorter: (row1, row2) =>
-      new Date(row1.created_at) - new Date(row2.created_at),
+      moment(row1.created_at).unix() - moment(row2.created_at).unix(),
   },
   { title: "内容", key: "content", resizable: true },
   {
@@ -70,12 +71,16 @@ const cols = reactive([
             maxWidth: "80px",
           },
         },
-        row.name,
-        h(NAvatar, {
-          round: true,
-          size: "small",
-          src: `http://q.qlogo.cn/headimg_dl?dst_uin=${row.qq}&spec=640&img_type=jpg`,
-        })
+        [
+          row.name,
+          h(NAvatar, {
+            round: true,
+            size: "small",
+            src: row.qq
+              ? `http://q.qlogo.cn/headimg_dl?dst_uin=${row.qq}&spec=640&img_type=jpg`
+              : `https://api.multiavatar.com/${row.content}.png`,
+          }),
+        ]
       );
     },
   },
@@ -92,16 +97,12 @@ const cols = reactive([
     key: "operation",
     width: 150,
     render(row, index) {
-      return h(
-        "div",
-        { class: "operation" },
-        h(
-          "div",
-          { class: "switch" },
+      return h("div", { class: "operation" }, [
+        h("div", { class: "switch" }, [
           h(
             NSwitch,
             {
-              railStyle: (info) => railStyle(info),
+              railStyle: railStyle,
               onUpdateValue: (val) => upShow(val, row),
               value: row.show,
               loading: loading,
@@ -115,7 +116,7 @@ const cols = reactive([
           h(
             NSwitch,
             {
-              railStyle: (info) => railStyle(info),
+              railStyle: railStyle,
               onUpdateValue: (val) => upCheck(val, row),
               value: row.check,
               loading: loading,
@@ -125,8 +126,8 @@ const cols = reactive([
               checked: () => "过审",
               unchecked: () => "不过",
             }
-          )
-        ),
+          ),
+        ]),
         h(
           NButton,
           {
@@ -135,11 +136,11 @@ const cols = reactive([
             onClick: () => delmessage(row, index),
           },
           () => "删除"
-        )
-      );
+        ),
+      ]);
     },
   },
-]);
+];
 const params = { pagesize: 10, pagenum: 1 };
 
 function upShow(val, row) {

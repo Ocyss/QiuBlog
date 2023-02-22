@@ -8,11 +8,10 @@
     :pagination="{
       pageSize: 10,
     }"
-    :row-props="rowProps"
   />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import api from "@/api";
 import { ref, h, resolveDynamicComponent } from "vue";
 import { timeControl } from "@/utils";
@@ -20,26 +19,27 @@ import { NAvatar, NIcon, NSwitch, NButton } from "naive-ui";
 import { railStyle } from "@/utils";
 import { LogoSnapchat } from "@vicons/ionicons5";
 import { useMessage, useDialog, NInput, NDivider } from "naive-ui";
-
+import type { DataTableColumns } from "naive-ui";
+import moment from "moment";
 const dialog = useDialog();
 const message = useMessage();
 const Data = ref([]);
-const rowProps = (row) => {
-  return {
-    onContextmenu: (e) => {
-      e.preventDefault();
-      dropdown.value.showDropdown = false;
-      nextTick().then(() => {
-        dropdown.value.showDropdown = true;
-        dropdown.value.x = e.clientX;
-        dropdown.value.y = e.clientY;
-        dropdown.value.row = row;
-      });
-    },
-  };
+type Song = {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  name: string;
+  qq: string;
+  email: string;
+  question: string;
+  reply: string;
+  like: number;
+  check: boolean;
+  show: boolean;
 };
+
 let loading = false;
-const cols = reactive([
+const cols: DataTableColumns<Song> = [
   {
     title: "ID",
     key: "id",
@@ -55,7 +55,7 @@ const cols = reactive([
       return timeControl(row.created_at);
     },
     sorter: (row1, row2) =>
-      new Date(row1.created_at) - new Date(row2.created_at),
+      moment(row1.created_at).unix() - moment(row2.created_at).unix(),
   },
   { title: "问题", key: "question", resizable: true },
   { title: "回答", key: "reply", resizable: true },
@@ -75,12 +75,14 @@ const cols = reactive([
               maxWidth: "80px",
             },
           },
-          row.name,
-          h(NAvatar, {
-            round: true,
-            size: "small",
-            src: `http://q.qlogo.cn/headimg_dl?dst_uin=${row.qq}&spec=640&img_type=jpg`,
-          })
+          [
+            row.name,
+            h(NAvatar, {
+              round: true,
+              size: "small",
+              src: `http://q.qlogo.cn/headimg_dl?dst_uin=${row.qq}&spec=640&img_type=jpg`,
+            }),
+          ]
         );
       } else {
         return h(
@@ -92,12 +94,14 @@ const cols = reactive([
               maxWidth: "80px",
             },
           },
-          "匿名",
-          h(NIcon, {
-            round: true,
-            size: 30,
-            component: resolveDynamicComponent(LogoSnapchat),
-          })
+          [
+            "匿名",
+            h(NIcon, {
+              round: true,
+              size: 30,
+              component: resolveDynamicComponent(LogoSnapchat),
+            }),
+          ]
         );
       }
     },
@@ -132,16 +136,12 @@ const cols = reactive([
     key: "operation",
     width: 150,
     render(row, index) {
-      return h(
-        "div",
-        { class: "operation" },
-        h(
-          "div",
-          { class: "switch" },
+      return h("div", { class: "operation" }, [
+        h("div", { class: "switch" }, [
           h(
             NSwitch,
             {
-              railStyle: (info) => railStyle(info),
+              railStyle: railStyle,
               onUpdateValue: (val) => upShow(val, row),
               value: row.show,
               loading: loading,
@@ -155,7 +155,7 @@ const cols = reactive([
           h(
             NSwitch,
             {
-              railStyle: (info) => railStyle(info),
+              railStyle: railStyle,
               onUpdateValue: (val) => upCheck(val, row),
               value: row.check,
               loading: loading,
@@ -165,8 +165,8 @@ const cols = reactive([
               checked: () => "过审",
               unchecked: () => "不过",
             }
-          )
-        ),
+          ),
+        ]),
         h(
           NButton,
           {
@@ -175,11 +175,11 @@ const cols = reactive([
             onClick: () => delmessage(row, index),
           },
           () => "删除"
-        )
-      );
+        ),
+      ]);
     },
   },
-]);
+];
 const params = { pagesize: 10, pagenum: 1 };
 
 function upShow(val, row) {
@@ -226,9 +226,7 @@ function reply(row, index) {
   dialog.warning({
     title: `回复:${row.id}`,
     content: () => {
-      return h(
-        "div",
-        {},
+      return h("div", {}, [
         row.question,
         h(NDivider),
         h(NInput, {
@@ -237,8 +235,8 @@ function reply(row, index) {
           onUpdateValue: (v) => {
             content.value = v;
           },
-        })
-      );
+        }),
+      ]);
     },
     positiveText: "确定",
     negativeText: "取消",

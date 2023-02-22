@@ -10,7 +10,7 @@
   />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, h, onBeforeMount } from "vue";
 import { NIcon, useMessage } from "naive-ui";
 import { RouterLink, useRoute, useRouter } from "vue-router";
@@ -27,7 +27,7 @@ const route = useRoute();
 
 const collapsed = ref(false);
 const message = useMessage();
-const menusKey = ref("go-" + route.name.split("-")[0]);
+const menusKey = ref("go-" + (route.name as string).split("-")[0]);
 function clickMenuItem(key) {
   menusKey.value = key;
 }

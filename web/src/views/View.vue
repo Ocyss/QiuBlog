@@ -4,7 +4,7 @@
   </frontVue>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import frontVue from "@/layout/front.vue";
 </script>
 

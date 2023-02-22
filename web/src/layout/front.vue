@@ -23,14 +23,15 @@
   </layoutVue>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import MenuVue from "./components/front/Menu.vue";
 import LogoVue from "./components/Logo.vue";
 import HeaderVue from "./components/Header.vue";
 import layoutVue from "./index.vue";
 import FriendChainVue from "./components/front/FriendChain.vue";
 
-const settingStore = inject("projectStore");
+import { inject, computed, ref } from "vue";
+const settingStore: any = inject("projectStore");
 //是否折叠
 const collapsed = computed({
   get: () => settingStore.collapsed,

@@ -22,14 +22,14 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from "vue";
+<script setup lang="ts">
+import { ref, onMounted, inject } from "vue";
 import { useIntersectionObserver } from "@vueuse/core";
 
 const emit = defineEmits(["upage", "load"]);
 const button = ref(void 0);
 const props = defineProps(["page", "cid", "pageCount"]);
-const settingStore = inject("projectStore");
+const settingStore: any = inject("projectStore");
 
 onMounted(() => {
   setTimeout(() => {

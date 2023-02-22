@@ -36,4 +36,10 @@ request.interceptors.response.use(
   }
 );
 
+declare module "axios" {
+  interface AxiosInstance {
+    (config: AxiosRequestConfig): Promise<any>;
+  }
+}
+
 export default request;

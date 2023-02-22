@@ -18,10 +18,10 @@
   </n-layout>
 </template>
 
-<script setup>
-import { ref, onMounted } from "vue";
+<script setup lang="ts">
+import { ref, onMounted, inject } from "vue";
 
-const settingStore = inject("projectStore");
+const settingStore: any = inject("projectStore");
 </script>
 
 <style lang="scss" scoped>

@@ -21,9 +21,9 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
-const designStore = inject("designStore");
+<script setup lang="ts">
+import { ref, inject } from "vue";
+const designStore: any = inject("designStore");
 </script>
 
 <style scoped lang="scss">

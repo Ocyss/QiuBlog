@@ -40,11 +40,11 @@
   </n-card>
 </template>
 
-<script setup>
-import { ref, onMounted } from "vue";
+<script setup lang="ts">
+import { ref, onMounted, inject, computed } from "vue";
 import api from "@/api";
 import { randomRgb } from "@/utils";
-const designStore = inject("designStore");
+const designStore: any = inject("designStore");
 let timer = null;
 const card = ref(void 0);
 const tags = ref([]);
@@ -75,7 +75,7 @@ const rotateX = () => {
   }
 };
 //计算Y轴移动
-const rotateY = (speedY) => {
+const rotateY = () => {
   for (let tag of tags.value) {
     var x1 = (tag.x - CY.value) * cos - tag.z * sin + CY.value;
     var z1 = tag.z * cos + (tag.x - CY.value) * sin;

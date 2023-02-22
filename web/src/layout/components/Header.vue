@@ -37,17 +37,17 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
+<script setup lang="ts">
+import { ref, inject, computed } from "vue";
 import {
   ColorPalette,
   Language,
   ShareSocialOutline,
   MenuSharp,
 } from "@vicons/ionicons5";
-
+import { railStyle } from "@/utils";
 const shareShow = ref(false);
-const designStore = inject("designStore");
+const designStore: any = inject("designStore");
 
 const url = window.location.href;
 //暗黑模式
@@ -61,22 +61,6 @@ const locale = computed({
   set: (val) => designStore.setLocale(val),
 });
 defineProps(["collapsed"]);
-
-const railStyle = ({ focused, checked }) => {
-  const style = {};
-  if (checked) {
-    style.background = "#d03050";
-    if (focused) {
-      style.boxShadow = "0 0 0 2px #d0305040";
-    }
-  } else {
-    style.background = "#2080f0";
-    if (focused) {
-      style.boxShadow = "0 0 0 2px #2080f040";
-    }
-  }
-  return style;
-};
 </script>
 
 <style lang="scss" scoped>

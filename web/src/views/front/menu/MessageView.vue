@@ -88,7 +88,7 @@
   </n-modal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { useMessage } from "naive-ui";
 import api from "@/api";

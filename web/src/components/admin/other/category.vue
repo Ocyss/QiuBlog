@@ -86,9 +86,9 @@
     </n-spin>
   </n-list>
 </template>
-<script setup>
+<script setup lang="ts">
 import draggable from "vuedraggable";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { Pencil, Trash } from "@vicons/ionicons5";
 
 import { useMessage } from "naive-ui";

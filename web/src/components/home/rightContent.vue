@@ -11,7 +11,8 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { inject } from "vue";
 import aboutVue from "./card/about.vue";
 import commentVue from "./card/comment.vue";
 import popularVue from "./card/popular.vue";

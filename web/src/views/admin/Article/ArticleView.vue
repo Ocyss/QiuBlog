@@ -31,13 +31,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useRouter } from "vue-router";
-import { h, reactive, nextTick } from "vue";
+import { h, reactive, nextTick, ref, inject } from "vue";
 import { NButton, NTag, NImage } from "naive-ui";
 import { timeControl } from "@/utils";
 import api from "@/api";
+import moment from "moment";
 const router = useRouter();
+
 const data = ref([]);
 const dropdown = ref({
   x: 0,
@@ -100,7 +102,7 @@ const colsReactive = reactive([
       return timeControl(row.created_at);
     },
     sorter: (row1, row2) =>
-      new Date(row1.created_at) - new Date(row2.created_at),
+      moment(row1.created_at).unix() - moment(row2.created_at).unix(),
   },
   {
     title: "更新时间",
@@ -111,7 +113,7 @@ const colsReactive = reactive([
       return timeControl(row.updated_at);
     },
     sorter: (row1, row2) =>
-      new Date(row1.updated_at) - new Date(row2.updated_at),
+      moment(row1.updated_at).unix() - moment(row2.updated_at).unix(),
   },
   { title: "标题", key: "title", minWidth: 150, resizable: true },
   {

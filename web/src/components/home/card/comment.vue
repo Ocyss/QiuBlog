@@ -29,11 +29,11 @@
   </n-card>
 </template>
 
-<script setup>
-import { ref } from "vue";
+<script setup lang="ts">
+import { ref, inject } from "vue";
 import { randomRgb } from "@/utils";
 import api from "@/api";
-const designStore = inject("designStore");
+const designStore: any = inject("designStore");
 const data = ref([]);
 
 api.message.getMessage({ pagesize: 6, pagenum: 1 }).then((res) => {

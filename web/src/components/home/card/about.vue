@@ -12,11 +12,11 @@
   </n-card>
 </template>
 
-<script setup>
-import { inject } from "vue";
-const config = inject("config");
+<script setup lang="ts">
+import { inject, ref } from "vue";
+const config: any = inject("config");
 
-const designStore = inject("designStore");
+const designStore: any = inject("designStore");
 </script>
 
 <style lang="scss" scoped>

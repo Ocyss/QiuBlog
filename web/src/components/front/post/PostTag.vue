@@ -14,7 +14,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import PostVue from "./Post.vue";
 const props = defineProps(["data"]);

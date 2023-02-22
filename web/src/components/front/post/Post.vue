@@ -54,7 +54,7 @@
         <n-space :wrap="false">
           <n-tag
             v-for="tag in item.tags"
-            @click="router.push({ name: menuTag, query: { id: tag.id } })"
+            @click="router.push({ name: 'menuTag', query: { id: tag.id } })"
             style="cursor: pointer"
             :key="tag"
             size="small"
@@ -76,18 +76,21 @@
   </n-config-provider>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Calendar, Book, PricetagsSharp } from "@vicons/ionicons5";
-import { ref } from "vue";
+import { inject, ref } from "vue";
 import { useRouter } from "vue-router";
 import TimerVue from "@/components/Timer.vue";
 
-const designStore = inject("designStore");
-const config = inject("config");
+const designStore: any = inject("designStore");
+const config: any = inject("config");
 
 const router = useRouter();
 const imgSrc = ref("");
-const props = defineProps(["item"]);
+const props = defineProps({
+  item: Object,
+  index: Number,
+});
 //渲染判断，无头图则采用随机api
 if (props.item.img == "") {
   imgSrc.value = config.value.global.randomImgApi + `wcnm=${props.index}`;
@@ -131,11 +134,11 @@ a {
     align-items: center;
   }
   .title {
-    font-size: 1.2rem;
+    font-size: 19px;
     font-weight: 600;
   }
   .contentMain {
-    font-size: 0.8rem;
+    font-size: 14px;
     -webkit-line-clamp: 2;
     overflow: hidden;
     display: -webkit-box;

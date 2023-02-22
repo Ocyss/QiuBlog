@@ -112,12 +112,13 @@
   </n-modal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { useMessage } from "naive-ui";
 import api from "@/api";
 import TimerVue from "@/components/Timer.vue";
 import { ThumbsUpSharp, LogoSnapchat } from "@vicons/ionicons5";
+import { railStyle } from "@/utils";
 const message = useMessage();
 const showModal = ref(false);
 const content = ref([]);
@@ -136,21 +137,6 @@ const switchData = ref({
 });
 const noSpace = (value) => !value || !/\s+/.test(value);
 const noSideSpace = (value) => !value.startsWith(" ") && !value.endsWith(" ");
-const railStyle = ({ focused, checked }) => {
-  const style = {};
-  if (checked) {
-    style.background = "#d03050";
-    if (focused) {
-      style.boxShadow = "0 0 0 2px #d0305040";
-    }
-  } else {
-    style.background = "#2080f0";
-    if (focused) {
-      style.boxShadow = "0 0 0 2px #2080f040";
-    }
-  }
-  return style;
-};
 
 function submitCallback() {
   if (data.value.question.length < 10) {

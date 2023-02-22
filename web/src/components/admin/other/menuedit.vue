@@ -14,7 +14,7 @@
   </n-card>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const props = defineProps(["value"]);
 </script>
 

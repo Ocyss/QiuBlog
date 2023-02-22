@@ -2,7 +2,7 @@
   <PostTagtVue :data="data" v-if="data" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import PostTagtVue from "@/components/front/post/PostTag.vue";
 import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";

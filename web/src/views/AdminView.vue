@@ -4,6 +4,6 @@
   </adminVue>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import adminVue from "@/layout/admin.vue";
 </script>

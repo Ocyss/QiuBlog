@@ -68,8 +68,9 @@
   </div>
 </template>
 
-<script setup>
-const designStore = inject("designStore");
+<script setup lang="ts">
+import { inject, ref } from "vue";
+const designStore: any = inject("designStore");
 </script>
 
 <style scoped>

@@ -10,13 +10,13 @@
   />
 </template>
 
-<script setup>
-import { ref, h, onBeforeMount } from "vue";
+<script setup lang="ts">
+import { ref, h, onBeforeMount, inject } from "vue";
 import { NIcon, useMessage } from "naive-ui";
 import { RouterLink, useRouter, useRoute } from "vue-router";
 import api from "@/api";
 const props = defineProps(["collapsed"]);
-const designStore = inject("designStore");
+const designStore: any = inject("designStore");
 const route = useRoute();
 
 const router = useRouter();
@@ -25,9 +25,9 @@ const message = useMessage();
 const menusKey = ref("home");
 
 if (route.meta.menukey == undefined) {
-  menusKey.value = route.params.menuName;
+  menusKey.value = route.params.menuName as string;
 } else {
-  menusKey.value = route.meta.menukey;
+  menusKey.value = route.meta.menukey as string;
 }
 //切换左侧菜单
 function clickMenuItem(key) {

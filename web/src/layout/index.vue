@@ -4,6 +4,7 @@
     v-if="scrollableEl"
     :listen-to="scrollableEl"
     right="20%"
+    style="z-index: 5000"
   />
   <n-layout class="layout" has-sider position="absolute">
     <n-layout-sider
@@ -44,18 +45,19 @@
   </n-layout>
 </template>
 
-<script setup>
-import { ref, onMounted } from "vue";
+<script setup lang="ts">
+import { ref, onMounted, provide, computed, readonly, inject } from "vue";
 import Footer from "./components/Footer.vue";
-import { NBackTop } from "naive-ui";
-const settingStore = inject("projectStore");
+import { useLoadingBar } from "naive-ui";
+
+const settingStore: any = inject("projectStore");
 //获取内layout元素
 const layoutRef = ref(void 0);
 //获取可滚动元素，注入方便其他组件监听
 const scrollableEl = ref(void 0);
 const backTopRef = ref(void 0);
-provide("scrollableEl", scrollableEl);
-provide("backTopRef", backTopRef);
+provide("scrollableEl", readonly(scrollableEl));
+provide("backTopRef", readonly(backTopRef));
 
 //是否手机模式，宽度小于700
 const isMobile = computed({

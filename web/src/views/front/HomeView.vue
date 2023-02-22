@@ -23,12 +23,12 @@
   <PostListVue :cdata="cdata" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import PostListVue from "@/components/front/post/PostList.vue";
-import { ref, computed } from "vue";
+import { ref, computed, inject } from "vue";
 import api from "@/api";
 
-const designStore = inject("designStore");
+const designStore: any = inject("designStore");
 const datas = ref([
   "https://qiu-blog.oss-cn-hangzhou.aliyuncs.com/Article/1676282445541866800.webp",
   "https://qiu-blog.oss-cn-hangzhou.aliyuncs.com/Article/1676282445542375600.webp",
