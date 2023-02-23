@@ -25,14 +25,15 @@
 <script setup lang="ts">
 import { ref, onMounted, inject } from "vue";
 import { useIntersectionObserver } from "@vueuse/core";
-
+import { useProjectSettingStore } from "@/store/modules/projectSetting";
 const emit = defineEmits(["upage", "load"]);
 const button = ref(void 0);
 const props = defineProps(["page", "cid", "pageCount"]);
-const settingStore: any = inject("projectStore");
+const settingStore = useProjectSettingStore();
 
 onMounted(() => {
   setTimeout(() => {
+    //进行自动加载按钮监听,按钮进入可视区域自动加载
     useIntersectionObserver(button, ([{ isIntersecting }]) => {
       if (settingStore.autuLoad && isIntersecting) {
         emit("load");

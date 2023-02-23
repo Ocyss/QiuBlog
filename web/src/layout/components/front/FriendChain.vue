@@ -13,9 +13,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from "vue";
+import { Ref, inject } from "vue";
+import type { Config } from "@/types";
+
 const props = defineProps(["collapsed"]);
-const config: any = inject("config");
+const config: Ref<Config> = inject("config");
 </script>
 
 <style scoped lang="scss">

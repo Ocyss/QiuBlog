@@ -46,9 +46,10 @@ import {
   MenuSharp,
 } from "@vicons/ionicons5";
 import { railStyle } from "@/utils";
+import { useDesignSettingStore } from "@/store/modules/designSetting";
 const shareShow = ref(false);
-const designStore: any = inject("designStore");
 
+const designStore = useDesignSettingStore();
 const url = window.location.href;
 //暗黑模式
 const darkMode = computed({

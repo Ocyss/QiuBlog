@@ -1,5 +1,5 @@
-import { defineStore, StoreDefinition } from "pinia";
-const appThemeList = [
+import { defineStore } from "pinia";
+const appThemeList: Array<string> = [
   "#2d8cf0",
   "#0960bd",
   "#0084f4",

@@ -70,7 +70,9 @@
 
 <script setup lang="ts">
 import { inject, ref } from "vue";
-const designStore: any = inject("designStore");
+import { useDesignSettingStore } from "@/store/modules/designSetting";
+
+const designStore = useDesignSettingStore();
 </script>
 
 <style scoped>

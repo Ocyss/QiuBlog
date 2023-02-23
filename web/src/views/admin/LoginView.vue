@@ -57,13 +57,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from "vue";
+import { ref, inject, Ref } from "vue";
 import { PersonCircle, LockClosed } from "@vicons/ionicons5";
 import { useMessage } from "naive-ui";
 import { useRouter } from "vue-router";
 import api from "@/api";
+import type { Config } from "@/types";
 
-const config: any = inject("config");
+const config: Ref<Config> = inject("config");
 const router = useRouter();
 const message = useMessage();
 const loginty = ref(true);

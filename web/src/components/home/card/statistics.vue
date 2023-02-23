@@ -41,7 +41,9 @@
 <script setup lang="ts">
 import { ref, inject, Ref } from "vue";
 import api from "@/api";
-const designStore: any = inject("designStore");
+import { useDesignSettingStore } from "@/store/modules/designSetting";
+
+const designStore = useDesignSettingStore();
 const data: Ref<any> = ref({
   article_count: 0,
   words_total: 0,

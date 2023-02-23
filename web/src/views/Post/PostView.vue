@@ -90,15 +90,16 @@
 
 <script setup lang="ts">
 import frontVue from "@/layout/front.vue";
-import { ref, inject, computed } from "vue";
+import { ref, inject, computed, Ref } from "vue";
 import api from "@/api";
 import { useRoute } from "vue-router";
 import { useMessage } from "naive-ui";
 import { Calendar, Book, PricetagsSharp } from "@vicons/ionicons5";
 import TimerVue from "@/components/Timer.vue";
 import editorVue from "@/components/editor.vue";
+import type { Config } from "@/types";
 
-const config: any = inject("config");
+const config: Ref<Config> = inject("config");
 const url = window.location.href;
 const route = useRoute();
 const message = useMessage();

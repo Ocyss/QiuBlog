@@ -20,8 +20,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted, inject } from "vue";
+import { useProjectSettingStore } from "@/store/modules/projectSetting";
 
-const settingStore: any = inject("projectStore");
+const settingStore = useProjectSettingStore();
 </script>
 
 <style lang="scss" scoped>

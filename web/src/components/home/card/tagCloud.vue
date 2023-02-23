@@ -44,7 +44,9 @@
 import { ref, onMounted, inject, computed } from "vue";
 import api from "@/api";
 import { randomRgb } from "@/utils";
-const designStore: any = inject("designStore");
+import { useDesignSettingStore } from "@/store/modules/designSetting";
+
+const designStore = useDesignSettingStore();
 let timer = null;
 const card = ref(void 0);
 const tags = ref([]);

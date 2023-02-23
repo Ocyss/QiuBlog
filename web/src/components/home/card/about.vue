@@ -13,10 +13,12 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref } from "vue";
-const config: any = inject("config");
+import { inject, Ref } from "vue";
+import { useDesignSettingStore } from "@/store/modules/designSetting";
+import type { Config } from "@/types";
 
-const designStore: any = inject("designStore");
+const config: Ref<Config> = inject("config");
+const designStore = useDesignSettingStore();
 </script>
 
 <style lang="scss" scoped>

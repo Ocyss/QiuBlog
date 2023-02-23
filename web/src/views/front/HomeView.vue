@@ -27,8 +27,9 @@
 import PostListVue from "@/components/front/post/PostList.vue";
 import { ref, computed, inject } from "vue";
 import api from "@/api";
+import { useDesignSettingStore } from "@/store/modules/designSetting";
 
-const designStore: any = inject("designStore");
+const designStore = useDesignSettingStore();
 const datas = ref([
   "https://qiu-blog.oss-cn-hangzhou.aliyuncs.com/Article/1676282445541866800.webp",
   "https://qiu-blog.oss-cn-hangzhou.aliyuncs.com/Article/1676282445542375600.webp",

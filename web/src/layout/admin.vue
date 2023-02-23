@@ -25,7 +25,9 @@ import HeaderVue from "./components/Header.vue";
 import LogoVue from "./components/Logo.vue";
 import layoutVue from "./index.vue";
 import { inject, computed, ref } from "vue";
-const settingStore: any = inject("projectStore");
+import { useProjectSettingStore } from "@/store/modules/projectSetting";
+
+const settingStore = useProjectSettingStore();
 //是否折叠
 const collapsed = computed({
   get: () => settingStore.getCollapsed,

@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from "vue";
+import { inject, Ref } from "vue";
 import aboutVue from "./card/about.vue";
 import commentVue from "./card/comment.vue";
 import popularVue from "./card/popular.vue";
@@ -20,7 +20,7 @@ import statisticsVue from "./card/statistics.vue";
 import tagCloudVue from "./card/tagCloud.vue";
 
 const props = defineProps(["affixRef"]);
-const scrollableEl = inject("scrollableEl");
+const scrollableEl: Ref<HTMLElement> = inject("scrollableEl");
 </script>
 
 <style lang="scss" scoped>

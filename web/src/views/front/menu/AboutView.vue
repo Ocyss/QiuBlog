@@ -21,8 +21,9 @@
 import { ref, onMounted, inject } from "vue";
 import axios from "axios";
 import editor from "@/components/editor.vue";
+import { useDesignSettingStore } from "@/store/modules/designSetting";
 
-const designStore: any = inject("designStore");
+const designStore = useDesignSettingStore();
 const contentRef = ref({
   author: "",
   project: "",

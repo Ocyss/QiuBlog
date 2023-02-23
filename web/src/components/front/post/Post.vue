@@ -78,13 +78,14 @@
 
 <script setup lang="ts">
 import { Calendar, Book, PricetagsSharp } from "@vicons/ionicons5";
-import { inject, ref } from "vue";
+import { inject, ref, Ref } from "vue";
 import { useRouter } from "vue-router";
 import TimerVue from "@/components/Timer.vue";
+import { useDesignSettingStore } from "@/store/modules/designSetting";
+import type { Config } from "@/types";
 
-const designStore: any = inject("designStore");
-const config: any = inject("config");
-
+const designStore = useDesignSettingStore();
+const config: Ref<Config> = inject("config");
 const router = useRouter();
 const imgSrc = ref("");
 const props = defineProps({

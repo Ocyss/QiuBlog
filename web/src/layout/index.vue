@@ -49,8 +49,9 @@
 import { ref, onMounted, provide, computed, readonly, inject } from "vue";
 import Footer from "./components/Footer.vue";
 import { useLoadingBar } from "naive-ui";
+import { useProjectSettingStore } from "@/store/modules/projectSetting";
 
-const settingStore: any = inject("projectStore");
+const settingStore = useProjectSettingStore();
 //获取内layout元素
 const layoutRef = ref(void 0);
 //获取可滚动元素，注入方便其他组件监听
@@ -99,6 +100,8 @@ onMounted(() => {
   window.addEventListener("resize", watchWidth);
   window["$loading"] = useLoadingBar();
   window["$loading"].finish();
+  console.log(layoutRef.value);
+
   //将可滚动元素赋值
   scrollableEl.value = layoutRef.value?.scrollableElRef;
 });

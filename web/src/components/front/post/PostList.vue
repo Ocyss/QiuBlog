@@ -49,19 +49,20 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref } from "vue";
+import { inject, ref, Ref } from "vue";
 import PostVue from "./Post.vue";
 import api from "@/api";
 import Pagination from "./Pagination.vue";
-
+import { useProjectSettingStore } from "@/store/modules/projectSetting";
 const PostSpinShow = ref(true);
 const props = defineProps(["cdata"]);
 const page = ref({ "-1": 1 });
 const pageCount = ref({ "-1": 1 });
 const cid = ref(-1);
 const tabs = ref(void 0);
-const settingStore: any = inject("projectStore");
-const backTopRef: any = inject("backTopRef");
+
+const settingStore = useProjectSettingStore();
+const backTopRef: Ref<HTMLElement> = inject("backTopRef");
 //各分类下的文章
 const PostData = ref({});
 //请求主页文章列表
