@@ -1,30 +1,35 @@
 import { defineStore } from "pinia";
 const appThemeList: Array<string> = [
-  "#2d8cf0",
-  "#0960bd",
-  "#0084f4",
-  "#009688",
-  "#536dfe",
-  "#ff5c93",
-  "#ee4f12",
-  "#0096c7",
-  "#9c27b0",
+  "#FC9D99",
+  "#D24D57",
+  "#26A65B",
+  "#EB7347",
+  "#AEDD81",
+  "#00CCFF",
+  "#D0D0D0",
   "#ff9800",
   "#FF3D68",
   "#00C1D4",
   "#71EFA3",
-  "#171010",
   "#78DEC7",
   "#1768AC",
   "#FB9300",
   "#FC5404",
+  "#3B99D4",
+  "#8ED14B",
+  "#F06B49",
+  "#ECC2F1",
+  "#82C7C3",
+  "#E3698A",
+  "#1776EB",
+  "#F5B2AC",
 ];
 
 export const useDesignSettingStore = defineStore({
   id: "app-design-setting",
   state: () => ({
     darkTheme: false, //深色主题
-    appTheme: "#2d8cf0", //系统风格
+    appTheme: "#FC9D99", //系统风格
     appThemeList, //系统内置风格
     locale: true,
   }),

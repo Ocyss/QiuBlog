@@ -28,7 +28,20 @@
         <n-icon size="25" @click="locale = !locale"><Language /></n-icon>
       </div>
       <div>
-        <n-icon size="25"><ColorPalette /></n-icon>
+        <n-popover placement="bottom" trigger="click">
+          <template #trigger>
+            <n-icon size="25"><ColorPalette /></n-icon>
+          </template>
+          <n-space class="themsBottom">
+            <div
+              class="themsRadio"
+              :class="designStore.appTheme == thems ? 'selected' : ''"
+              :style="{ backgroundColor: thems }"
+              v-for="thems in designStore.appThemeList"
+              @click="designStore.appTheme = thems"
+            ></div>
+          </n-space>
+        </n-popover>
       </div>
     </div>
     <n-modal v-model:show="shareShow">
@@ -61,6 +74,7 @@ const locale = computed({
   get: () => designStore.getLocale,
   set: (val) => designStore.setLocale(val),
 });
+
 defineProps(["collapsed"]);
 </script>
 
@@ -96,5 +110,20 @@ defineProps(["collapsed"]);
 
 .n-icon {
   cursor: pointer;
+}
+.themsBottom {
+  width: 10vw;
+  justify-content: center !important;
+  .selected {
+    border: solid 2px var(--n-text-color);
+  }
+}
+.themsRadio {
+  width: 20px;
+  height: 20px;
+  box-sizing: border-box;
+  &:hover {
+    border: solid 3px var(--n-text-color);
+  }
 }
 </style>

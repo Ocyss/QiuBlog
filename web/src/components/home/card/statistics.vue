@@ -42,7 +42,7 @@
 import { ref, inject, Ref } from "vue";
 import api from "@/api";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
-
+import moment from "moment";
 const designStore = useDesignSettingStore();
 const data: Ref<any> = ref({
   article_count: 0,
@@ -51,14 +51,12 @@ const data: Ref<any> = ref({
   last_updated: 0,
 });
 let date: Ref<any> = ref({
-  cur: Math.round(new Date().getTime() / 1000),
+  cur: moment().unix(),
   d: 0,
   h: 0,
   m: 0,
   s: 0,
 });
-
-const dates = ref("");
 
 api.statistics.statistics().then((res) => {
   if (res.status == 200) {
