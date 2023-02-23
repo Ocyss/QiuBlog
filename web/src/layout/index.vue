@@ -22,7 +22,6 @@
     >
       <slot name="sider" :collapsed="collapsed"></slot>
     </n-layout-sider>
-
     <n-drawer
       v-model:show="showSideDrawder"
       width="35%"
@@ -46,10 +45,10 @@
 </template>
 
 <script setup lang="ts">
+import { useProjectSettingStore } from "@/store/modules/projectSetting";
 import { ref, onMounted, provide, computed, readonly, inject } from "vue";
 import Footer from "./components/Footer.vue";
 import { useLoadingBar } from "naive-ui";
-import { useProjectSettingStore } from "@/store/modules/projectSetting";
 
 const settingStore = useProjectSettingStore();
 //获取内layout元素
@@ -100,8 +99,6 @@ onMounted(() => {
   window.addEventListener("resize", watchWidth);
   window["$loading"] = useLoadingBar();
   window["$loading"].finish();
-  console.log(layoutRef.value);
-
   //将可滚动元素赋值
   scrollableEl.value = layoutRef.value?.scrollableElRef;
 });
@@ -113,6 +110,7 @@ onMounted(() => {
   flex-direction: row;
   flex: auto;
 }
+
 .n-scrollbar {
   display: flex;
   justify-content: center;

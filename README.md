@@ -12,7 +12,6 @@
     <a href="https://github.com/qiu-lzsnmb/QiuBlog/issues">报告Bug</a>
     <a href="https://github.com/qiu-lzsnmb/QiuBlog/issues">提出新特性</a>
   </p>
-
 ## 技术栈
 
 #### 后端 Golang 1.19
@@ -31,6 +30,35 @@
 - vuedraggable              [(拖拽库)](https://github.com/SortableJS/Vue.Draggable)
 - axios                             (网络请求库)
 
+## 部署方法
+
+前端在web目录下输入指令 `yarn build` 进行编译
+
+后端在根目录输入指令`go build`进行编译
+
+也可直接下载编译好的版本
+
+```go
+├─config // 配置目录
+│  ├─ config.ini //后端配置文件
+├─web // 前端目录
+│  ├─assets
+│  ├─static // 静态文件
+|  |  ├─ config.json5 //前端配置文件
+│  └─index.html 
+└─main // 二进制可执行文件
+```
+
+可在宝塔面板，Go项目中部署
+
+> 项目执行文件  `选择main // 二进制可执行文件`
+>
+> 项目端口 `后端配置文件中的HttpPort(不带:)`
+>
+> 执行命令 `默认`
+>
+> 其他按需配置
+
 ## 预览
 
 <img src="https://qiu-blog.oss-cn-hangzhou.aliyuncs.com/Q/2022-10-30/2.png" style="zoom: 33%;" />
@@ -42,8 +70,6 @@
 <img src="https://qiu-blog.oss-cn-hangzhou.aliyuncs.com/Q/2022-10-30/1.png" style="zoom: 25%;" />
 
 ### 文件目录说明
-后端
-
 ```
 │─api // 接口
 │  └─v1
