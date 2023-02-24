@@ -52,12 +52,29 @@ type (
 	Comment struct{}
 )
 
+func ClearMessage(message bool, question bool) {
+	ctx := context.Background()
+	if message {
+		db.Rdb.HDel(ctx, "messages", "admin:true")
+		db.Rdb.HDel(ctx, "messages", "admin:false")
+		db.Rdb.Del(ctx, "message")
+	}
+	if question {
+		db.Rdb.HDel(ctx, "questions", "admin:true")
+		db.Rdb.HDel(ctx, "questions", "admin:false")
+		db.Rdb.Del(ctx, "question")
+	}
+}
+
 // AddMessage 添加留言
 func AddMessage(data *Message) int {
 	err = Db.Create(data).Error
 	if err != nil {
 		return errmsg.ERROR
 	}
+	ctx := context.Background()
+	db.Rdb.HDel(ctx, "messages", "admin:true")
+	db.Rdb.HDel(ctx, "messages", "admin:false")
 	return errmsg.SUCCESS
 }
 
@@ -67,6 +84,9 @@ func AddQuestion(data *Question) int {
 	if err != nil {
 		return errmsg.ERROR
 	}
+	ctx := context.Background()
+	db.Rdb.HDel(ctx, "questions", "admin:true")
+	db.Rdb.HDel(ctx, "questions", "admin:false")
 	return errmsg.SUCCESS
 }
 
@@ -88,7 +108,8 @@ func GetMessage(pageSize int, pageNum int, admin bool) ([]any, int64) {
 			Model(&Message{}).
 			Where(where).
 			Order("created_at desc").
-			Pluck("id", &data.Ids)
+			Pluck("id", &data.Ids).
+			Count(&data.Total)
 		dataJson, _ = json.Marshal(data)
 		db.Rdb.HSet(ctx, "messages", key, dataJson)
 	} else {
@@ -133,9 +154,10 @@ func GetQuestion(pageSize int, pageNum int, admin bool) ([]any, int64) {
 			Model(&Question{}).
 			Where(where).
 			Order("created_at desc").
-			Pluck("id", &data.Ids)
+			Pluck("id", &data.Ids).
+			Count(&data.Total)
 		dataJson, _ = json.Marshal(data)
-		db.Rdb.HSet(ctx, "messages", key, dataJson)
+		db.Rdb.HSet(ctx, "questions", key, dataJson)
 	} else {
 		_ = json.Unmarshal(dataJson, &data)
 	}
@@ -211,11 +233,15 @@ func DelMessage(id uint, message bool) int {
 	return errmsg.SUCCESS
 }
 
-// ReplyQuestio 回答
-func ReplyQuestio(id uint, content string) int {
+// ReplyQuestion 回答
+func ReplyQuestion(id uint, content string) int {
 	err = Db.Model(&Question{}).Where(id).Update("reply", content).Error
 	if err != nil {
 		return errmsg.ERROR
 	}
+	ctx := context.Background()
+	db.Rdb.HDel(ctx, "questions", "admin:true")
+	db.Rdb.HDel(ctx, "questions", "admin:false")
+	db.Rdb.HDel(ctx, "question", strconv.Itoa(int(id)))
 	return errmsg.SUCCESS
 }

@@ -124,7 +124,6 @@ func GetsArticle(pageSize int, pageNum int, cid int, mid int, tid int) ([]Articl
 			}
 			dataJson, _ = json.Marshal(data)
 			db.Rdb.HSet(ctx, "articles", tidKey, dataJson)
-			fmt.Println(tidKey, data)
 		}
 	} else {
 		midKey := fmt.Sprintf("mid:%d", mid)

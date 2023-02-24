@@ -62,22 +62,21 @@ const cid = ref(-1);
 const tabs = ref(void 0);
 
 const settingStore = useProjectSettingStore();
-const backTopRef: Ref<HTMLElement> = inject("backTopRef");
+const backTopRef: Ref<any> = inject("backTopRef");
 //各分类下的文章
 const PostData = ref({});
 //请求主页文章列表
 // c是分类请求,m是菜单请求
 function getPosts() {
+  PostSpinShow.value = true;
   const params: {
     pagesize: number;
     pagenum: number;
-    cid: number;
-    mid: number;
+    cid?: number;
+    mid?: number;
   } = {
     pagesize: 10,
     pagenum: page.value[cid.value],
-    cid: null,
-    mid: null,
   };
   if (cid.value == -1) {
     params.mid = props.cdata.id;

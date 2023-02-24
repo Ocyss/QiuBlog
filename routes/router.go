@@ -35,11 +35,12 @@ func InitRouter() {
 		auth.POST("category/add", Handler()(v1.AddCategory))     //添加分类
 		auth.PUT("category/list", Handler()(v1.ModifyCategorys)) //批量修改分类
 		//上传
-		auth.POST("upload/image", Handler()(v1.Upload)) //上}传文件
+		auth.POST("upload/image", Handler()(v1.Upload)) //上传文件
 		//消息
-		auth.PUT("message/updata", Handler()(v1.UpMessage))
-		auth.DELETE("message/del", Handler()(v1.DelMessage))
-		auth.PUT("message/reply", Handler()(v1.ReplyQuestio))
+		auth.PUT("message/updata", Handler()(v1.UpMessage))      //更新
+		auth.DELETE("message/del", Handler()(v1.DelMessage))     //删除
+		auth.PUT("message/reply", Handler()(v1.ReplyQuestion))   //回复
+		auth.DELETE("message/clear", Handler()(v1.ClearMessage)) //清除缓存
 	}
 
 	router := r.Group("api/v1")

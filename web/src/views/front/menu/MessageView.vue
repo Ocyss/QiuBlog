@@ -12,7 +12,11 @@
             <n-avatar
               round
               size="large"
-              :src="`http://q.qlogo.cn/headimg_dl?dst_uin=${item.qq}&spec=640&img_type=jpg`"
+              :src="
+                item.qq
+                  ? `http://q.qlogo.cn/headimg_dl?dst_uin=${item.qq}&spec=640&img_type=jpg`
+                  : `https://api.multiavatar.com/${item.content}.png`
+              "
             />
           </template>
           <template #header>{{ item.name }}</template>
@@ -63,7 +67,11 @@
       <n-avatar
         round
         size="large"
-        :src="`http://q.qlogo.cn/headimg_dl?dst_uin=${data.qq}&spec=640&img_type=jpg`"
+        :src="
+          data.qq
+            ? `http://q.qlogo.cn/headimg_dl?dst_uin=${data.qq}&spec=640&img_type=jpg`
+            : `https://api.multiavatar.com/${data.content}.png`
+        "
       />
     </n-space>
     <n-divider />

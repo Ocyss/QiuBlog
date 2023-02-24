@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"qiublog/model"
 	"qiublog/utils/ask"
@@ -23,6 +22,10 @@ type (
 	reply struct {
 		Id      uint   `json:"id"`
 		Content string `json:"content"`
+	}
+	clear struct {
+		Message  bool `json:"message"`
+		Question bool `json:"question"`
 	}
 )
 
@@ -47,7 +50,6 @@ func AddQuestion(c *gin.Context) (int, any) {
 func GetMessage(c *gin.Context) (int, any) {
 	pageSize, pageNum := tool.PageTool(c) //分页最大数,分页偏移量
 	_, admin := tool.IsAdmin(c)
-	fmt.Println(admin)
 	data, total := model.GetMessage(pageSize, pageNum, admin)
 	return errmsg.SUCCESS, gin.H{
 		"data":  data,
@@ -88,11 +90,21 @@ func DelMessage(c *gin.Context) (int, any) {
 	return model.DelMessage(data.Id, data.Message), nil
 }
 
-func ReplyQuestio(c *gin.Context) (int, any) {
+func ReplyQuestion(c *gin.Context) (int, any) {
 	var data reply
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
 		return ask.ErrParam()
 	}
-	return model.ReplyQuestio(data.Id, data.Content), nil
+	return model.ReplyQuestion(data.Id, data.Content), nil
+}
+
+func ClearMessage(c *gin.Context) (int, any) {
+	var data clear
+	err := c.ShouldBindJSON(&data)
+	if err != nil {
+		return ask.ErrParam()
+	}
+	model.ClearMessage(data.Message, data.Question)
+	return errmsg.SUCCESS, nil
 }

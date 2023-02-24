@@ -38,3 +38,11 @@ export const delMessage = (id, message) => {
     data: { id, message },
   });
 };
+
+export const clearMessage = (data: { message: boolean; question: boolean }) => {
+  return request({
+    url: "/api/v1/message/clear",
+    method: "delete",
+    data: data,
+  });
+};
