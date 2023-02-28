@@ -14,11 +14,18 @@ func InitRouter() {
 	r.Use(gin.Recovery())
 	if utils.Config.Server.AppMode == "release" {
 		r.LoadHTMLGlob("web/index.html")
+
 		r.Static("assets", "web/assets")
 		r.Static("static", "web/static")
 		r.GET("/", func(c *gin.Context) {
 			c.HTML(200, "index.html", nil)
 		})
+		if utils.Config.Server.BaiduVerifyCodevaName != "" {
+			r.StaticFile(utils.Config.Server.BaiduVerifyCodevaName, "web/"+utils.Config.Server.BaiduVerifyCodevaName)
+		}
+		if utils.Config.Server.GoogleVerifyCodevaName != "" {
+			r.StaticFile(utils.Config.Server.GoogleVerifyCodevaName, "web/"+utils.Config.Server.GoogleVerifyCodevaName)
+		}
 	}
 
 	auth := r.Group("api/v1")

@@ -62,9 +62,9 @@ api.statistics.statistics().then((res) => {
   if (res.status == 200) {
     data.value = res.data;
     date.value.cur = date.value.cur - res.data.elapsed_time;
-    date.value.d = Math.round(date.value.cur / 86400);
-    date.value.h = Math.round((date.value.cur - date.value.d * 86400) / 3600);
-    date.value.m = Math.round(
+    date.value.d = Math.floor(date.value.cur / 86400);
+    date.value.h = Math.floor((date.value.cur - date.value.d * 86400) / 3600);
+    date.value.m = Math.floor(
       (date.value.cur - date.value.d * 86400 - date.value.h * 3600) / 60
     );
     date.value.s =

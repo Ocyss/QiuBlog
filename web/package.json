@@ -12,7 +12,6 @@
     "@chenfengyuan/vue-qrcode": "2",
     "@vueuse/core": "^9.13.0",
     "axios": "^1.3.3",
-    "lottie-web": "^5.10.2",
     "marked": "^4.2.12",
     "md-editor-v3": "^2.8.1",
     "moment": "^2.29.4",

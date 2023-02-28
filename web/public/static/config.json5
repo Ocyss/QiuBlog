@@ -1,5 +1,6 @@
 {
   userInfo: {
+    title: "💘 <- - - 的博客>", //标题后缀
     name: "- - -", // 名字
     motto: ["故事很短，满是遗憾。", "Now is better than never."], // 座右铭
   },
@@ -10,6 +11,6 @@
     },
   ],
   global: {
-    randomImgApi: "https://api.btstu.cn/sjbz/api.php?",
+    randomImgApi: "https://api.btstu.cn/sjbz/api.php?", // 没有图片就使用随机Api图片
   },
 }

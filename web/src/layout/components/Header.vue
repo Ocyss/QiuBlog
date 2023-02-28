@@ -37,7 +37,7 @@
               class="themsRadio"
               :class="designStore.appTheme == thems ? 'selected' : ''"
               :style="{ backgroundColor: thems }"
-              v-for="thems in designStore.appThemeList"
+              v-for="thems in appThemeList"
               @click="designStore.appTheme = thems"
             ></div>
           </n-space>
@@ -61,7 +61,31 @@ import {
 import { railStyle } from "@/utils";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
 const shareShow = ref(false);
-
+const appThemeList = ref([
+  "#FC9D99",
+  "#D24D57",
+  "#26A65B",
+  "#EB7347",
+  "#AEDD81",
+  "#00CCFF",
+  "#D0D0D0",
+  "#ff9800",
+  "#FF3D68",
+  "#00C1D4",
+  "#71EFA3",
+  "#78DEC7",
+  "#1768AC",
+  "#FB9300",
+  "#FC5404",
+  "#3B99D4",
+  "#8ED14B",
+  "#F06B49",
+  "#ECC2F1",
+  "#82C7C3",
+  "#E3698A",
+  "#1776EB",
+  "#F5B2AC",
+]);
 const designStore = useDesignSettingStore();
 const url = window.location.href;
 //暗黑模式

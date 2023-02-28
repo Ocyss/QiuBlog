@@ -2,6 +2,7 @@
   <n-spin class="postlist" :show="PostSpinShow" style="min-height: 300px">
     <div class="PostSpin" v-if="PostData">
       <div class="PostPage">
+        <div class="title">{{ tname }} :</div>
         <div>{{ page["0"] }}/{{ pageCount["0"] }}</div>
 
         <n-checkbox
@@ -36,15 +37,29 @@ import Pagination from "@/components/front/post/Pagination.vue";
 import api from "@/api";
 import { useRoute, useRouter } from "vue-router";
 import { useProjectSettingStore } from "@/store/modules/projectSetting";
+import { setTitle } from "@/utils";
 const settingStore = useProjectSettingStore();
 const route = useRoute();
+const router = useRouter();
 const tid = route.query.id;
+const tname = ref("");
 const page = ref({ "0": 1 });
 const pageCount = ref({ "0": 1 });
 const PostData = ref([]);
 const backTopRef: Ref<any> = inject("backTopRef");
 const PostSpinShow = ref(false);
 const cdata = ref([]);
+
+settingStore.getAllTags().then((res) => {
+  let tag = res.find((item) => {
+    return item.id == tid;
+  });
+  if (tag == undefined) {
+    router.push({ name: "exception-404" });
+  }
+  tname.value = tag.name;
+  setTitle(tname.value);
+});
 
 function getPosts() {
   PostSpinShow.value = true;

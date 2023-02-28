@@ -59,6 +59,7 @@ func CreateArticle(tx *gorm.DB, data *Article) (int, uint) {
 	ctx := context.Background()
 	//删除所有缓存索引,保证数据一致
 	db.Rdb.Del(ctx, "articles")
+	db.Rdb.Del(ctx, "tags")
 	return errmsg.SUCCESS, data.ID
 }
 

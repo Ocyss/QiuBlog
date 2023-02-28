@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-wechat-title="$route.meta.title" v-if="useConfig">
+  <div id="app" v-if="useConfig">
     <n-config-provider
       :locale="designStore.getLocale ? zhCN : enUS"
       :theme="designStore.darkTheme ? darkTheme : undefined"
@@ -31,17 +31,17 @@ import type { VueCookies } from "vue-cookies";
 import type { Config } from "@/types";
 
 const useConfig: Ref<Config> = ref(void 0);
-const $cookies = inject<VueCookies>("$cookies");
+axios.get("static/config.json5").then((res) => {
+  useConfig.value = new Function("return " + res.data)();
+});
+const cookies = inject<VueCookies>("$cookies");
 const designStore = useDesignSettingStore();
 
 provide("config", useConfig);
 
-axios.get("static/config.json5").then((res) => {
-  useConfig.value = new Function("return " + res.data)();
-});
-if (!$cookies.get("mainuv")) {
+if (!cookies.get("mainuv")) {
   api.statistics.mainuv().then(() => {
-    $cookies.set("mainuv", "1", -1);
+    cookies.set("mainuv", "1", -1);
   });
 }
 

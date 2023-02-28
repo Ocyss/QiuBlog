@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import PostListVue from "@/components/front/post/PostList.vue";
 import { useRoute, useRouter } from "vue-router";
-import { ref, onBeforeMount } from "vue";
+import { ref, onMounted } from "vue";
 import api from "@/api";
 
 const route = useRoute();

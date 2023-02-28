@@ -1,6 +1,17 @@
 import { h, unref, CSSProperties } from "vue";
 import { NIcon, NTag, NTooltip, NTime } from "naive-ui";
 import { cloneDeep } from "lodash-es";
+import { Ref, inject } from "vue";
+import type { Config } from "@/types";
+
+async function getConfig(): Promise<Config> {
+  let config: Config;
+  let file = await fetch("static/config.json5");
+  let res = await file.text();
+  config = new Function("return " + res)();
+  //console.log(config);
+  return config;
+}
 //Nicon封装
 export function renderIcon(icon) {
   return () => h(NIcon, null, { default: () => h(icon) });
@@ -74,4 +85,11 @@ export const railStyle = (
     }
   }
   return style;
+};
+
+//修改网页标题
+export const setTitle = (t: any) => {
+  getConfig().then((config) => {
+    window.document.title = `${t} ${config.userInfo.title}`;
+  });
 };

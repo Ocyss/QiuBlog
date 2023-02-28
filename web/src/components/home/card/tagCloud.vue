@@ -42,11 +42,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted, inject, computed } from "vue";
-import api from "@/api";
 import { randomRgb } from "@/utils";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
+import { useProjectSettingStore } from "@/store/modules/projectSetting";
 
 const designStore = useDesignSettingStore();
+const settingStore = useProjectSettingStore();
 let timer = null;
 const card = ref(void 0);
 const tags = ref([]);
@@ -146,11 +147,10 @@ const watchWidth = () => {
 };
 
 onMounted(() => {
-  api.tags.get().then((res) => {
-    TagData.value.tags = res.data;
+  settingStore.getAllTags().then((res) => {
+    TagData.value.tags = res;
     watchWidth();
   });
-
   window.addEventListener("resize", watchWidth);
   timer = setInterval(() => {
     rotateX();

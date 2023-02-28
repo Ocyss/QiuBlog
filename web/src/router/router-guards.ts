@@ -1,3 +1,5 @@
+import { setTitle } from "@/utils";
+
 const getCookie = (name) =>
   document.cookie.match(`[;\s+]?${name}=([^;]*)`)?.pop();
 
@@ -6,7 +8,12 @@ export function febore(router) {
     if (!to.name) {
       //判断有没有路由
       next({ name: "exception-404" });
-    } else if (to.matched[0].name == "admin" && !getCookie("token")) {
+    }
+    if (to.meta.title != undefined) {
+      setTitle(to.meta.title);
+    }
+
+    if (to.matched[0].name == "admin" && !getCookie("token")) {
       //前往后台，判断是否登陆
       next({ name: "login" });
     } else if (to.name == "login") {

@@ -90,13 +90,14 @@
 
 <script setup lang="ts">
 import frontVue from "@/layout/front.vue";
-import { ref, inject, computed, Ref } from "vue";
+import { ref, inject, computed, Ref, onMounted } from "vue";
 import api from "@/api";
 import { useRoute } from "vue-router";
 import { useMessage } from "naive-ui";
 import { Calendar, Book, PricetagsSharp } from "@vicons/ionicons5";
 import TimerVue from "@/components/Timer.vue";
 import editorVue from "@/components/editor.vue";
+import { setTitle } from "@/utils";
 import type { Config } from "@/types";
 
 const config: Ref<Config> = inject("config");
@@ -125,9 +126,10 @@ const imgSrc = computed(() => {
 
 const category = ref({ name: "" });
 
-api.article.get(route.params.pid).then((res) => {
+api.article.get(route.params.pid as unknown as number).then((res) => {
   postData.value = res.data;
   uv.value = res.uv;
+  setTitle(res.data.title);
 });
 
 api.category.get().then((res) => {
@@ -135,6 +137,8 @@ api.category.get().then((res) => {
     return item.id == postData.value.cid;
   });
 });
+
+onMounted(() => {});
 </script>
 
 <style lang="scss" scoped>

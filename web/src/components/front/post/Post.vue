@@ -158,7 +158,7 @@ a {
   display: flex;
   width: 95%;
   max-width: 800px;
-  height: 10.5rem;
+  height: 12.5rem;
   background-color: #fff;
   border-radius: 0.5rem;
   overflow: hidden;
@@ -188,7 +188,7 @@ a {
   }
 }
 .img {
-  width: 52%;
+  width: 33%;
   -webkit-clip-path: polygon(0 0, 100% 0, 94% 100%, 0 100%);
   clip-path: polygon(0 0, 100% 0, 94% 100%, 0 100%);
   img {

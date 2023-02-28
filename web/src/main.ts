@@ -3,7 +3,7 @@ import App from "./App.vue";
 import { setupRouter } from "./router";
 import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
-import VueWechatTitle from "vue-wechat-title";
+//import VueWechatTitle from "vue-wechat-title";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
 import VueCookies from "vue-cookies";
 
@@ -15,7 +15,7 @@ const app = createApp(App);
 
 app.component(VueQrcode.name, VueQrcode);
 
-app.use(VueWechatTitle);
+//app.use(VueWechatTitle); 自己写标题吧
 app.use(pinia);
 app.use(VueCookies, { expires: "7d" });
 

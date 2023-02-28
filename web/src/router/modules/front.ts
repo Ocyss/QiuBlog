@@ -4,9 +4,7 @@ const routes = [
   {
     path: "/",
     name: "home",
-    meta: {
-      title: "主页",
-    },
+    meta: {},
     component: index,
     redirect: "/m/home",
     children: [
@@ -16,6 +14,7 @@ const routes = [
         component: () => import("@/views/front/HomeView.vue"),
         meta: {
           menukey: "home",
+          title: "主页",
         },
       },
       {
@@ -32,6 +31,7 @@ const routes = [
         component: () => import("@/views/front/menu/QaView.vue"),
         meta: {
           menukey: "qa",
+          title: "问答",
         },
       },
       {
@@ -40,6 +40,7 @@ const routes = [
         component: () => import("@/views/front/menu/MessageView.vue"),
         meta: {
           menukey: "message",
+          title: "留言",
         },
       },
       {
@@ -48,6 +49,7 @@ const routes = [
         component: () => import("@/views/front/menu/AboutView.vue"),
         meta: {
           menukey: "about",
+          title: "关于",
         },
       },
       {
