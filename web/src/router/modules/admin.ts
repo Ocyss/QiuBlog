@@ -1,4 +1,6 @@
-const routes = [
+import { RouteRecordRaw } from "vue-router";
+
+const routes: Array<RouteRecordRaw> = [
   {
     path: "/adminadminadminadminadminadminadminadmin",
     name: "admin",

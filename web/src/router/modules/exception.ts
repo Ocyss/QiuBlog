@@ -1,7 +1,9 @@
 import { Layout } from "@/router/constant";
 import { AlertCircle } from "@vicons/ionicons5";
 import { renderIcon } from "@/utils/index";
-const routes = [
+import { RouteRecordRaw } from "vue-router";
+
+const routes: Array<RouteRecordRaw> = [
   {
     path: "/exception",
     name: "Exception",

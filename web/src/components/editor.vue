@@ -12,11 +12,15 @@
       :top="60"
       :listen-to="scrollableEl"
     >
-      <md-catalog
-        editor-id="author-id"
-        :scroll-element="scrollableEl"
-        :theme="getTheme"
-      />
+      <n-collapse>
+        <n-collapse-item class="catalog" title="目录" name="1">
+          <md-catalog
+            editor-id="author-id"
+            :scroll-element="scrollableEl"
+            :theme="getTheme"
+          />
+        </n-collapse-item>
+      </n-collapse>
     </n-affix>
   </div>
 </template>
@@ -46,6 +50,11 @@ const getTheme = computed(() => {
 
 .affix {
   position: fixed;
-  right: 30%;
+  right: 2%;
+}
+
+.catalog {
+  background-color: var(--n-color);
+  width: 40vw;
 }
 </style>

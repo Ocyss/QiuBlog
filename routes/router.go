@@ -1,10 +1,13 @@
 package routes
 
 import (
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"os"
 	v1 "qiublog/api/v1"
 	"qiublog/middleware"
 	"qiublog/utils"
+	"strings"
 )
 
 func InitRouter() {
@@ -13,12 +16,22 @@ func InitRouter() {
 	r.MaxMultipartMemory = 8 << 20 // 8 MiB
 	r.Use(gin.Recovery())
 	if utils.Config.Server.AppMode == "release" {
-		r.LoadHTMLGlob("web/index.html")
-
-		r.Static("assets", "web/assets")
-		r.Static("static", "web/static")
-		r.GET("/", func(c *gin.Context) {
-			c.HTML(200, "index.html", nil)
+		r.Use(static.Serve("/", static.LocalFile("web", true)))
+		r.NoRoute(func(c *gin.Context) {
+			accept := c.Request.Header.Get("Accept")
+			flag := strings.Contains(accept, "text/html")
+			if flag {
+				content, err := os.ReadFile("web/index.html")
+				if (err) != nil {
+					c.Writer.WriteHeader(404)
+					c.Writer.WriteString("Not Found")
+					return
+				}
+				c.Writer.WriteHeader(200)
+				c.Writer.Header().Add("Accept", "text/html")
+				c.Writer.Write(content)
+				c.Writer.Flush()
+			}
 		})
 		if utils.Config.Server.BaiduVerifyCodevaName != "" {
 			r.StaticFile(utils.Config.Server.BaiduVerifyCodevaName, "web/"+utils.Config.Server.BaiduVerifyCodevaName)

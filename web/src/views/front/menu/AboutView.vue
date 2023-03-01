@@ -29,7 +29,7 @@ const contentRef = ref({
   project: "",
 });
 onMounted(() => {
-  axios.get("static/about.md").then((res) => {
+  axios.get("/static/about.md").then((res) => {
     contentRef.value.author = res.data;
   });
   axios

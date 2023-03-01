@@ -79,9 +79,9 @@ function getMenuName(key) {
   }
 }
 //切换左侧菜单
-function clickMenuItem(key) {
+function clickMenuItem(key, item) {
   menusKey.value = key;
-  getMenuName(key);
+  setTitle(designStore.getLocale ? item.name : item.ename);
 }
 //图标赋值
 function renderIcon(icon) {
@@ -107,6 +107,8 @@ const menusRef = computed(() => {
           },
           { default: () => (designStore.getLocale ? item.name : item.ename) }
         ),
+      name: item.name,
+      ename: item.ename,
       key: item.link,
       icon: renderIcon(item.icon),
     };

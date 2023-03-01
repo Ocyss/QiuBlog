@@ -1,6 +1,7 @@
 import index from "@/views/FrontView.vue";
+import { RouteRecordRaw } from "vue-router";
 
-const routes = [
+const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "home",

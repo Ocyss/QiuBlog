@@ -6,7 +6,7 @@ import type { Config } from "@/types";
 
 async function getConfig(): Promise<Config> {
   let config: Config;
-  let file = await fetch("static/config.json5");
+  let file = await fetch("/static/config.json5");
   let res = await file.text();
   config = new Function("return " + res)();
   //console.log(config);
