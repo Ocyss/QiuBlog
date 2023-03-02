@@ -6,22 +6,22 @@
       preview-only
       :theme="getTheme"
     />
-    <n-affix
+    <!-- <n-affix
       class="affix"
       v-if="scrollableEl"
       :top="60"
       :listen-to="scrollableEl"
     >
-      <n-collapse>
-        <n-collapse-item class="catalog" title="目录" name="1">
-          <md-catalog
-            editor-id="author-id"
-            :scroll-element="scrollableEl"
-            :theme="getTheme"
-          />
-        </n-collapse-item>
-      </n-collapse>
-    </n-affix>
+      <n-popover :overlap="overlap" placement="left-end" trigger="click">
+        <template #trigger></template>
+        <md-catalog
+          editor-id="author-id"
+          :scroll-element="scrollableEl"
+          :theme="getTheme"
+        />
+      </n-popover>
+      <n-collapse></n-collapse>
+    </n-affix> -->
   </div>
 </template>
 
@@ -30,6 +30,8 @@ import { ref, computed, inject, onMounted, Ref } from "vue";
 import MdEditor from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
+
+const overlap = ref(false);
 const props = defineProps(["content"]);
 const editorRef = ref(void 0);
 const contentRef = ref(props.content);

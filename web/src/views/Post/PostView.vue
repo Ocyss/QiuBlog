@@ -1,8 +1,7 @@
 <template>
   <frontVue>
     <div class="main">
-      <div class="cover">
-        <img :src="imgSrc" :alt="postData.title" loading="lazy" />
+      <div class="cover" :style="{ backgroundImage: `url(${imgSrc})` }">
         <div class="info">
           <div class="info-head">
             <div>
@@ -11,32 +10,32 @@
               </n-icon-wrapper>
               <TimerVue :t="postData.created_at" />
             </div>
-            <div class="rightInfo">
-              <div style="margin-right: 0.5rem">
-                <n-icon-wrapper
-                  :size="18"
-                  :border-radius="15"
-                  color="rgb(192,202,51)"
-                >
-                  <n-icon :size="13" :component="Book" />
-                </n-icon-wrapper>
-                {{ uv }}阅读
-              </div>
-              <div v-if="category">
-                <n-icon-wrapper
-                  color="rgb(67,160,71)"
-                  :size="18"
-                  :border-radius="15"
-                >
-                  <n-icon :size="13" :component="PricetagsSharp" />
-                </n-icon-wrapper>
-                {{ category.name }}
-              </div>
+            <div>
+              <n-icon-wrapper
+                :size="18"
+                :border-radius="15"
+                color="rgb(192,202,51)"
+              >
+                <n-icon :size="13" :component="Book" />
+              </n-icon-wrapper>
+              {{ uv }}阅读
+            </div>
+            <div v-if="category">
+              <n-icon-wrapper
+                color="rgb(67,160,71)"
+                :size="18"
+                :border-radius="15"
+              >
+                <n-icon :size="13" :component="PricetagsSharp" />
+              </n-icon-wrapper>
+              {{ category.name }}
             </div>
           </div>
 
           <div class="info-text">
-            <h1>{{ postData.title }}</h1>
+            <div class="title">
+              {{ postData.title }}
+            </div>
             <span>{{ postData.desc }}</span>
           </div>
           <div class="info-tags">
@@ -154,40 +153,56 @@ onMounted(() => {});
   border-radius: 16px;
   min-height: 230px;
   background-color: #eee;
-  img {
-    display: block;
+  text-shadow: 0 0.1875rem 0.3125rem #1c1f21;
+  background-position: 50%;
+  background-size: cover;
+  &::before {
+    content: "";
     position: absolute;
-    left: 0;
     top: 0;
-    object-fit: cover;
+    left: 0;
     width: 100%;
     height: 100%;
-    filter: brightness(50%);
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.4);
   }
   .info {
-    position: absolute;
+    min-height: 230px;
+    position: relative;
     color: #fff;
     width: 100%;
-    height: 100%;
     box-sizing: border-box;
     text-transform: none;
     margin: 0;
     padding: 24px;
-    z-index: 1;
-    text-shadow: 0 1px 3px rgb(0 0 0 / 25%);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-}
-.info-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.3rem;
-  > div {
+    z-index: 600;
     display: flex;
     align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    .info-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      .title {
+        font-weight: 700;
+        font-size: 1.6rem;
+        text-align: center;
+        letter-spacing: 0.25rem;
+      }
+    }
+    .info-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.3rem;
+      > div {
+        display: flex;
+        align-items: center;
+        margin: 5px;
+      }
+    }
   }
 }
 
