@@ -175,7 +175,7 @@ onMounted(() => {});
     text-transform: none;
     margin: 0;
     padding: 24px;
-    z-index: 600;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-evenly;

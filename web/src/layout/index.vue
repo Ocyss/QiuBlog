@@ -1,12 +1,5 @@
 <template>
-  <!-- <n-back-top
-    ref="backTopRef"
-    v-if="scrollableEl"
-    :listen-to="scrollableEl"
-    right="20%"
-    style="z-index: 5000"
-  /> -->
-  <affixVue />
+  <affixVue ref="affixRef" />
   <n-layout class="layout" has-sider position="absolute">
     <n-layout-sider
       v-if="!isMobile"
@@ -51,6 +44,8 @@ import { ref, onMounted, provide, computed, readonly, inject } from "vue";
 import Footer from "./components/Footer.vue";
 import { useLoadingBar } from "naive-ui";
 import affixVue from "@/components/affix.vue";
+const affixRef = ref(void 0);
+
 const settingStore = useProjectSettingStore();
 //获取内layout元素
 const layoutRef = ref(void 0);
@@ -58,6 +53,7 @@ const layoutRef = ref(void 0);
 const scrollableEl = ref(void 0);
 
 provide("scrollableEl", readonly(scrollableEl));
+provide("BackTop", readonly(affixRef));
 
 //是否手机模式，宽度小于700
 const isMobile = computed({

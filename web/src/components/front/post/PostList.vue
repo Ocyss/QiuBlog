@@ -62,7 +62,7 @@ const cid = ref(-1);
 const tabs = ref(void 0);
 
 const settingStore = useProjectSettingStore();
-const backTopRef: Ref<any> = inject("backTopRef");
+const backTop: Ref<any> = inject("BackTop");
 //各分类下的文章
 const PostData = ref({});
 //请求主页文章列表
@@ -104,7 +104,7 @@ getPosts();
 
 function upPage(p) {
   //返回顶部
-  backTopRef.value.handleClick();
+  backTop.value?.backTop();
   PostData.value[cid.value] = [];
   getPosts();
 }
