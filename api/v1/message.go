@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"qiublog/model"
 	"qiublog/utils/ask"
@@ -35,6 +36,7 @@ func AddMessage(c *gin.Context) (int, any) {
 	if err != nil {
 		return ask.ErrParam()
 	}
+	_ = tool.WxPush(fmt.Sprintf("QiuBlog提醒您:\n有一条新的留言\n\n昵称: %s\nQQ: %s\n邮箱: %s\n内容: %s", data.Name, data.Qq, data.Email, data.Content))
 	return model.AddMessage(&data), nil
 }
 
@@ -44,6 +46,7 @@ func AddQuestion(c *gin.Context) (int, any) {
 	if err != nil {
 		return ask.ErrParam()
 	}
+	_ = tool.WxPush(fmt.Sprintf("QiuBlog提醒您:\n有一条新的问答\n\n昵称: %s\nQQ: %s\n邮箱: %s\n问题: %s", data.Name, data.Qq, data.Email, data.Question))
 	return model.AddQuestion(&data), nil
 }
 

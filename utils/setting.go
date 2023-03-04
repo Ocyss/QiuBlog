@@ -13,6 +13,7 @@ type ConfigStruct struct {
 	Database         database
 	Oss              oss
 	ConstructionTime int64
+	Push             push
 }
 
 func init() {
@@ -25,6 +26,7 @@ func init() {
 	LoadRedis(file)
 	LoadData(file)
 	LoadOss(file)
+	LoadPush(file)
 }
 
 type server struct {
@@ -103,4 +105,16 @@ func LoadOss(file *ini.File) {
 		Config.Oss.QiniuSever = file.Section("qiniu").Key("QiniuSever").String()
 	}
 
+}
+
+type push struct {
+	WxPushCorpId  string
+	WxPushAgentid string
+	WxPushSecret  string
+}
+
+func LoadPush(file *ini.File) {
+	Config.Push.WxPushCorpId = file.Section("Push").Key("WxPushCorpId").String()
+	Config.Push.WxPushAgentid = file.Section("Push").Key("WxPushAgentid").String()
+	Config.Push.WxPushSecret = file.Section("Push").Key("WxPushSecret").String()
 }

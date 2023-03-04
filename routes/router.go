@@ -33,12 +33,6 @@ func InitRouter() {
 				c.Writer.Flush()
 			}
 		})
-		if utils.Config.Server.BaiduVerifyCodevaName != "" {
-			r.StaticFile(utils.Config.Server.BaiduVerifyCodevaName, "web/"+utils.Config.Server.BaiduVerifyCodevaName)
-		}
-		if utils.Config.Server.GoogleVerifyCodevaName != "" {
-			r.StaticFile(utils.Config.Server.GoogleVerifyCodevaName, "web/"+utils.Config.Server.GoogleVerifyCodevaName)
-		}
 	}
 
 	auth := r.Group("api/v1")

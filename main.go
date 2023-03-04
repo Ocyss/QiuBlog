@@ -7,8 +7,9 @@ import (
 )
 
 func main() {
-
 	model.InitDb()
+
 	db.InitRedis()
+
 	routes.InitRouter()
 }
