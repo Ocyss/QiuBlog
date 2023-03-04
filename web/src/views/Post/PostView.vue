@@ -98,7 +98,6 @@ import TimerVue from "@/components/Timer.vue";
 import editorVue from "@/components/editor.vue";
 import { setTitle } from "@/utils";
 import type { Config } from "@/types";
-
 const config: Ref<Config> = inject("config");
 const url = window.location.href;
 const route = useRoute();

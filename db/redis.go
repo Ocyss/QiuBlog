@@ -24,3 +24,22 @@ func InitRedis() {
 		panic(fmt.Sprintf("连接redis出错，错误信息：%v", err))
 	}
 }
+
+// Allow 通过redis的value判断第几次访问并返回是否允许访问
+func Allow(key string, events int64, per time.Duration) bool {
+	ctx := context.Background()
+	curr := Rdb.LLen(ctx, key).Val()
+	if curr >= events {
+		return false
+	}
+	if v := Rdb.Exists(ctx, key).Val(); v == 0 {
+		pipe := Rdb.TxPipeline()
+		pipe.RPush(ctx, key, key)
+		//设置过期时间
+		pipe.Expire(ctx, key, per)
+		_, _ = pipe.Exec(ctx)
+	} else {
+		Rdb.RPushX(ctx, key, key)
+	}
+	return true
+}

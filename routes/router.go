@@ -15,6 +15,7 @@ func InitRouter() {
 	r := gin.Default()
 	r.MaxMultipartMemory = 8 << 20 // 8 MiB
 	r.Use(gin.Recovery())
+	r.Use(middleware.RateMiddleware())
 	if utils.Config.Server.AppMode == "release" {
 		r.Use(static.Serve("/", static.LocalFile("web", true)))
 		r.NoRoute(func(c *gin.Context) {
@@ -36,7 +37,7 @@ func InitRouter() {
 	}
 
 	auth := r.Group("api/v1")
-	auth.Use(middleware.JwtToken(true))
+	auth.Use(middleware.JwtToken(true, 100))
 	{
 		//文章
 		auth.POST("article/add", Handler()(v1.ReleaseArticle))  //发布文章

@@ -52,6 +52,7 @@ defineExpose({
     background-color: var(--popover-color);
     border-radius: 50%;
     margin: 5px 0px;
+    box-shadow: 0 2px 8px 0px rgba(0, 0, 0, 0.12);
     cursor: pointer;
     font-size: 20px;
     &:hover {

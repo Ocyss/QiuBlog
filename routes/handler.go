@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"qiublog/utils"
 	"qiublog/utils/errmsg"
 )
@@ -31,7 +32,7 @@ func Handler() func(h MyHandler) gin.HandlerFunc {
 				if utils.Config.Server.AppMode == "debug" {
 					req["errmsg"] = data
 				}
-				c.JSON(400, req)
+				c.AbortWithStatusJSON(http.StatusTooManyRequests, req)
 			}
 		}
 	}

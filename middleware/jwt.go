@@ -56,7 +56,7 @@ func CheckToken(token string) (*MyClaims, int) {
 
 // JwtToken jwt中间件
 // 参数： termination 是否中断(true:没权限直接静止访问,false:没权限只返回部分字段)
-func JwtToken(termination bool) gin.HandlerFunc {
+func JwtToken(termination bool, role int) gin.HandlerFunc {
 	cRes := func(c *gin.Context, code int) {
 		if termination {
 			c.JSON(http.StatusOK, gin.H{
@@ -81,12 +81,19 @@ func JwtToken(termination bool) gin.HandlerFunc {
 			cRes(c, code)
 			return
 		}
+		if key.Role < role {
+			//认证字符串时间判断 !过期
+			code = errmsg.ERROR_ROLE_LOW
+			cRes(c, code)
+			return
+		}
 		if time.Now().Unix() > key.ExpiresAt {
 			//认证字符串时间判断 !过期
 			code = errmsg.ERROR_TOKEN_RUNTIME
 			cRes(c, code)
 			return
 		}
+
 		c.Set("id", key.Id)
 		c.Set("role", key.Role)
 		c.Next()

@@ -52,7 +52,7 @@ func AddQuestion(c *gin.Context) (int, any) {
 
 func GetMessage(c *gin.Context) (int, any) {
 	pageSize, pageNum := tool.PageTool(c) //分页最大数,分页偏移量
-	_, admin := tool.IsAdmin(c)
+	_, admin := tool.IsAdmin(c, 100)
 	data, total := model.GetMessage(pageSize, pageNum, admin)
 	return errmsg.SUCCESS, gin.H{
 		"data":  data,
@@ -62,7 +62,7 @@ func GetMessage(c *gin.Context) (int, any) {
 
 func GetQuestion(c *gin.Context) (int, any) {
 	pageSize, pageNum := tool.PageTool(c) //分页最大数,分页偏移量
-	_, admin := tool.IsAdmin(c)
+	_, admin := tool.IsAdmin(c, 100)
 	data, total := model.GetQuestion(pageSize, pageNum, admin)
 	return errmsg.SUCCESS, gin.H{
 		"data":  data,

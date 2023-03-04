@@ -23,7 +23,6 @@
     "vue": "3.2.47",
     "vue-cookies": "^1.8.2",
     "vue-router": "4.1.6",
-    "vue-wechat-title": "^2.0.7",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {

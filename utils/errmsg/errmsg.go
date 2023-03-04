@@ -13,6 +13,7 @@ const (
 	ERROR_TOKEN_RUNTIME    = 1102
 	ERROR_TOKEN_WRONG      = 1103
 	ERROR_TOKEN_TYPE_WRONG = 1104
+	ERROR_ROLE_LOW         = 1105
 	// code = 2000  Tags      标签表
 
 	// code = 3000  Article   文章表
@@ -42,6 +43,7 @@ var codemsg = map[int]string{
 	ERROR_TOKEN_RUNTIME:    "Token过期",
 	ERROR_TOKEN_WRONG:      "Token不正确",
 	ERROR_TOKEN_TYPE_WRONG: "Token格式错误",
+	ERROR_ROLE_LOW:         "当前用户权限不够",
 	ERROR_PARM_SO:          "缺少必要参数!",
 	ERROR_FILE_WRONG:       "上传文件/格式有误",
 	ERROR_CLASS_WRONG:      "上传类型不对",

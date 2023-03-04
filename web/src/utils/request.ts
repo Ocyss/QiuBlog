@@ -32,6 +32,7 @@ request.interceptors.response.use(
   function (error) {
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
+    message.error(error.response.data.message);
     return Promise.reject(error);
   }
 );
