@@ -1,10 +1,10 @@
 .List {
   width: 210px;
   min-width: 210px;
-  height: 85vh;
+  min-height: 700px;
   .n-spin-container {
     overflow-y: scroll;
-    height: 500px;
+    height: 700px;
   }
 }
 

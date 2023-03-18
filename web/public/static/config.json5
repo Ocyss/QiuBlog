@@ -1,7 +1,7 @@
 {
   userInfo: {
-    title: "💘 <- - - 的博客>", //标题后缀
-    name: "- - -", // 名字
+    title: "💘  Ocyss 的博客", //标题后缀
+    name: "Ocyss", // 名字
     motto: ["故事很短，满是遗憾。", "Now is better than never."], // 座右铭
   },
   friendChain: [

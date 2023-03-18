@@ -176,6 +176,7 @@ function del(index) {
   savedata.push({ type: "remove", id: menulist.value[index].id });
   menulist.value.splice(index, 1);
 }
+
 //保存菜单修改
 function saveMenu() {
   setMenuShow.value = true;

@@ -15,6 +15,7 @@ function upload(files, type) {
     url: "/api/v1/upload/image",
     method: "post",
     data: formData,
+    timeout: 20000,
   });
 }
 

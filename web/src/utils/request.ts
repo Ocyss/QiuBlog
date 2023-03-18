@@ -2,7 +2,7 @@ import axios from "axios";
 import { createDiscreteApi } from "naive-ui";
 const { message } = createDiscreteApi(["message"]);
 let request = axios.create({
-  timeout: 5000,
+  timeout: 8000,
 });
 
 // 添加请求拦截器
