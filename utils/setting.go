@@ -30,12 +30,13 @@ func init() {
 }
 
 type server struct {
-	AppMode                string
-	HttpPort               string
-	Oss                    string
-	JwtKey                 string
-	BaiduVerifyCodevaName  string
-	GoogleVerifyCodevaName string
+	AppMode     string
+	HttpPort    string
+	Oss         string
+	JwtKey      string
+	Url         string
+	AuthorName  string
+	AuthorEmail string
 }
 
 func LoadServer(file *ini.File) {
@@ -43,8 +44,9 @@ func LoadServer(file *ini.File) {
 	Config.Server.HttpPort = file.Section("server").Key("HttpPort").MustString(":3000")
 	Config.Server.Oss = file.Section("server").Key("Oss").MustString("qiniu")
 	Config.Server.JwtKey = file.Section("server").Key("JwtKey").MustString("111")
-	Config.Server.BaiduVerifyCodevaName = file.Section("server").Key("BaiduVerifyCodevaName").MustString("")
-	Config.Server.GoogleVerifyCodevaName = file.Section("server").Key("GoogleVerifyCodevaName").MustString("")
+	Config.Server.Url = file.Section("server").Key("Url").MustString("")
+	Config.Server.AuthorName = file.Section("server").Key("AuthorName").MustString("")
+	Config.Server.AuthorEmail = file.Section("server").Key("AuthorEmail").MustString("")
 }
 
 type redis struct {

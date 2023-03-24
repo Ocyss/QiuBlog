@@ -178,3 +178,12 @@ func GetArticle(Aid int) (int, *Article) {
 	}
 	return errmsg.SUCCESS, &data
 }
+
+func GetAllArticle() []Article {
+	var data []Article
+	err = Db.Find(&data).Error
+	if err != nil {
+		return nil
+	}
+	return data
+}

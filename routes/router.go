@@ -3,10 +3,12 @@ package routes
 import (
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"os"
 	v1 "qiublog/api/v1"
 	"qiublog/middleware"
 	"qiublog/utils"
+	"qiublog/utils/sitemap"
 	"strings"
 )
 
@@ -35,6 +37,27 @@ func InitRouter() {
 			}
 		})
 	}
+	r.GET("rss", func(c *gin.Context) {
+		res, err := sitemap.Feed.ToRss()
+		if err != nil {
+			c.String(http.StatusServiceUnavailable, "Err...")
+		}
+		c.Data(http.StatusOK, "application/rss+xml", []byte(res))
+	})
+	r.GET("atom", func(c *gin.Context) {
+		atom, err := sitemap.Feed.ToAtom()
+		if err != nil {
+			c.String(http.StatusServiceUnavailable, "Err...")
+		}
+		c.Data(http.StatusOK, "application/atom+xml", []byte(atom))
+	})
+	r.GET("json", func(c *gin.Context) {
+		json, err := sitemap.Feed.ToJSON()
+		if err != nil {
+			c.String(http.StatusServiceUnavailable, "Err...")
+		}
+		c.Data(http.StatusOK, "application/feed+json", []byte(json))
+	})
 
 	auth := r.Group("api/v1")
 	auth.Use(middleware.JwtToken(true, 100))
