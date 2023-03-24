@@ -6,7 +6,9 @@
     <div class="text">
       <div class="name">{{ config.userInfo.name }}</div>
       <div class="motto">
-        {{ config.userInfo.motto[designStore.judgeLocale] }}
+        {{
+          designStore.getLocale ? config.userInfo.motto : config.userInfo.mottoE
+        }}
       </div>
     </div>
   </n-card>

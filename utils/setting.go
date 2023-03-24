@@ -1,23 +1,49 @@
 package utils
 
 import (
+	"encoding/json"
 	"fmt"
 	"gopkg.in/ini.v1"
+	"os"
 )
 
-var Config ConfigStruct
+var Config ServerConfig
 
-type ConfigStruct struct {
+type ServerConfig struct {
 	Server           server
 	Redis            redis
 	Database         database
 	Oss              oss
 	ConstructionTime int64
 	Push             push
+	Frontend         FrontendConfig
+}
+type FrontendConfig struct {
+	UserInfo struct {
+		Title  string `json:"title"`
+		Name   string `json:"name"`
+		Email  string `json:"email"`
+		Motto  string `json:"motto"`
+		MottoE string `json:"mottoE"`
+	} `json:"userInfo"`
+	FriendChain []struct {
+		Name string `json:"name"`
+		Href string `json:"href"`
+	} `json:"friendChain"`
+	Global struct {
+		RandomImgApi string `json:"randomImgApi"`
+	} `json:"global"`
 }
 
 func init() {
-	file, err := ini.Load("config/config.ini")
+	var file *ini.File
+	var err error
+	// 通过环境变量来判断是否使用默认配置文件，方便开发
+	if filename, ok := os.LookupEnv("QiuBlogConfigFileName"); ok {
+		file, err = ini.Load(fmt.Sprintf("config/%s.ini", filename))
+	} else {
+		file, err = ini.Load("config/config.ini")
+	}
 	if err != nil {
 		panic(fmt.Sprintf("配置文件读取错误，请检查文件路径--%s", err))
 	}
@@ -27,16 +53,23 @@ func init() {
 	LoadData(file)
 	LoadOss(file)
 	LoadPush(file)
+
+	jsonData, err := os.ReadFile("config/config.json")
+	if err != nil {
+		panic("Error reading front-end configuration file")
+	}
+	err = json.Unmarshal(jsonData, &Config.Frontend)
+	if err != nil {
+		panic(fmt.Sprintf("Front-end configuration file parsing error,msg: %v", err))
+	}
 }
 
 type server struct {
-	AppMode     string
-	HttpPort    string
-	Oss         string
-	JwtKey      string
-	Url         string
-	AuthorName  string
-	AuthorEmail string
+	AppMode  string
+	HttpPort string
+	Oss      string
+	JwtKey   string
+	Url      string
 }
 
 func LoadServer(file *ini.File) {
@@ -45,8 +78,6 @@ func LoadServer(file *ini.File) {
 	Config.Server.Oss = file.Section("server").Key("Oss").MustString("qiniu")
 	Config.Server.JwtKey = file.Section("server").Key("JwtKey").MustString("111")
 	Config.Server.Url = file.Section("server").Key("Url").MustString("")
-	Config.Server.AuthorName = file.Section("server").Key("AuthorName").MustString("")
-	Config.Server.AuthorEmail = file.Section("server").Key("AuthorEmail").MustString("")
 }
 
 type redis struct {
@@ -106,7 +137,6 @@ func LoadOss(file *ini.File) {
 		Config.Oss.QiniuBucket = file.Section("qiniu").Key("Bucket").String()
 		Config.Oss.QiniuSever = file.Section("qiniu").Key("QiniuSever").String()
 	}
-
 }
 
 type push struct {

@@ -31,9 +31,10 @@ import type { VueCookies } from "vue-cookies";
 import type { Config } from "@/types";
 
 const useConfig: Ref<Config> = ref(void 0);
-axios.get("/static/config.json5").then((res) => {
-  useConfig.value = new Function("return " + res.data)();
+axios.get("/config").then((res) => {
+  useConfig.value = res.data;
 });
+
 const cookies = inject<VueCookies>("$cookies");
 const designStore = useDesignSettingStore();
 

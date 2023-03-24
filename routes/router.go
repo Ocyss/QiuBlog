@@ -37,26 +37,38 @@ func InitRouter() {
 			}
 		})
 	}
-	r.GET("rss", func(c *gin.Context) {
-		res, err := sitemap.Feed.ToRss()
+	r.StaticFile("config", "./config/config.json")
+
+	r.GET("sitemap/:type", func(c *gin.Context) {
+		var data struct {
+			Type string `uri:"type"`
+		}
+		var response, mimetype string
+		var err error
+
+		if err := c.ShouldBindUri(&data); err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"msg": err})
+			return
+		}
+		switch strings.ToUpper(data.Type) {
+		case "RSS":
+			mimetype = "application/rss+xml"
+			response, err = sitemap.Feed.ToRss()
+		case "ATOM":
+			mimetype = "application/atom+xml"
+			response, err = sitemap.Feed.ToAtom()
+		case "JSON":
+			mimetype = "application/feed+json"
+			response, err = sitemap.Feed.ToJSON()
+		default:
+			c.JSON(http.StatusNotFound, gin.H{"msg": "Only RSS, ATOM and JSON protocols are supported"})
+			return
+		}
 		if err != nil {
 			c.String(http.StatusServiceUnavailable, "Err...")
+			return
 		}
-		c.Data(http.StatusOK, "application/rss+xml", []byte(res))
-	})
-	r.GET("atom", func(c *gin.Context) {
-		atom, err := sitemap.Feed.ToAtom()
-		if err != nil {
-			c.String(http.StatusServiceUnavailable, "Err...")
-		}
-		c.Data(http.StatusOK, "application/atom+xml", []byte(atom))
-	})
-	r.GET("json", func(c *gin.Context) {
-		json, err := sitemap.Feed.ToJSON()
-		if err != nil {
-			c.String(http.StatusServiceUnavailable, "Err...")
-		}
-		c.Data(http.StatusOK, "application/feed+json", []byte(json))
+		c.Data(http.StatusOK, mimetype, []byte(response))
 	})
 
 	auth := r.Group("api/v1")

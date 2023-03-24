@@ -3,7 +3,6 @@ package sitemap
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"os"
 	"qiublog/model"
 	"qiublog/utils"
@@ -45,28 +44,23 @@ func Db() {
 func InitSitemap() {
 	// 获取博客建站时间
 	CreatedTime := time.Unix(utils.Config.ConstructionTime, 0)
-	author = &feeds.Author{Name: utils.Config.Server.AuthorName, Email: utils.Config.Server.AuthorEmail}
+	author = &feeds.Author{Name: utils.Config.Frontend.UserInfo.Name, Email: utils.Config.Frontend.UserInfo.Email}
 	Feed = &feeds.Feed{
-		Title:       "Ocyss 的博客",
-		Link:        &feeds.Link{Href: "https://邱.cf/"},
-		Description: "故事很短，满是遗憾。",
+		Title:       utils.Config.Frontend.UserInfo.Title,
+		Link:        &feeds.Link{Href: utils.Config.Server.Url},
+		Description: utils.Config.Frontend.UserInfo.Motto,
 		Author:      author,
 		Created:     CreatedTime,
 	}
+
 	// 先读取本地的缓存，没有在遍历数据库
-	sitemapCache, err := os.Open("./sitemap.cache")
-	if err != nil {
+	sitemapCache, err := os.ReadFile("./sitemap.cache")
+	if err != nil || utils.Config.Server.AppMode == "debug" {
 		Db()
 	} else {
-		defer sitemapCache.Close()
-		sitemapByte, err := io.ReadAll(sitemapCache)
-		if err != nil {
-			Db()
-		}
-		err = json.Unmarshal(sitemapByte, &Feed.Items)
+		err = json.Unmarshal(sitemapCache, &Feed.Items)
 		if err != nil {
 			Db()
 		}
 	}
-
 }
