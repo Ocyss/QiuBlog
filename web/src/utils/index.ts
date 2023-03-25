@@ -86,10 +86,3 @@ export const railStyle = (
   }
   return style;
 };
-
-//修改网页标题
-export const setTitle = (t: any) => {
-  getConfig().then((config) => {
-    window.document.title = `${t} ${config.userInfo.title}`;
-  });
-};

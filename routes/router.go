@@ -39,7 +39,7 @@ func InitRouter() {
 		})
 	}
 	r.StaticFile("config", "./config/config.json")
-
+	r.StaticFile("about.md", "./config/about.md")
 	r.GET("rss/:type", func(c *gin.Context) {
 		var data struct {
 			Type string `uri:"type"`

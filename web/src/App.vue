@@ -6,7 +6,9 @@
       :theme-overrides="getThemeOverrides"
       :date-locale="designStore.getLocale ? dateZhCN : dateEnUS"
     >
-      <n-loading-bar-provider>
+      <n-loading-bar-provider
+        :loading-bar-style="{ loading: 'color: #ffffff;' }"
+      >
         <n-dialog-provider>
           <n-notification-provider>
             <n-message-provider>
@@ -27,9 +29,11 @@ import { lighten } from "@/utils/index";
 import api from "@/api";
 import { provide, ref, computed, inject, Ref } from "vue";
 import axios from "axios";
+import { useHead } from "@unhead/vue";
+import { getActiveHead } from "unhead";
 import type { VueCookies } from "vue-cookies";
 import type { Config } from "@/types";
-
+let oldtitle: string;
 const useConfig: Ref<Config> = ref(void 0);
 axios.get("/config").then((res) => {
   useConfig.value = res.data;
@@ -59,6 +63,27 @@ const getThemeOverrides = computed(() => {
       colorLoading: appTheme,
     },
   };
+});
+
+const titleTemplate = (title?: string) => {
+  oldtitle = title;
+  return `${title} - ${useConfig.value?.userInfo?.title}`;
+};
+//调用原生接口判断是否离开了页面
+document.addEventListener("visibilitychange", function () {
+  const state = document.visibilityState;
+  if (state === "visible") {
+    useHead({ title: oldtitle, titleTemplate });
+  } else if (state === "hidden") {
+    useHead({
+      title: "啊💔怎么离开了呢💔怎么会?怎么会呢!",
+      titleTemplate: null,
+    });
+  }
+});
+
+useHead({
+  titleTemplate,
 });
 </script>
 

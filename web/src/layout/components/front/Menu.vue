@@ -16,7 +16,8 @@ import { NIcon, useMessage } from "naive-ui";
 import { RouterLink, useRouter, useRoute } from "vue-router";
 import api from "@/api";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
-import { setTitle } from "@/utils";
+import { useHead } from "@unhead/vue";
+
 const props = defineProps(["collapsed"]);
 const designStore = useDesignSettingStore();
 const route = useRoute();
@@ -75,13 +76,13 @@ function getMenuName(key) {
     route.name == "menuAbout" ||
     route.name == "menu"
   ) {
-    setTitle(designStore.getLocale ? menu.name : menu.ename);
+    useHead({ title: designStore.getLocale ? menu.name : menu.ename });
   }
 }
 //切换左侧菜单
 function clickMenuItem(key, item) {
   menusKey.value = key;
-  setTitle(designStore.getLocale ? item.name : item.ename);
+  useHead({ title: designStore.getLocale ? item.name : item.ename });
 }
 //图标赋值
 function renderIcon(icon) {

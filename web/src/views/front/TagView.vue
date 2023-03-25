@@ -37,7 +37,7 @@ import Pagination from "@/components/front/post/Pagination.vue";
 import api from "@/api";
 import { useRoute, useRouter } from "vue-router";
 import { useProjectSettingStore } from "@/store/modules/projectSetting";
-import { setTitle } from "@/utils";
+import { useHead } from "@unhead/vue";
 const settingStore = useProjectSettingStore();
 const route = useRoute();
 const router = useRouter();
@@ -58,7 +58,7 @@ settingStore.getAllTags().then((res) => {
     router.push({ name: "exception-404" });
   }
   tname.value = tag.name;
-  setTitle(tname.value);
+  useHead({ title: tname.value });
 });
 
 function getPosts() {

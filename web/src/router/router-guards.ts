@@ -1,16 +1,18 @@
-import { setTitle } from "@/utils";
-
+import { createDiscreteApi } from "naive-ui";
+import { useHead } from "@unhead/vue";
+const { loadingBar } = createDiscreteApi(["loadingBar"]);
 const getCookie = (name) =>
   document.cookie.match(`[;\s+]?${name}=([^;]*)`)?.pop();
 
 export function febore(router) {
   router.beforeEach(async (to, from, next) => {
+    loadingBar.start();
     if (!to.name) {
       //判断有没有路由
       next({ name: "exception-404" });
     }
     if (to.meta.title != undefined) {
-      setTitle(to.meta.title);
+      useHead({ title: to.meta.title });
     }
 
     if (to.matched[0].name == "admin" && !getCookie("token")) {
@@ -27,7 +29,9 @@ export function febore(router) {
       next();
     }
   });
-  router.afterEach((to, _, failure) => {});
+  router.afterEach((to, _, failure) => {
+    loadingBar.finish();
+  });
   router.onError((error) => {
     console.log(error, "路由错误");
   });

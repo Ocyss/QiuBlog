@@ -5,6 +5,7 @@ import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { NaiveUiResolver } from "unplugin-vue-components/resolvers";
 import { resolve } from "path";
+import UnheadVite from "@unhead/addons/vite";
 //打包分析
 // import { visualizer } from "rollup-plugin-visualizer";
 // import VitePluginCompression from "vite-plugin-compression";//压缩
@@ -40,6 +41,7 @@ export default defineConfig({
     Components({
       resolvers: [NaiveUiResolver()],
     }),
+    UnheadVite(),
     // 打包分析
     // visualizer({
     //   emitFile: true, //是否被触摸
@@ -90,7 +92,7 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 6879,
     proxy: {
-      "^/(api|config|sitemap)": {
+      "^/(api|config|sitemap|about.md)": {
         target: "http://127.0.0.1:3000",
         changeOrigin: true,
       },

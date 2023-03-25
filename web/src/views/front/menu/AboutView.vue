@@ -29,13 +29,11 @@ const contentRef = ref({
   project: "",
 });
 onMounted(() => {
-  axios.get("/static/about.md").then((res) => {
+  axios.get("/about.md").then((res) => {
     contentRef.value.author = res.data;
   });
   axios
-    .get(
-      "https://gh.api.99988866.xyz/https://raw.githubusercontent.com/qiu-lzsnmb/QiuBlog/master/README.md"
-    )
+    .get("https://raw.githubusercontent.com/Ocyss/QiuBlog/master/README.md")
     .then((res) => {
       contentRef.value.project = res.data;
     });
