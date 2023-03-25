@@ -77,7 +77,7 @@ const cols: DataTableColumns<Song> = [
             round: true,
             size: "small",
             src: row.qq
-              ? `http://q.qlogo.cn/headimg_dl?dst_uin=${row.qq}&spec=640&img_type=jpg`
+              ? `https://q.qlogo.cn/headimg_dl?dst_uin=${row.qq}&spec=640&img_type=jpg`
               : `https://api.multiavatar.com/${row.content}.png`,
           }),
         ]

@@ -10,7 +10,7 @@
         :size="35"
         :src="
           item.qq
-            ? `http://q.qlogo.cn/headimg_dl?dst_uin=${item.qq}&spec=640&img_type=jpg`
+            ? `https://q.qlogo.cn/headimg_dl?dst_uin=${item.qq}&spec=640&img_type=jpg`
             : `https://api.multiavatar.com/${item.content}.png`
         "
       />

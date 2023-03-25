@@ -80,7 +80,7 @@ const cols: DataTableColumns<Song> = [
             h(NAvatar, {
               round: true,
               size: "small",
-              src: `http://q.qlogo.cn/headimg_dl?dst_uin=${row.qq}&spec=640&img_type=jpg`,
+              src: `https://q.qlogo.cn/headimg_dl?dst_uin=${row.qq}&spec=640&img_type=jpg`,
             }),
           ]
         );
