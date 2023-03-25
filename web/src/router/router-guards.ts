@@ -6,7 +6,10 @@ const getCookie = (name) =>
 
 export function febore(router) {
   router.beforeEach(async (to, from, next) => {
-    loadingBar.start();
+    if (!import.meta.env.SSR) {
+      loadingBar.start();
+    }
+
     if (!to.name) {
       //判断有没有路由
       next({ name: "exception-404" });
@@ -30,7 +33,9 @@ export function febore(router) {
     }
   });
   router.afterEach((to, _, failure) => {
-    loadingBar.finish();
+    if (!import.meta.env.SSR) {
+      loadingBar.finish();
+    }
   });
   router.onError((error) => {
     console.log(error, "路由错误");

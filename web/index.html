@@ -28,10 +28,13 @@
     <script src="https://unpkg.com/naive-ui@2.34.3"></script>
 
     <title>💘 Ocyss 的博客</title>
+    <!--css-outlet-->
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <div id="app">
+      <!--ssr-outlet-->
+    </div>
+    <script type="module" src="/src/entry-client.ts"></script>
   </body>
   <script src="/static/effect/click.js"></script>
 </html>

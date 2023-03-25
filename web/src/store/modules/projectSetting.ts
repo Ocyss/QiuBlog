@@ -19,14 +19,14 @@ export const useProjectSettingStore = defineStore({
     },
   },
 
-  persist: {
-    enabled: true,
-    strategies: [
-      {
-        key: "Setting",
-        storage: localStorage,
-        paths: ["collapsed", "autuLoad"],
-      },
-    ],
-  },
+  // persist: {
+  //   enabled: true,
+  //   strategies: [
+  //     {
+  //       key: "Setting",
+  //       storage: localStorage,
+  //       paths: ["collapsed", "autuLoad"],
+  //     },
+  //   ],
+  // },
 });

@@ -13,11 +13,11 @@
 
 <script setup lang="ts">
 import { inject, Ref } from "vue";
-import aboutVue from "./card/about.vue";
-import commentVue from "./card/comment.vue";
-import popularVue from "./card/popular.vue";
-import statisticsVue from "./card/statistics.vue";
-import tagCloudVue from "./card/tagCloud.vue";
+import aboutVue from "./card/cardAbout.vue";
+import commentVue from "./card/cardComment.vue";
+import popularVue from "./card/cardPopular.vue";
+import statisticsVue from "./card/cardStatistics.vue";
+import tagCloudVue from "./card/cardTagCloud.vue";
 
 const props = defineProps(["affixRef"]);
 const scrollableEl: Ref<HTMLElement> = inject("scrollableEl");

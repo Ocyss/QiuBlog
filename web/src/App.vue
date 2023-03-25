@@ -27,7 +27,7 @@ import { useDesignSettingStore } from "@/store/modules/designSetting";
 import { zhCN, dateZhCN, darkTheme, enUS, dateEnUS } from "naive-ui";
 import { lighten } from "@/utils/index";
 import api from "@/api";
-import { provide, ref, computed, inject, Ref } from "vue";
+import { provide, ref, computed, inject, Ref, onMounted } from "vue";
 import axios from "axios";
 import { useHead } from "@unhead/vue";
 import { getActiveHead } from "unhead";
@@ -35,20 +35,10 @@ import type { VueCookies } from "vue-cookies";
 import type { Config } from "@/types";
 let oldtitle: string;
 const useConfig: Ref<Config> = ref(void 0);
-axios.get("/config").then((res) => {
-  useConfig.value = res.data;
-});
 
-const cookies = inject<VueCookies>("$cookies");
 const designStore = useDesignSettingStore();
 
 provide("config", useConfig);
-
-if (!cookies.get("mainuv")) {
-  api.statistics.mainuv().then(() => {
-    cookies.set("mainuv", "1", -1);
-  });
-}
 
 const getThemeOverrides = computed(() => {
   const appTheme = designStore.appTheme;
@@ -69,21 +59,35 @@ const titleTemplate = (title?: string) => {
   oldtitle = title;
   return `${title} - ${useConfig.value?.userInfo?.title}`;
 };
-//调用原生接口判断是否离开了页面
-document.addEventListener("visibilitychange", function () {
-  const state = document.visibilityState;
-  if (state === "visible") {
-    useHead({ title: oldtitle, titleTemplate });
-  } else if (state === "hidden") {
-    useHead({
-      title: "啊💔怎么离开了呢💔怎么会?怎么会呢!",
-      titleTemplate: null,
-    });
-  }
-});
 
 useHead({
   titleTemplate,
+});
+
+onMounted(() => {
+  axios.get("/config").then((res) => {
+    useConfig.value = res.data;
+  });
+  if (!import.meta.env.SSR) {
+    // const cookies = inject<VueCookies>("$cookies");
+    // if (!cookies.get("mainuv")) {
+    //   api.statistics.mainuv().then(() => {
+    //     cookies.set("mainuv", "1", -1);
+    //   });
+    // }
+    //调用原生接口判断是否离开了页面
+    document.addEventListener("visibilitychange", function () {
+      const state = document.visibilityState;
+      if (state === "visible") {
+        useHead({ title: oldtitle, titleTemplate });
+      } else if (state === "hidden") {
+        useHead({
+          title: "啊💔怎么离开了呢💔怎么会?怎么会呢!",
+          titleTemplate: null,
+        });
+      }
+    });
+  }
 });
 </script>
 

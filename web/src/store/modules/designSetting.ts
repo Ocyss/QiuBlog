@@ -29,5 +29,5 @@ export const useDesignSettingStore = defineStore({
       this.locale = value;
     },
   },
-  persist: true,
+  // persist: true,
 });
