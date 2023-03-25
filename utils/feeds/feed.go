@@ -36,6 +36,8 @@ type Item struct {
 	Created     time.Time
 	Enclosure   *Enclosure
 	Content     string
+	Changefreq  string
+	Priority    string
 }
 
 type Feed struct {
@@ -52,7 +54,7 @@ type Feed struct {
 	Image       *Image
 }
 
-// add a new Item to a Feed
+// Add add a new Item to a Feed
 func (f *Feed) Add(item *Item) {
 	f.Items = append(f.Items, item)
 }
@@ -67,12 +69,12 @@ func anyTimeFormat(format string, times ...time.Time) string {
 	return ""
 }
 
-// interface used by ToXML to get a object suitable for exporting XML.
+// XmlFeed interface used by ToXML to get a object suitable for exporting XML.
 type XmlFeed interface {
 	FeedXml() interface{}
 }
 
-// turn a feed object (either a Feed, AtomFeed, or RssFeed) into xml
+// ToXML turn a feed object (either a Feed, AtomFeed, or RssFeed) into xml
 // returns an error if xml marshaling fails
 func ToXML(feed XmlFeed) (string, error) {
 	x := feed.FeedXml()
@@ -98,20 +100,25 @@ func WriteXML(feed XmlFeed, w io.Writer) error {
 	return e.Encode(x)
 }
 
-// creates an Atom representation of this feed
+// ToAtom creates an Atom representation of this feed
 func (f *Feed) ToAtom() (string, error) {
 	a := &Atom{f}
 	return ToXML(a)
 }
 
 // WriteAtom writes an Atom representation of this feed to the writer.
-func (f *Feed) WriteAtom(w io.Writer) error {
-	return WriteXML(&Atom{f}, w)
-}
+//func (f *Feed) WriteAtom(w io.Writer) error {
+//	return WriteXML(&Atom{f}, w)
+//}
 
-// creates an Rss representation of this feed
+// ToRss creates an Rss representation of this feed
 func (f *Feed) ToRss() (string, error) {
 	r := &Rss{f}
+	return ToXML(r)
+}
+
+func (f *Feed) ToSitemap() (string, error) {
+	r := &Sitemap{f}
 	return ToXML(r)
 }
 

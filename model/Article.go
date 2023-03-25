@@ -181,9 +181,9 @@ func GetArticle(Aid int) (int, *Article) {
 
 func GetAllArticle() []Article {
 	var data []Article
-	err = Db.Find(&data).Error
-	if err != nil {
-		return nil
-	}
+	Db.
+		Model(Article{}).
+		Order("created_at desc").
+		Find(&data)
 	return data
 }

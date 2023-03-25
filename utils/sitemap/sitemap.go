@@ -12,7 +12,7 @@ import (
 )
 
 var Feed *feeds.Feed
-var author *feeds.Author
+var Author *feeds.Author
 
 func Db() {
 	// 先清空之前数据
@@ -24,7 +24,7 @@ func Db() {
 		Feed.Items = append(Feed.Items, &feeds.Item{
 			Title:       v.Title,
 			Link:        &feeds.Link{Href: fmt.Sprintf("%s/post/%d", utils.Config.Server.Url, v.ID)},
-			Author:      author,
+			Author:      Author,
 			Description: v.Desc,
 			Id:          strconv.Itoa(int(v.ID)),
 			Updated:     v.UpdatedAt,
@@ -44,12 +44,12 @@ func Db() {
 func InitSitemap() {
 	// 获取博客建站时间
 	CreatedTime := time.Unix(utils.Config.ConstructionTime, 0)
-	author = &feeds.Author{Name: utils.Config.Frontend.UserInfo.Name, Email: utils.Config.Frontend.UserInfo.Email}
+	Author = &feeds.Author{Name: utils.Config.Frontend.UserInfo.Name, Email: utils.Config.Frontend.UserInfo.Email}
 	Feed = &feeds.Feed{
 		Title:       utils.Config.Frontend.UserInfo.Title,
 		Link:        &feeds.Link{Href: utils.Config.Server.Url},
 		Description: utils.Config.Frontend.UserInfo.Motto,
-		Author:      author,
+		Author:      Author,
 		Created:     CreatedTime,
 	}
 

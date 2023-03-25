@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -39,7 +40,7 @@ func InitRouter() {
 	}
 	r.StaticFile("config", "./config/config.json")
 
-	r.GET("sitemap/:type", func(c *gin.Context) {
+	r.GET("rss/:type", func(c *gin.Context) {
 		var data struct {
 			Type string `uri:"type"`
 		}
@@ -61,14 +62,23 @@ func InitRouter() {
 			mimetype = "application/feed+json"
 			response, err = sitemap.Feed.ToJSON()
 		default:
-			c.JSON(http.StatusNotFound, gin.H{"msg": "Only RSS, ATOM and JSON protocols are supported"})
-			return
+			mimetype = "application/xml"
+			response, err = sitemap.Feed.ToSitemap()
 		}
 		if err != nil {
 			c.String(http.StatusServiceUnavailable, "Err...")
 			return
 		}
 		c.Data(http.StatusOK, mimetype, []byte(response))
+	})
+
+	r.GET("sitemap.xml", func(c *gin.Context) {
+		response, err := sitemap.Feed.ToSitemap()
+		if err != nil {
+			c.String(http.StatusServiceUnavailable, fmt.Sprintf("msg:%v", err))
+			return
+		}
+		c.Data(http.StatusOK, "application/xml", []byte(response))
 	})
 
 	auth := r.Group("api/v1")

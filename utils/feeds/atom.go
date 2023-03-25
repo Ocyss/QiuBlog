@@ -56,7 +56,7 @@ type AtomEntry struct {
 	Author      *AtomAuthor  // required if feed lacks an author
 }
 
-// Multiple links with different rel can coexist
+// AtomLink Multiple links with different rel can coexist
 type AtomLink struct {
 	//Atom 1.0 <link rel="enclosure" type="audio/mpeg" title="MP3" href="http://www.example.org/myaudiofile.mp3" length="1234" />
 	XMLName xml.Name `xml:"link"`
@@ -93,12 +93,12 @@ func newAtomEntry(i *Item) *AtomEntry {
 	s := &AtomSummary{Content: i.Description, Type: "html"}
 
 	if len(id) == 0 {
-		// if there's no id set, try to create one, either from data or just a uuid
+		// if there's no id set, try to create one, either from data or just an uuid
 		if len(i.Link.Href) > 0 && (!i.Created.IsZero() || !i.Updated.IsZero()) {
 			dateStr := anyTimeFormat("2006-01-02", i.Updated, i.Created)
 			host, path := i.Link.Href, "/invalid.html"
-			if url, err := url.Parse(i.Link.Href); err == nil {
-				host, path = url.Host, url.Path
+			if parse, err := url.Parse(i.Link.Href); err == nil {
+				host, path = parse.Host, parse.Path
 			}
 			id = fmt.Sprintf("tag:%s,%s:%s", host, dateStr, path)
 		} else {
@@ -110,13 +110,13 @@ func newAtomEntry(i *Item) *AtomEntry {
 		name, email = i.Author.Name, i.Author.Email
 	}
 
-	link_rel := i.Link.Rel
-	if link_rel == "" {
-		link_rel = "alternate"
+	linkRel := i.Link.Rel
+	if linkRel == "" {
+		linkRel = "alternate"
 	}
 	x := &AtomEntry{
 		Title:   i.Title,
-		Links:   []AtomLink{{Href: i.Link.Href, Rel: link_rel, Type: i.Link.Type}},
+		Links:   []AtomLink{{Href: i.Link.Href, Rel: linkRel, Type: i.Link.Type}},
 		Id:      id,
 		Updated: anyTimeFormat(time.RFC3339, i.Updated, i.Created),
 		Summary: s,
@@ -127,7 +127,7 @@ func newAtomEntry(i *Item) *AtomEntry {
 		x.Content = &AtomContent{Content: i.Content, Type: "html"}
 	}
 
-	if i.Enclosure != nil && link_rel != "enclosure" {
+	if i.Enclosure != nil && linkRel != "enclosure" {
 		x.Links = append(x.Links, AtomLink{Href: i.Enclosure.Url, Rel: "enclosure", Type: i.Enclosure.Type, Length: i.Enclosure.Length})
 	}
 
@@ -137,7 +137,7 @@ func newAtomEntry(i *Item) *AtomEntry {
 	return x
 }
 
-// create a new AtomFeed with a generic Feed struct's data
+// AtomFeed create a new AtomFeed with a generic Feed struct's data
 func (a *Atom) AtomFeed() *AtomFeed {
 	updated := anyTimeFormat(time.RFC3339, a.Updated, a.Created)
 	feed := &AtomFeed{
