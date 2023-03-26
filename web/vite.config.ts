@@ -71,30 +71,32 @@ export default defineConfig({
       },
     },
   },
-  build: {
-    sourcemap: false,
-    minify: "esbuild",
-    chunkSizeWarningLimit: 800,
-    rollupOptions: {
-      output: {
-        //静态资源分类打包
-        chunkFileNames: "assets/js/[name]-[hash].js",
-        entryFileNames: "assets/js/[name]-[hash].js",
-        assetFileNames: "assets/[ext]/[name]-[hash].[ext]",
-        manualChunks(id) {
-          if (id.includes("naive-ui") || id.includes("vue")) {
-            return;
-          }
-          //静态资源分拆打包
-          if (id.includes("node_modules")) {
-            return id
-              .toString()
-              .split("node_modules/")[1]
-              .split("/")[0]
-              .toString();
-          }
-        },
-      },
-    },
-  },
+  // legacy: { buildSsrCjsExternalHeuristics: true },
+  // build: {
+  //   sourcemap: false,
+  //   minify: "esbuild",
+  //   chunkSizeWarningLimit: 800,
+
+  // rollupOptions: {
+  //   output: {
+  //     //静态资源分类打包
+  //     // chunkFileNames: "assets/js/[name]-[hash].js",
+  //     // entryFileNames: "assets/js/[name]-[hash].js",
+  //     // assetFileNames: "assets/[ext]/[name]-[hash].[ext]",
+  //     manualChunks(id) {
+  //       if (id.includes("naive-ui") || id.includes("vue")) {
+  //         return;
+  //       }
+  //       //静态资源分拆打包
+  //       if (id.includes("node_modules")) {
+  //         return id
+  //           .toString()
+  //           .split("node_modules/")[1]
+  //           .split("/")[0]
+  //           .toString();
+  //       }
+  //     },
+  //   },
+  // },
+  // },
 });

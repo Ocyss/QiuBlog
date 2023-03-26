@@ -7,7 +7,8 @@ export const useProjectSettingStore = defineStore({
     isMobile: false, // 是否处于移动端模式
     collapsed: false, // 侧栏是否折叠
     autuLoad: false, // 是否自动下一页
-    allTags: undefined,
+    allTags: undefined, //所有标签
+    isMainUV: false,
   }),
   actions: {
     async getAllTags(): Promise<Array<any>> {
@@ -17,16 +18,15 @@ export const useProjectSettingStore = defineStore({
       }
       return this.allTags;
     },
+    mainUV(): void {
+      if (!this.isMainUV) {
+        api.statistics.mainuv().then(() => {
+          this.isMainUV = true;
+        });
+      }
+    },
   },
-
-  // persist: {
-  //   enabled: true,
-  //   strategies: [
-  //     {
-  //       key: "Setting",
-  //       storage: localStorage,
-  //       paths: ["collapsed", "autuLoad"],
-  //     },
-  //   ],
-  // },
+  persist: {
+    paths: ["collapsed", "autuLoad"],
+  },
 });

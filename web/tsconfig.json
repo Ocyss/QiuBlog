@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
+    "module": "es2022",
+    "moduleResolution": "Node",
     "jsx": "preserve",
+    "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]

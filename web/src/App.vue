@@ -24,19 +24,19 @@
 
 <script setup lang="ts">
 import { useDesignSettingStore } from "@/store/modules/designSetting";
+import { useProjectSettingStore } from "@/store/modules/projectSetting";
 import { zhCN, dateZhCN, darkTheme, enUS, dateEnUS } from "naive-ui";
 import { lighten } from "@/utils/index";
 import api from "@/api";
 import { provide, ref, computed, inject, Ref, onMounted } from "vue";
 import axios from "axios";
 import { useHead } from "@unhead/vue";
-import { getActiveHead } from "unhead";
-import type { VueCookies } from "vue-cookies";
 import type { Config } from "@/types";
 let oldtitle: string;
 const useConfig: Ref<Config> = ref(void 0);
 
 const designStore = useDesignSettingStore();
+const settingStore = useProjectSettingStore();
 
 provide("config", useConfig);
 
@@ -69,12 +69,7 @@ onMounted(() => {
     useConfig.value = res.data;
   });
   if (!import.meta.env.SSR) {
-    // const cookies = inject<VueCookies>("$cookies");
-    // if (!cookies.get("mainuv")) {
-    //   api.statistics.mainuv().then(() => {
-    //     cookies.set("mainuv", "1", -1);
-    //   });
-    // }
+    settingStore.mainUV(); //统计访问量
     //调用原生接口判断是否离开了页面
     document.addEventListener("visibilitychange", function () {
       const state = document.visibilityState;

@@ -40,6 +40,6 @@ const settingStore = useProjectSettingStore();
 
 .layoutSide {
   max-width: 320px;
-  width: 23%;
+  width: 21vw;
 }
 </style>

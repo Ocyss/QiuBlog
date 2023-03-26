@@ -30,17 +30,18 @@ const scrollableEl: Ref<HTMLElement> = inject("scrollableEl");
   align-items: center;
   flex-direction: column;
   max-width: 280px;
+  margin: auto;
 }
 
 .main {
   position: relative;
 
   .n-affix {
-    width: 100%;
   }
   .n-card,
   .n-affix > .n-card {
-    width: 95%;
+    max-width: 280px;
+    width: 20vw;
     border-radius: 8px;
     border-style: solid;
     border-width: 2px;
