@@ -85,7 +85,6 @@ import { useDesignSettingStore } from "@/store/modules/designSetting";
 import type { Config } from "@/types";
 
 const designStore = useDesignSettingStore();
-const config: Ref<Config> = inject("config");
 const router = useRouter();
 const imgSrc = ref("");
 const props = defineProps({
@@ -94,7 +93,7 @@ const props = defineProps({
 });
 //渲染判断，无头图则采用随机api
 if (props.item.img == "") {
-  imgSrc.value = config.value.global.randomImgApi + `wcnm=${props.index}`;
+  imgSrc.value = "图裂，待写~~~~";
 } else {
   imgSrc.value = props.item.img;
 }

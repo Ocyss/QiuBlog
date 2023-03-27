@@ -4,8 +4,10 @@ import vue from "@vitejs/plugin-vue";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { NaiveUiResolver } from "unplugin-vue-components/resolvers";
-import { resolve } from "path";
 import UnheadVite from "@unhead/addons/vite";
+import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
+import { resolve, dirname } from "node:path";
+import { fileURLToPath } from "url";
 //打包分析
 // import { visualizer } from "rollup-plugin-visualizer";
 // import VitePluginCompression from "vite-plugin-compression";//压缩
@@ -35,6 +37,14 @@ export default defineConfig({
           ],
         },
       ],
+    }),
+    VueI18nPlugin({
+      /* options */
+      // locale messages resource pre-compile option
+      include: resolve(
+        dirname(fileURLToPath(import.meta.url)),
+        "./path/to/src/locales/**"
+      ),
     }),
     Components({
       resolvers: [NaiveUiResolver()],
@@ -71,7 +81,9 @@ export default defineConfig({
       },
     },
   },
-  // legacy: { buildSsrCjsExternalHeuristics: true },
+  ssr: {
+    noExternal: ["naive-ui", "date-fns", "vueuc"],
+  },
   // build: {
   //   sourcemap: false,
   //   minify: "esbuild",

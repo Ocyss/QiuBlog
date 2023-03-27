@@ -7,12 +7,14 @@
     "dev": "node server",
     "build:client": "vite build --outDir dist/client --ssrManifest",
     "build:server": "vite build --outDir dist/server --ssr src/entry-server.ts",
-    "preview": "vite preview",
-    "start": "NODE_ENV=production node server.js"
+    "build": "vite build --outDir dist/client --ssrManifest & vite build --outDir dist/server --ssr src/entry-server.ts",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "2",
     "@css-render/vue3-ssr": "^0.15.12",
+    "@intlify/unplugin-vue-i18n": "^0.10.0",
+    "@unhead/ssr": "^1.1.25",
     "@unhead/vue": "^1.1.25",
     "@vueuse/core": "^9.13.0",
     "add": "^2.0.6",
@@ -24,7 +26,9 @@
     "pinia": "^2.0.33",
     "pinia-plugin-persistedstate": "^3.1.0",
     "qrcode": "1",
+    "vite-plugin-ssr": "^0.4.103",
     "vue": "3.2.47",
+    "vue-i18n": "^9.2.2",
     "vue-router": "4.1.6",
     "vuedraggable": "^4.1.0",
     "yarn": "^1.22.19"
@@ -34,7 +38,6 @@
     "@unhead/addons": "^1.1.25",
     "@vicons/ionicons5": "^0.12.0",
     "@vitejs/plugin-vue": "^4.1.0",
-    "eslint": "^8.36.0",
     "express": "^4.18.2",
     "naive-ui": "^2.34.3",
     "rollup-plugin-visualizer": "^5.9.0",

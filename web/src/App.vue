@@ -1,14 +1,12 @@
 <template>
-  <div id="app" v-if="useConfig">
+  <div id="app">
     <n-config-provider
       :locale="designStore.getLocale ? zhCN : enUS"
       :theme="designStore.darkTheme ? darkTheme : undefined"
       :theme-overrides="getThemeOverrides"
       :date-locale="designStore.getLocale ? dateZhCN : dateEnUS"
     >
-      <n-loading-bar-provider
-        :loading-bar-style="{ loading: 'color: #ffffff;' }"
-      >
+      <n-loading-bar-provider>
         <n-dialog-provider>
           <n-notification-provider>
             <n-message-provider>
@@ -25,20 +23,17 @@
 <script setup lang="ts">
 import { useDesignSettingStore } from "@/store/modules/designSetting";
 import { useProjectSettingStore } from "@/store/modules/projectSetting";
-import { zhCN, dateZhCN, darkTheme, enUS, dateEnUS } from "naive-ui";
+import { zhCN, enUS, dateZhCN, darkTheme, dateEnUS } from "naive-ui";
 import { lighten } from "@/utils/index";
-import api from "@/api";
 import { provide, ref, computed, inject, Ref, onMounted } from "vue";
-import axios from "axios";
 import { useHead } from "@unhead/vue";
-import type { Config } from "@/types";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 let oldtitle: string;
-const useConfig: Ref<Config> = ref(void 0);
 
 const designStore = useDesignSettingStore();
 const settingStore = useProjectSettingStore();
-
-provide("config", useConfig);
 
 const getThemeOverrides = computed(() => {
   const appTheme = designStore.appTheme;
@@ -57,7 +52,10 @@ const getThemeOverrides = computed(() => {
 
 const titleTemplate = (title?: string) => {
   oldtitle = title;
-  return `${title} - ${useConfig.value?.userInfo?.title}`;
+  if (!title) {
+    return t("info.title.load");
+  }
+  return `${title} - ${t("main.title")}`;
 };
 
 useHead({
@@ -65,9 +63,6 @@ useHead({
 });
 
 onMounted(() => {
-  axios.get("/config").then((res) => {
-    useConfig.value = res.data;
-  });
   if (!import.meta.env.SSR) {
     settingStore.mainUV(); //统计访问量
     //调用原生接口判断是否离开了页面
@@ -77,7 +72,7 @@ onMounted(() => {
         useHead({ title: oldtitle, titleTemplate });
       } else if (state === "hidden") {
         useHead({
-          title: "啊💔怎么离开了呢💔怎么会?怎么会呢!",
+          title: t("info.title.hidden"),
           titleTemplate: null,
         });
       }
