@@ -224,10 +224,9 @@ function selectMenu(data) {
 }
 
 //请求菜单子项
-api.menuchild.gets().then((res) => {
-  menulist.value = res.data;
-  menulist2.value = [...menulist.value];
-});
+const res = await api.menuchild.gets();
+menulist.value = res.data;
+menulist2.value = [...menulist.value];
 </script>
 
 <style lang="scss" scoped>

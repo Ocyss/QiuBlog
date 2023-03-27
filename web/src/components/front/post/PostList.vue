@@ -1,7 +1,6 @@
 <template>
   <n-spin class="postlist" :show="PostSpinShow" style="min-height: 300px">
-    <n-tabs
-      ref="tabs"
+    <!-- <n-tabs
       :bar-width="28"
       type="line"
       class="custom-tabs"
@@ -43,7 +42,7 @@
         </div>
         <n-empty v-else description="没有东西。。。" />
       </n-tab-pane>
-    </n-tabs>
+    </n-tabs> -->
     <template #description>加载中~~~~</template>
   </n-spin>
 </template>
@@ -59,7 +58,6 @@ const props = defineProps(["cdata"]);
 const page = ref({ "-1": 1 });
 const pageCount = ref({ "-1": 1 });
 const cid = ref(-1);
-const tabs = ref(void 0);
 
 const settingStore = useProjectSettingStore();
 const backTop: Ref<any> = inject("BackTop");
@@ -67,7 +65,7 @@ const backTop: Ref<any> = inject("BackTop");
 const PostData = ref({});
 //请求主页文章列表
 // c是分类请求,m是菜单请求
-function getPosts() {
+async function getPosts() {
   PostSpinShow.value = true;
   const params: {
     pagesize: number;
@@ -83,21 +81,20 @@ function getPosts() {
   } else {
     params.cid = cid.value;
   }
-  api.article.getList(params).then((res) => {
-    if (!PostData.value[cid.value]) {
-      PostData.value[cid.value] = [];
-    }
-    PostData.value[cid.value].push(
-      ...res.data.map((item) => {
-        item.cname = props.cdata.cids.find((citem) => {
-          return citem.id == item.cid;
-        });
-        return item;
-      })
-    );
-    pageCount.value[cid.value] = Math.ceil(res.total / params.pagesize);
-    PostSpinShow.value = false;
-  });
+  const res = await api.article.getList(params);
+  if (!PostData.value[cid.value]) {
+    PostData.value[cid.value] = [];
+  }
+  PostData.value[cid.value].push(
+    ...res.data.map((item) => {
+      item.cname = props.cdata.cids.find((citem) => {
+        return citem.id == item.cid;
+      });
+      return item;
+    })
+  );
+  pageCount.value[cid.value] = Math.ceil(res.total / params.pagesize);
+  PostSpinShow.value = false;
 }
 
 getPosts();

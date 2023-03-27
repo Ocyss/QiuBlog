@@ -50,35 +50,35 @@ const getThemeOverrides = computed(() => {
   };
 });
 
-const titleTemplate = (title?: string) => {
-  oldtitle = title;
-  if (!title) {
-    return t("info.title.load");
-  }
-  return `${title} - ${t("main.title")}`;
-};
+// const titleTemplate = (title?: string) => {
+//   oldtitle = title;
+//   if (!title) {
+//     return t("info.title.load");
+//   }
+//   return `${title} - ${t("main.title")}`;
+// };
 
-useHead({
-  titleTemplate,
-});
+// useHead({
+//   titleTemplate,
+// });
 
-onMounted(() => {
-  if (!import.meta.env.SSR) {
-    settingStore.mainUV(); //统计访问量
-    //调用原生接口判断是否离开了页面
-    document.addEventListener("visibilitychange", function () {
-      const state = document.visibilityState;
-      if (state === "visible") {
-        useHead({ title: oldtitle, titleTemplate });
-      } else if (state === "hidden") {
-        useHead({
-          title: t("info.title.hidden"),
-          titleTemplate: null,
-        });
-      }
-    });
-  }
-});
+// onMounted(() => {
+//   if (!import.meta.env.SSR) {
+//     settingStore.mainUV(); //统计访问量
+//     //调用原生接口判断是否离开了页面
+//     document.addEventListener("visibilitychange", function () {
+//       const state = document.visibilityState;
+//       if (state === "visible") {
+//         useHead({ title: oldtitle, titleTemplate });
+//       } else if (state === "hidden") {
+//         useHead({
+//           title: t("info.title.hidden"),
+//           titleTemplate: null,
+//         });
+//       }
+//     });
+//   }
+// });
 </script>
 
 <style lang="scss" scoped>

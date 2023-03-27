@@ -35,7 +35,6 @@ type Song = {
 
 const message = useMessage();
 const dialog = useDialog();
-const Data = ref([]);
 
 let loading = false;
 const cols: DataTableColumns<Song> = [
@@ -183,9 +182,8 @@ function delmessage(row, index) {
   });
 }
 
-api.message.getMessage(params).then((res) => {
-  Data.value.push(...res.data);
-});
+const res = await api.message.getMessage(params);
+const Data = ref([...res.data]);
 </script>
 
 <style scoped lang="scss"></style>

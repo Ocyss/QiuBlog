@@ -172,12 +172,11 @@ function submitCallback() {
   }
 }
 const params = { pagesize: 10, pagenum: 1 };
-api.message.getQuestion(params).then((res) => {
-  res.data.map((item) => {
-    if (item.show == true || item.show == undefined) {
-      content.value.push(item);
-    }
-  });
+const res = await api.message.getQuestion(params);
+res.data.map((item) => {
+  if (item.show == true || item.show == undefined) {
+    content.value.push(item);
+  }
 });
 </script>
 

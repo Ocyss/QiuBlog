@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import PostListVue from "@/components/front/post/PostList.vue";
-import { ref, computed, inject } from "vue";
+import { ref, computed } from "vue";
 import api from "@/api";
 import { useHead } from "@unhead/vue";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
@@ -54,13 +54,13 @@ const cdata = ref({
   ],
 });
 
-api.category.get().then((res) => {
-  res.data.map((item) => {
-    if (item.homeshow) {
-      cdata.value.cids.push(item);
-    }
-  });
+const res = await api.category.get();
+res.data.map((item) => {
+  if (item.homeshow) {
+    cdata.value.cids.push(item);
+  }
 });
+
 useHead({
   link: [
     {

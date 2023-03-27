@@ -28,7 +28,7 @@
         <n-icon size="25" @click="locale = !locale"><Language /></n-icon>
       </div>
       <div>
-        <n-popover placement="bottom" trigger="click">
+        <!-- <n-popover placement="bottom" trigger="click">
           <template #trigger>
             <n-icon size="25"><ColorPalette /></n-icon>
           </template>
@@ -41,7 +41,7 @@
               @click="designStore.appTheme = thems"
             ></div>
           </n-space>
-        </n-popover>
+        </n-popover> -->
       </div>
     </div>
     <n-modal v-model:show="shareShow">

@@ -2,6 +2,7 @@ import axios from "axios";
 import { message } from "@/utils/client";
 
 let request = axios.create({
+  baseURL: "http://127.0.0.1:3000/",
   timeout: 8000,
 });
 

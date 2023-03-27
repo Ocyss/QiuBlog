@@ -5,7 +5,7 @@ export const set = (data) => {
 };
 
 export const gets = (params = {}) => {
-  return request({ url: "/api/v1/menuchilds", method: "get", params });
+  return request({ url: "api/v1/menuchilds", method: "get", params });
 };
 
 export const get = (params = {}) => {

@@ -94,9 +94,8 @@ function load() {
   getPosts();
 }
 getPosts();
-api.category.get().then((res) => {
-  cdata.value = res.data;
-});
+const res = await api.category.get();
+cdata.value = res.data;
 </script>
 
 <style scoped lang="scss">

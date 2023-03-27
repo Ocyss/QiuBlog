@@ -1,41 +1,43 @@
 <template>
   <affixVue ref="affixRef" />
-  <n-layout class="layout" has-sider position="absolute">
-    <n-layout-sider
-      v-if="!isMobile"
-      show-trigger="arrow-circle"
-      collapse-mode="width"
-      class="layout-sider"
-      :collapsed="collapsed"
-      :collapsed-width="64"
-      :width="leftMenuWidth"
-      :native-scrollbar="false"
-      @collapse="collapsed = true"
-      @expand="collapsed = false"
-      bordered
-    >
-      <slot name="sider" :collapsed="collapsed"></slot>
-    </n-layout-sider>
-    <n-drawer
-      v-model:show="showSideDrawder"
-      width="35%"
-      placement="left"
-      class="layout-side-drawer"
-    >
-      <slot name="drawer" :collapsed="collapsed"></slot>
-    </n-drawer>
-    <n-layout ref="layoutRef">
-      <n-layout-header class="layout-header" bordered position="absolute">
-        <slot name="header" :collapsed="collapsed"></slot>
-      </n-layout-header>
-      <n-layout-content class="layout-content">
-        <slot name="default"></slot>
-      </n-layout-content>
-      <n-layout-footer>
-        <Footer style="width: 100%" />
-      </n-layout-footer>
+  <Suspense>
+    <n-layout class="layout" has-sider position="absolute">
+      <n-layout-sider
+        v-if="!isMobile"
+        show-trigger="arrow-circle"
+        collapse-mode="width"
+        class="layout-sider"
+        :collapsed="collapsed"
+        :collapsed-width="64"
+        :width="leftMenuWidth"
+        :native-scrollbar="false"
+        @collapse="collapsed = true"
+        @expand="collapsed = false"
+        bordered
+      >
+        <slot name="sider" :collapsed="collapsed"></slot>
+      </n-layout-sider>
+      <n-drawer
+        v-model:show="showSideDrawder"
+        width="35%"
+        placement="left"
+        class="layout-side-drawer"
+      >
+        <slot name="drawer" :collapsed="collapsed"></slot>
+      </n-drawer>
+      <n-layout ref="layoutRef">
+        <n-layout-header class="layout-header" bordered position="absolute">
+          <slot name="header" :collapsed="collapsed"></slot>
+        </n-layout-header>
+        <n-layout-content class="layout-content">
+          <slot name="default"></slot>
+        </n-layout-content>
+        <n-layout-footer>
+          <Footer style="width: 100%" />
+        </n-layout-footer>
+      </n-layout>
     </n-layout>
-  </n-layout>
+  </Suspense>
 </template>
 
 <script setup lang="ts">

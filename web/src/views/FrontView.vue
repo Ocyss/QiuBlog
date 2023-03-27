@@ -2,7 +2,7 @@
   <frontVue>
     <rightColumnVue>
       <div class="content">
-        <RouterView :key="$route.fullPath" />
+        <RouterView />
         <n-back-top :right="100" />
       </div>
       <template #column>

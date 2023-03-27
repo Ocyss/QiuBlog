@@ -12,12 +12,11 @@ const route = useRoute();
 const router = useRouter();
 const cdata = ref();
 
-api.menuchild.get({ link: route.params.menuName }).then((res) => {
-  if (res.data.id == 0) {
-    router.push({ name: "exception-404" });
-  } else {
-    cdata.value = res.data;
-    cdata.value.cids.unshift({ id: -1, name: "全部", homeshow: true });
-  }
-});
+const res = await api.menuchild.get({ link: route.params.menuName });
+if (res.data.id == 0) {
+  router.push({ name: "exception-404" });
+} else {
+  cdata.value = res.data;
+  cdata.value.cids.unshift({ id: -1, name: "全部", homeshow: true });
+}
 </script>

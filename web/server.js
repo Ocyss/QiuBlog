@@ -78,8 +78,7 @@ export async function createServer(
         render = (await import("./dist/server/entry-server.js")).render;
       }
 
-      const [appHtml, cssHtml, preloadLinks] = await render(url, manifest);
-
+      const { appHtml, cssHtml, preloadLinks } = await render(url, manifest);
       const html = template
         .replace(`<!--ssr-outlet-->`, appHtml)
         .replace(`<!--css-outlet-->`, cssHtml)
@@ -88,7 +87,6 @@ export async function createServer(
       res.status(200).set({ "Content-Type": "text/html" }).end(html);
     } catch (e) {
       vite && vite.ssrFixStacktrace(e);
-      console.log(e.stack);
       res.status(500).end(e.stack);
     }
   });

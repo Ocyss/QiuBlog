@@ -157,10 +157,9 @@ const colsReactive = reactive([
   },
 ]);
 
-api.article.getList({ mid: -2 }).then((res) => {
-  res.data.map((item) => {
-    data.value.push(item);
-  });
+const res = await api.article.getList({ pagesize: 6, pagenum: 0, mid: -2 });
+res.data.map((item) => {
+  data.value.push(item);
 });
 </script>
 

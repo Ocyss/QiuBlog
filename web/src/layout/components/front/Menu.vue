@@ -17,6 +17,7 @@ import { RouterLink, useRouter, useRoute } from "vue-router";
 import api from "@/api";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
 import { useHead } from "@unhead/vue";
+import axios from "axios";
 
 const props = defineProps(["collapsed"]);
 const designStore = useDesignSettingStore();
@@ -89,45 +90,46 @@ function renderIcon(icon) {
   return () => h(NIcon, { innerHTML: icon });
 }
 //主页菜单
-const menusRef = computed(() => {
-  return menus.value.map((item) => {
-    return {
-      label: () =>
-        h(
-          RouterLink,
-          {
-            to: {
-              name: item.linkName,
-              params:
-                item.linkName == "menu"
-                  ? {
-                      menuName: item.link,
-                    }
-                  : {},
-            },
-          },
-          { default: () => (designStore.getLocale ? item.name : item.ename) }
-        ),
-      name: item.name,
-      ename: item.ename,
-      key: item.link,
-      icon: renderIcon(item.icon),
-    };
-  });
-});
+// const menusRef = computed(() => {
+//   return menus.value.map((item) => {
+//     return {
+//       label: () =>
+//         h(
+//           RouterLink,
+//           {
+//             to: {
+//               name: item.linkName,
+//               params:
+//                 item.linkName == "menu"
+//                   ? {
+//                       menuName: item.link,
+//                     }
+//                   : {},
+//             },
+//           },
+//           { default: () => (designStore.getLocale ? item.name : item.ename) }
+//         ),
+//       name: item.name,
+//       ename: item.ename,
+//       key: item.link,
+//       icon: renderIcon(item.icon),
+//     };
+//   });
+// });
+let menusRef = undefined;
 //请求菜单项
-api.menuchild.gets().then((res) => {
-  res.data.map((item) => {
-    menus.value.splice(1, 0, {
-      name: item.name,
-      ename: item.ename,
-      linkName: "menu",
-      link: item.link,
-      icon: item.logo,
-    });
+const res = await api.menuchild.gets();
+
+res.data.map((item) => {
+  menus.value.splice(1, 0, {
+    name: item.name,
+    ename: item.ename,
+    linkName: "menu",
+    link: item.link,
+    icon: item.logo,
   });
-  getMenuName(menusKey.value);
 });
+getMenuName(menusKey.value);
 </script>
 
 <style scoped></style>

@@ -137,12 +137,11 @@ function submitCallback() {
 }
 
 const params = { pagesize: 10, pagenum: 1 };
-api.message.getMessage(params).then((res) => {
-  res.data.map((item) => {
-    if (item.show == true || item.show == undefined) {
-      content.value.push(item);
-    }
-  });
+const res = await api.message.getMessage(params);
+res.data.map((item) => {
+  if (item.show == true || item.show == undefined) {
+    content.value.push(item);
+  }
 });
 </script>
 

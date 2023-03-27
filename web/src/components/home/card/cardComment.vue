@@ -38,12 +38,11 @@ import { useDesignSettingStore } from "@/store/modules/designSetting";
 const designStore = useDesignSettingStore();
 const data = ref([]);
 
-api.message.getMessage({ pagesize: 6, pagenum: 1 }).then((res) => {
-  res.data.map((item) => {
-    if (item.show == true || item.show == undefined) {
-      data.value.push(item);
-    }
-  });
+const res = await api.message.getMessage({ pagesize: 6, pagenum: 1 });
+res.data.map((item) => {
+  if (item.show == true || item.show == undefined) {
+    data.value.push(item);
+  }
 });
 </script>
 

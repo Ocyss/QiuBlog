@@ -23,7 +23,7 @@ import type { DataTableColumns } from "naive-ui";
 import moment from "moment";
 const dialog = useDialog();
 const message = useMessage();
-const Data = ref([]);
+
 type Song = {
   id: number;
   created_at: string;
@@ -250,7 +250,7 @@ function reply(row, index) {
     },
   });
 }
-api.message.getQuestion(params).then((res) => {
-  Data.value.push(...res.data);
-});
+
+const res = await api.message.getQuestion(params);
+const Data = ref([...res.data]);
 </script>

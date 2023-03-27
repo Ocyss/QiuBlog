@@ -18,6 +18,7 @@ func InitRouter() {
 	r.MaxMultipartMemory = 8 << 20 // 8 MiB
 	r.Use(gin.Recovery())
 	r.Use(middleware.RateMiddleware()) // 胜率限制
+	r.Use(middleware.Cors())
 	loadStatic(r)
 	startAuth(r)
 	startUser(r)

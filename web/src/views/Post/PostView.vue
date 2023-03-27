@@ -98,7 +98,7 @@ import TimerVue from "@/components/Timer.vue";
 import editorVue from "@/components/editor.vue";
 import { useHead } from "@unhead/vue";
 import type { Config } from "@/types";
-const url = window.location.href;
+
 const route = useRoute();
 const message = useMessage();
 const uv = ref(0);
@@ -114,25 +114,31 @@ const postData = ref({
   cid: -1,
   tags: [],
 });
+const url = ref("");
+if (!import.meta.env.SSR) {
+  url.value = window.location.href;
+}
 
 const imgSrc = computed(() => {
-  return postData.value.img ? postData.value.img : "图裂待写~~";
+  return postData.value.img ? postData.value.img : "/static/img/fc.jpg";
 });
 
 const category = ref({ name: "" });
 
-api.article.get(route.params.pid as unknown as number).then((res) => {
-  postData.value = res.data;
-  uv.value = res.uv;
-  useHead({
-    title: res.data.title,
-    meta: [{ name: "description", content: res.data.desc }],
-  });
-});
+onMounted(() => {
+  api.article.get(route.params.pid as unknown as number).then((article_res) => {
+    postData.value = article_res.data;
+    uv.value = article_res.uv;
 
-api.category.get().then((res) => {
-  category.value = res.data.find((item) => {
-    return item.id == postData.value.cid;
+    useHead({
+      title: article_res.data.title,
+      meta: [{ name: "description", content: article_res.data.desc }],
+    });
+  });
+  api.category.get().then((category_res) => {
+    category.value = category_res.data.find((item) => {
+      return item.id == postData.value.cid;
+    });
   });
 });
 </script>
