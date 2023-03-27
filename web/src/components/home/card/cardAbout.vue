@@ -4,24 +4,15 @@
       <img class="avatar" src="/static/img/avatar.png" alt="" />
     </div>
     <div class="text">
-      <div class="name">{{ config.userInfo.name }}</div>
+      <div class="name">{{ $t("main.name") }}</div>
       <div class="motto">
-        {{
-          designStore.getLocale ? config.userInfo.motto : config.userInfo.mottoE
-        }}
+        {{ $t("main.motto") }}
       </div>
     </div>
   </n-card>
 </template>
 
-<script setup lang="ts">
-import { inject, Ref } from "vue";
-import { useDesignSettingStore } from "@/store/modules/designSetting";
-import type { Config } from "@/types";
-
-const config: Ref<Config> = inject("config");
-const designStore = useDesignSettingStore();
-</script>
+<script setup lang="ts"></script>
 
 <style lang="scss" scoped>
 .img {

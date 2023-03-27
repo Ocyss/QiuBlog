@@ -1,6 +1,6 @@
 import axios from "axios";
-import { createDiscreteApi } from "naive-ui";
-const { message } = createDiscreteApi(["message"]);
+import { message } from "@/utils/client";
+
 let request = axios.create({
   timeout: 8000,
 });
@@ -24,15 +24,17 @@ request.interceptors.response.use(
     // 对响应数据做点什么
     if (res.data.status == 200) {
       return res.data;
-    } else {
+    } else if (res.data.status != undefined) {
       message.error(res.data.message);
       return Promise.reject(new Error(res.data.message));
+    } else {
+      return res;
     }
   },
   function (error) {
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
-    message.error(error.response.data.message);
+    message.error(error.response?.data.message);
     return Promise.reject(error);
   }
 );

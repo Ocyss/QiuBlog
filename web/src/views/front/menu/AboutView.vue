@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, inject } from "vue";
-import axios from "axios";
+import request from "@/utils/request";
 import editor from "@/components/editor.vue";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
 
@@ -29,10 +29,10 @@ const contentRef = ref({
   project: "",
 });
 onMounted(() => {
-  axios.get("/about.md").then((res) => {
+  request.get("/about.md").then((res) => {
     contentRef.value.author = res.data;
   });
-  axios
+  request
     .get("https://raw.githubusercontent.com/Ocyss/QiuBlog/master/README.md")
     .then((res) => {
       contentRef.value.project = res.data;

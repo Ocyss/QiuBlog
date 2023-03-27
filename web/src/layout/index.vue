@@ -69,6 +69,7 @@ const collapsed = computed({
     settingStore.collapsed = val;
   },
 });
+
 //是否显示侧抽屉
 const showSideDrawder = computed({
   get: () => isMobile.value && collapsed.value,
