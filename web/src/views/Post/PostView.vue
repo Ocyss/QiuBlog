@@ -98,6 +98,7 @@ import TimerVue from "@/components/Timer.vue";
 import editorVue from "@/components/editor.vue";
 import { useHead } from "@unhead/vue";
 import type { Config } from "@/types";
+const config: Ref<Config> = inject("config");
 const url = window.location.href;
 const route = useRoute();
 const message = useMessage();
@@ -116,7 +117,9 @@ const postData = ref({
 });
 
 const imgSrc = computed(() => {
-  return postData.value.img ? postData.value.img : "图裂待写~~";
+  return postData.value.img
+    ? postData.value.img
+    : config.value.global.randomImgApi;
 });
 
 const category = ref({ name: "" });

@@ -1,7 +1,8 @@
-import fs from "node:fs";
+import fs from "fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath } from "url";
 import express from "express";
+import { createServer as createViteServer } from "vite";
 
 const isTest = process.env.VITEST;
 
@@ -25,9 +26,12 @@ export async function createServer(
 
   const app = express();
 
-  /**
-   * @type {import('vite').ViteDevServer}
-   */
+  // const vite = await createViteServer({
+  //   server: { middlewareMode: true },
+  //   appType: "custom",
+  // });
+
+  // app.use(vite.middlewares);
   let vite;
   if (!isProd) {
     vite = await (
@@ -66,6 +70,16 @@ export async function createServer(
     const url = req.originalUrl;
 
     try {
+      // let template = fs.readFileSync(
+      //   path.resolve(__dirname, "index.html"),
+      //   "utf-8"
+      // );
+
+      // template = await vite.transformIndexHtml(url, template);
+
+      // const { render } = import("./dist/server/entry-server.js");
+
+      // const { appHtml, cssHtml } = await render(url);
       let template, render;
       if (!isProd) {
         // always read fresh template in dev

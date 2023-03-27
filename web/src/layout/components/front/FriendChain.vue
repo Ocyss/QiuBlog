@@ -1,19 +1,23 @@
 <template>
   <div class="main" v-if="!collapsed">
-    <h2>{{ $t("component.chain.name") }}</h2>
-    <!-- <a
+    <h2>友链</h2>
+    <a
+      v-if="config"
       target="_blank"
       v-for="fc in config.friendChain"
       :href="fc.href"
     >
       {{ fc.name }}
-    </a> -->
-    友链维护中
+    </a>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps(["collapsed"]);
+import { Ref, inject } from "vue";
+import type { Config } from "@/types";
+
+const props = defineProps(["collapsed"]);
+const config: Ref<Config> = inject("config");
 </script>
 
 <style scoped lang="scss">

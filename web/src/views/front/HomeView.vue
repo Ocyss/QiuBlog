@@ -27,7 +27,6 @@
 import PostListVue from "@/components/front/post/PostList.vue";
 import { ref, computed, inject } from "vue";
 import api from "@/api";
-import { useHead } from "@unhead/vue";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
 
 const designStore = useDesignSettingStore();
@@ -60,28 +59,6 @@ api.category.get().then((res) => {
       cdata.value.cids.push(item);
     }
   });
-});
-useHead({
-  link: [
-    {
-      rel: "alternate",
-      type: "application/rss+xml",
-      title: "RSS 2.0 Feed",
-      href: "/rss/rss",
-    },
-    {
-      rel: "alternate",
-      type: "application/atom+xml",
-      title: "RSS Atom Feed",
-      href: "/rss/atom",
-    },
-    {
-      rel: "alternate",
-      type: "application/rss+json",
-      title: "RSS JSON Feed",
-      href: "/rss/json",
-    },
-  ],
 });
 </script>
 

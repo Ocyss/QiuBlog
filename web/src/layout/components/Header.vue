@@ -60,8 +60,6 @@ import {
 } from "@vicons/ionicons5";
 import { railStyle } from "@/utils";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
-import { useI18n } from "vue-i18n";
-const i18n = useI18n();
 const shareShow = ref(false);
 const appThemeList = ref([
   "#FC9D99",
@@ -89,11 +87,7 @@ const appThemeList = ref([
   "#F5B2AC",
 ]);
 const designStore = useDesignSettingStore();
-let url = "";
-if (!import.meta.env.SSR) {
-  url = window.location.href;
-}
-
+const url = window.location.href;
 //暗黑模式
 const darkMode = computed({
   get: () => designStore.getDarkTheme,
@@ -102,10 +96,7 @@ const darkMode = computed({
 //国际化语言
 const locale = computed({
   get: () => designStore.getLocale,
-  set: (val) => {
-    i18n.locale.value = val ? "zhCN" : "enUS";
-    designStore.setLocale(val);
-  },
+  set: (val) => designStore.setLocale(val),
 });
 
 defineProps(["collapsed"]);
