@@ -2,19 +2,22 @@ import { basename } from "node:path";
 import { createApp } from "./main";
 import { renderToString } from "vue/server-renderer";
 import { setup } from "@css-render/vue3-ssr";
+import { renderSSRHead } from "@unhead/ssr";
 
 export async function render(url, manifest) {
-  const { app, router, pinia } = createApp();
+  const { app, router, pinia, head } = createApp();
 
   await router.push(url);
   await router.isReady();
 
   const { collect } = setup(app);
-  const ctx = {};
+  const ctx: any = {};
   const appHtml = await renderToString(app, ctx);
   const cssHtml = collect();
   const preloadLinks = renderPreloadLinks(ctx.modules, manifest);
-  return { appHtml, cssHtml, preloadLinks };
+
+  const headPayload = await renderSSRHead(head);
+  return { appHtml, cssHtml, preloadLinks, headPayload };
 }
 
 function renderPreloadLinks(modules, manifest) {

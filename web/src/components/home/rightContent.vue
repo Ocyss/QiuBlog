@@ -2,7 +2,7 @@
   <div class="main">
     <aboutVue />
 
-    <n-affix v-if="scrollableEl" :trigger-top="60" :listen-to="scrollableEl">
+    <n-affix :trigger-top="60" :listen-to="scrollableEl">
       <commentVue />
       <popularVue />
       <statisticsVue />

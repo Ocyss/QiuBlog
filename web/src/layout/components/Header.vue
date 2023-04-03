@@ -10,11 +10,12 @@
         <n-icon size="25" @click="shareShow = true">
           <ShareSocialOutline />
         </n-icon>
+        {{ shareShow }}
       </div>
     </div>
     <div class="menuRight">
       <div>
-        <n-switch v-model:value="darkMode" :rail-style="railStyle">
+        <n-switch v-model:value="designStore.darkTheme" :rail-style="railStyle">
           <template #checked>
             {{ designStore.getLocale ? "下班" : "LowerClass" }}
           </template>
@@ -97,7 +98,11 @@ if (!import.meta.env.SSR) {
 //暗黑模式
 const darkMode = computed({
   get: () => designStore.getDarkTheme,
-  set: (val) => designStore.setDarkTheme(val),
+  set: (val) => {
+    console.log("darkMode", val);
+
+    designStore.setDarkTheme(val);
+  },
 });
 //国际化语言
 const locale = computed({

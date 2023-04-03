@@ -62,7 +62,7 @@
       </div>
       <n-divider />
       <div class="content">
-        <editorVue v-if="postData.content" :content="postData.content" />
+        <editorVue :content="postData.content" />
       </div>
       <n-divider />
       <div class="copyright">
@@ -97,50 +97,38 @@ import { Calendar, Book, PricetagsSharp } from "@vicons/ionicons5";
 import TimerVue from "@/components/Timer.vue";
 import editorVue from "@/components/editor.vue";
 import { useHead } from "@unhead/vue";
-import type { Config } from "@/types";
 
 const route = useRoute();
 const message = useMessage();
-const uv = ref(0);
-const postData = ref({
-  id: -1,
-  created_at: "2000-01-01T00:00:00+08:00",
-  updated_at: "2022-01-01T00:00:00+08:00",
-  deleted_at: null,
-  title: "",
-  img: "",
-  desc: "",
-  content: "",
-  cid: -1,
-  tags: [],
-});
+
 const url = ref("");
 if (!import.meta.env.SSR) {
   url.value = window.location.href;
 }
 
+const article_res = await api.article.get(
+  route.params.pid as unknown as number
+);
+
+const postData = ref(article_res.data);
+const uv = ref(article_res.uv);
+
 const imgSrc = computed(() => {
   return postData.value.img ? postData.value.img : "/static/img/fc.jpg";
 });
 
-const category = ref({ name: "" });
-
-onMounted(() => {
-  api.article.get(route.params.pid as unknown as number).then((article_res) => {
-    postData.value = article_res.data;
-    uv.value = article_res.uv;
-
-    useHead({
-      title: article_res.data.title,
-      meta: [{ name: "description", content: article_res.data.desc }],
-    });
-  });
-  api.category.get().then((category_res) => {
-    category.value = category_res.data.find((item) => {
-      return item.id == postData.value.cid;
-    });
-  });
+useHead({
+  title: article_res.data.title,
+  meta: [{ name: "description", content: article_res.data.desc }],
 });
+
+const category_res = await api.category.get();
+
+const category = ref(
+  category_res.data.find((item) => {
+    return item.id == postData.value.cid;
+  })
+);
 </script>
 
 <style lang="scss" scoped>

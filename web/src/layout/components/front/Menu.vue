@@ -89,6 +89,23 @@ function clickMenuItem(key, item) {
 function renderIcon(icon) {
   return () => h(NIcon, { innerHTML: icon });
 }
+
+//请求菜单项
+const res = await api.menuchild.gets();
+
+res.data.map((item) => {
+  menus.value.splice(1, 0, {
+    name: item.name,
+    ename: item.ename,
+    linkName: "menu",
+    link: item.link,
+    icon: item.logo,
+  });
+});
+
+getMenuName(menusKey.value);
+
+let menusRef = undefined;
 //主页菜单
 // const menusRef = computed(() => {
 //   return menus.value.map((item) => {
@@ -107,29 +124,17 @@ function renderIcon(icon) {
 //                   : {},
 //             },
 //           },
-//           { default: () => (designStore.getLocale ? item.name : item.ename) }
+//           // { default: () => (designStore.getLocale ? item.name : item.ename) }
+//           { default: () => item.name }
 //         ),
+
 //       name: item.name,
 //       ename: item.ename,
 //       key: item.link,
-//       icon: renderIcon(item.icon),
+//       // icon: renderIcon(item.icon),
 //     };
 //   });
 // });
-let menusRef = undefined;
-//请求菜单项
-const res = await api.menuchild.gets();
-
-res.data.map((item) => {
-  menus.value.splice(1, 0, {
-    name: item.name,
-    ename: item.ename,
-    linkName: "menu",
-    link: item.link,
-    icon: item.logo,
-  });
-});
-getMenuName(menusKey.value);
 </script>
 
 <style scoped></style>

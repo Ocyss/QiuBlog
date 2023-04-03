@@ -7,9 +7,9 @@ const isTest = process.env.VITEST;
 
 export async function createServer(
   root = process.cwd(),
-  isProd = process.env.NODE_ENV === "production",
-  hmrPort
+  isProd = process.env.NODE_ENV === "production"
 ) {
+  console.log("isProd: ", isProd);
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   const resolve = (p) => path.resolve(__dirname, p);
 
@@ -38,19 +38,10 @@ export async function createServer(
       logLevel: isTest ? "error" : "info",
       server: {
         middlewareMode: true,
-        watch: {
-          // During tests we edit the files too fast and sometimes chokidar
-          // misses change events, so enforce polling for consistency
-          usePolling: true,
-          interval: 100,
-        },
-        hmr: {
-          port: hmrPort,
-        },
       },
       appType: "custom",
     });
-    // use vite's connect instance as middleware
+
     app.use(vite.middlewares);
   } else {
     app.use((await import("compression")).default());
@@ -68,25 +59,33 @@ export async function createServer(
     try {
       let template, render;
       if (!isProd) {
-        // always read fresh template in dev
         template = fs.readFileSync(resolve("index.html"), "utf-8");
         template = await vite.transformIndexHtml(url, template);
         render = (await vite.ssrLoadModule("/src/entry-server.ts")).render;
       } else {
         template = indexProd;
-        // @ts-ignore
         render = (await import("./dist/server/entry-server.js")).render;
       }
 
-      const { appHtml, cssHtml, preloadLinks } = await render(url, manifest);
+      const { appHtml, cssHtml, preloadLinks, headPayload } = await render(
+        url,
+        manifest
+      );
+
       const html = template
         .replace(`<!--ssr-outlet-->`, appHtml)
         .replace(`<!--css-outlet-->`, cssHtml)
-        .replace(`<!--preload-links-->`, preloadLinks);
+        .replace(`<!--preload-links-->`, preloadLinks)
+        .replace(`[!--htmlAttrs--]`, headPayload.htmlAttrs)
+        .replace(`[!--bodyAttrs--]`, headPayload.bodyAttrs)
+        .replace(`<!--bodyTags-->`, headPayload.bodyTags)
+        .replace(`<!--bodyTagsOpen-->`, headPayload.bodyTagsOpen)
+        .replace(`<!--headTags-->`, headPayload.headTags);
 
       res.status(200).set({ "Content-Type": "text/html" }).end(html);
     } catch (e) {
       vite && vite.ssrFixStacktrace(e);
+
       res.status(500).end(e.stack);
     }
   });

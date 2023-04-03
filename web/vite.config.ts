@@ -62,16 +62,6 @@ export default defineConfig({
   resolve: {
     alias,
   },
-  // server: {
-  //   host: "0.0.0.0",
-  //   port: 6879,
-  //   proxy: {
-  //     "^/(api|config|sitemap|about.md)": {
-  //       target: "http://127.0.0.1:3000",
-  //       changeOrigin: true,
-  //     },
-  //   },
-  // },
   css: {
     preprocessorOptions: {
       scss: {

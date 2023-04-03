@@ -1,10 +1,14 @@
 import { createApp } from "./main";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import { renderToString } from "vue/server-renderer";
 
-const { app, router, pinia } = createApp();
+async function clientInit() {
+  const { app, router, pinia } = createApp();
+  pinia.use(piniaPluginPersistedstate);
 
-pinia.use(piniaPluginPersistedstate);
+  router.isReady().then(() => {
+    app.mount("#app");
+  });
+}
 
-router.isReady().then(() => {
-  app.mount("#app");
-});
+clientInit();

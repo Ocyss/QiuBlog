@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, inject } from "vue";
+import { ref, onServerPrefetch, inject } from "vue";
 import request from "@/utils/request";
 import editor from "@/components/editor.vue";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
@@ -28,7 +28,7 @@ const contentRef = ref({
   author: "",
   project: "",
 });
-onMounted(() => {
+onServerPrefetch(async () => {
   request.get("/about.md").then((res) => {
     contentRef.value.author = res.data;
   });

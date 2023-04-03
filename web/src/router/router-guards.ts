@@ -1,11 +1,13 @@
 import { useHead } from "@unhead/vue";
 import { loadingBar } from "@/utils/client";
+
 const getCookie = (name) =>
   document.cookie.match(`[;\s+]?${name}=([^;]*)`)?.pop();
 
 export function febore(router) {
   router.beforeEach(async (to, from, next) => {
     loadingBar.start();
+
     if (!to.name) {
       //判断有没有路由
       next({ name: "exception-404" });

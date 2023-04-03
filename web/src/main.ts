@@ -11,6 +11,7 @@ export function createApp() {
   app.component(VueQrcode.name, VueQrcode);
   // 挂载head插件
   const head = createHead();
+
   app.use(head);
   // 挂载路由
   const router = createRouter();
@@ -21,5 +22,5 @@ export function createApp() {
   app.use(pinia);
   //国际化语言
   app.use(i18n);
-  return { app, router, pinia };
+  return { app, router, pinia, head };
 }

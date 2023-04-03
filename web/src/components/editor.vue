@@ -8,14 +8,14 @@
     />
     <Teleport to="#affixContent">
       <div class="affixContent">
-        <n-popover :overlap="overlap" placement="left-end" trigger="hover">
+        <!-- <n-popover :overlap="overlap" placement="left-end" trigger="hover">
           <template #trigger><n-icon :component="Receipt" /></template>
           <md-catalog
             editor-id="author-id"
             :scroll-element="scrollableEl"
             :theme="getTheme"
           />
-        </n-popover>
+        </n-popover> -->
       </div>
     </Teleport>
   </div>

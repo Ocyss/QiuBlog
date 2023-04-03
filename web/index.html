@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" [!--htmlAttrs--]>
   <head>
     <meta charset="UTF-8" />
     <link rel="shortcut icon" href="/static/img/favicons.png" />
     <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="theme-color" content="#ffffff" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://unpkg.com/vue@3.2.47/dist/vue.global.prod.js"></script>
-    <script src="https://unpkg.com/naive-ui@2.34.3"></script>
-
-    <title>💘 Ocyss 的博客</title>
+    <!-- <script src="https://unpkg.com/vue@3.2.47/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/naive-ui@2.34.3"></script> -->
+    <!--headTags-->
+    <!--preload-links-->
     <!--css-outlet-->
     <!--preload-links-->
   </head>
-  <body>
+  <body [!--bodyAttrs--]>
+    <!--bodyTagsOpen-->
     <div id="app">
       <!--ssr-outlet-->
     </div>
     <script type="module" src="/src/entry-client.ts"></script>
+    <!--bodyTags-->
   </body>
   <script src="/static/effect/click.js"></script>
 </html>

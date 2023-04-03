@@ -20,12 +20,12 @@
       </div>
     </n-carousel>
   </div>
-  <PostListVue :cdata="cdata" />
+  <PostListVue v-if="load" :cdata="cdata" />
 </template>
 
 <script setup lang="ts">
 import PostListVue from "@/components/front/post/PostList.vue";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import api from "@/api";
 import { useHead } from "@unhead/vue";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
@@ -53,13 +53,7 @@ const cdata = ref({
     },
   ],
 });
-
-const res = await api.category.get();
-res.data.map((item) => {
-  if (item.homeshow) {
-    cdata.value.cids.push(item);
-  }
-});
+const load = ref(false);
 
 useHead({
   link: [
@@ -82,6 +76,17 @@ useHead({
       href: "/rss/json",
     },
   ],
+});
+
+onMounted(() => {
+  api.category.get().then((res) => {
+    res.data.map((item) => {
+      if (item.homeshow) {
+        cdata.value.cids.push(item);
+      }
+    });
+    load.value = true;
+  });
 });
 </script>
 

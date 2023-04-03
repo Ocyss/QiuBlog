@@ -82,7 +82,6 @@ import { inject, ref, Ref } from "vue";
 import { useRouter } from "vue-router";
 import TimerVue from "@/components/Timer.vue";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
-import type { Config } from "@/types";
 
 const designStore = useDesignSettingStore();
 const router = useRouter();
@@ -93,7 +92,7 @@ const props = defineProps({
 });
 //渲染判断，无头图则采用随机api
 if (props.item.img == "") {
-  imgSrc.value = "图裂，待写~~~~";
+  imgSrc.value = "/static/img/fc.jpg";
 } else {
   imgSrc.value = props.item.img;
 }
