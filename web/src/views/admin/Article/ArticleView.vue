@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { h, reactive, nextTick, ref, inject } from "vue";
+import { h, reactive, nextTick, ref, onMounted } from "vue";
 import { NButton, NTag, NImage } from "naive-ui";
 import { timeControl } from "@/utils";
 import api from "@/api";
@@ -156,10 +156,12 @@ const colsReactive = reactive([
     },
   },
 ]);
-
-const res = await api.article.getList({ pagesize: 6, pagenum: 0, mid: -2 });
-res.data.map((item) => {
-  data.value.push(item);
+onMounted(() => {
+  api.article.getList({ pagesize: 6, pagenum: 0, mid: -2 }).then((res) => {
+    res.data.map((item) => {
+      data.value.push(item);
+    });
+  });
 });
 </script>
 

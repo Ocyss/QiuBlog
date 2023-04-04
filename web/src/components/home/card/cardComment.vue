@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from "vue";
+import { ref, inject, onMounted, onServerPrefetch } from "vue";
 import { randomRgb } from "@/utils";
 import api from "@/api";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
@@ -38,10 +38,22 @@ import { useDesignSettingStore } from "@/store/modules/designSetting";
 const designStore = useDesignSettingStore();
 const data = ref([]);
 
-const res = await api.message.getMessage({ pagesize: 6, pagenum: 1 });
-res.data.map((item) => {
-  if (item.show == true || item.show == undefined) {
-    data.value.push(item);
+async function getMessage() {
+  const res = await api.message.getMessage({ pagesize: 6, pagenum: 1 });
+  res.data.map((item) => {
+    if (item.show == true || item.show == undefined) {
+      data.value.push(item);
+    }
+  });
+}
+
+onServerPrefetch(() => {
+  getMessage();
+});
+
+onMounted(() => {
+  if (!data.value) {
+    getMessage();
   }
 });
 </script>

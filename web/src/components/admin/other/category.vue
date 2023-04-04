@@ -104,11 +104,6 @@ const cateSpin = ref(false); //是否显示加载中
 const categoryList = ref([]); //分类列表
 const categoryChange = []; // 变动列表
 
-//请求分类
-api.category.get().then((res) => {
-  categoryList.value = res.data;
-});
-
 const CheckList = computed({
   get: () => {
     if (menuValue.value.id == 0) {
@@ -181,16 +176,25 @@ function AddCategory() {
     newData.value = { name: "", homeshow: false, mid: 0 };
   });
 }
+
 //修改菜单名
 function toggleMenu(data) {
   menuValue.value = data;
 }
+
 //保存
 function save() {
   api.category.put(categoryChange).then((res) => {
     message.success("保存成功！");
   });
 }
+
+onMounted(() => {
+  //请求分类
+  api.category.get().then((res) => {
+    categoryList.value = res.data;
+  });
+});
 
 //函数暴露
 defineExpose({ toggleMenu });

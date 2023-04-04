@@ -121,7 +121,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted, onServerPrefetch } from "vue";
 import { useMessage } from "naive-ui";
 import api from "@/api";
 import TimerVue from "@/components/Timer.vue";
@@ -171,11 +171,24 @@ function submitCallback() {
     return true;
   }
 }
-const params = { pagesize: 10, pagenum: 1 };
-const res = await api.message.getQuestion(params);
-res.data.map((item) => {
-  if (item.show == true || item.show == undefined) {
-    content.value.push(item);
+
+async function getQuestion() {
+  const params = { pagesize: 10, pagenum: 1 };
+  const res = await api.message.getQuestion(params);
+  res.data.map((item) => {
+    if (item.show == true || item.show == undefined) {
+      content.value.push(item);
+    }
+  });
+}
+
+onServerPrefetch(() => {
+  getQuestion();
+});
+
+onMounted(() => {
+  if (!content.value) {
+    getQuestion();
   }
 });
 </script>

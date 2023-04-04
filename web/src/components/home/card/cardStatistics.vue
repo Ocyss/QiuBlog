@@ -3,6 +3,7 @@
     class="statistics"
     :title="designStore.getLocale ? '统计信息' : 'statistics'"
     size="small"
+    v-if="data"
   >
     <div class="main">
       <div class="mainUv">
@@ -40,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, Ref } from "vue";
+import { ref, inject, Ref, onMounted } from "vue";
 import api from "@/api";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
 import moment from "moment";
@@ -54,24 +55,24 @@ let date: Ref<any> = ref({
   s: 0,
 });
 
-const res = await api.statistics.statistics();
+const data: Ref<any> = ref({});
 
-const data: Ref<any> = ref(res.data);
+onMounted(async () => {
+  const res = await api.statistics.statistics();
 
-date.value.cur = date.value.cur - res.data.elapsed_time;
-date.value.d = Math.floor(date.value.cur / 86400);
-date.value.h = Math.floor((date.value.cur - date.value.d * 86400) / 3600);
-date.value.m = Math.floor(
-  (date.value.cur - date.value.d * 86400 - date.value.h * 3600) / 60
-);
+  date.value.cur = date.value.cur - res.data.elapsed_time;
+  date.value.d = Math.floor(date.value.cur / 86400);
+  date.value.h = Math.floor((date.value.cur - date.value.d * 86400) / 3600);
+  date.value.m = Math.floor(
+    (date.value.cur - date.value.d * 86400 - date.value.h * 3600) / 60
+  );
 
-date.value.s =
-  date.value.cur -
-  date.value.d * 86400 -
-  date.value.h * 3600 -
-  date.value.m * 60;
+  date.value.s =
+    date.value.cur -
+    date.value.d * 86400 -
+    date.value.h * 3600 -
+    date.value.m * 60;
 
-if (!import.meta.env.SSR) {
   setInterval(() => {
     date.value.s++;
     if (date.value.s >= 60) {
@@ -87,7 +88,7 @@ if (!import.meta.env.SSR) {
       }
     }
   }, 1000);
-}
+});
 </script>
 
 <style scoped lang="scss">

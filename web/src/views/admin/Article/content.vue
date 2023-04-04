@@ -76,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, inject, computed } from "vue";
+import { ref, onMounted, inject, computed, onServerPrefetch } from "vue";
 import { useMessage } from "naive-ui";
 import { useRouter, useRoute } from "vue-router";
 import MdEditor from "md-editor-v3";
@@ -183,27 +183,33 @@ function customRequest({
       onError();
     });
 }
-
-onMounted(() => {
+async function getMC() {
   //请求菜单项和分类;
-  api.menuchild.gets().then((res) => {
-    api.category.get(false).then((res2) => {
-      res.data.map((item) => {
-        menuoptions.value.push({
-          value: item.name,
-          label: item.name,
-          children: res2.data
-            .map((item2) => {
-              if (item2.mid == item.id) {
-                return { value: item2.id, label: item2.name };
-              }
-            })
-            .filter((item) => typeof item !== "undefined"),
-        });
-      });
+  const mres = await api.menuchild.gets();
+  const cres = await api.category.get(false);
+  mres.data.map((item) => {
+    menuoptions.value.push({
+      value: item.name,
+      label: item.name,
+      children: cres.data
+        .map((item2) => {
+          if (item2.mid == item.id) {
+            return { value: item2.id, label: item2.name };
+          }
+        })
+        .filter((item) => typeof item !== "undefined"),
     });
   });
+}
 
+onServerPrefetch(() => {
+  getMC();
+});
+
+onMounted(() => {
+  if (!menuoptions.value) {
+    getMC();
+  }
   //判断是不是修改帖子
   if (route.name == "article-updata") {
     api.article.get(route.params.id).then((res) => {

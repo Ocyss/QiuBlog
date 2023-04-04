@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref, Ref } from "vue";
+import { inject, ref, Ref, onMounted } from "vue";
 import PostVue from "./Post.vue";
 import api from "@/api";
 import Pagination from "./Pagination.vue";
@@ -64,6 +64,7 @@ const settingStore = useProjectSettingStore();
 const backTop: Ref<any> = inject("BackTop");
 //各分类下的文章
 const PostData = ref({});
+
 //请求主页文章列表
 // c是分类请求,m是菜单请求
 function getPosts() {
@@ -99,8 +100,6 @@ function getPosts() {
   });
 }
 
-getPosts();
-
 function upPage(p) {
   //返回顶部
   backTop.value?.backTop();
@@ -122,6 +121,10 @@ function changeCategory(val) {
     PostSpinShow.value = false;
   }
 }
+
+onMounted(() => {
+  getPosts();
+});
 </script>
 
 <style scoped lang="scss">

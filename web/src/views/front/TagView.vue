@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, Ref } from "vue";
+import { ref, inject, Ref, onMounted } from "vue";
 import PostVue from "@/components/front/post/Post.vue";
 import Pagination from "@/components/front/post/Pagination.vue";
 import api from "@/api";
@@ -93,9 +93,13 @@ function load() {
   page.value["0"]++;
   getPosts();
 }
-getPosts();
-const res = await api.category.get();
-cdata.value = res.data;
+
+onMounted(() => {
+  api.category.get().then((res) => {
+    cdata.value = res.data;
+  });
+  getPosts();
+});
 </script>
 
 <style scoped lang="scss">

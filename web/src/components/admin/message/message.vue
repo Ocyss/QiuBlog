@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import api from "@/api";
-import { ref, h } from "vue";
+import { ref, h, onMounted } from "vue";
 import { timeControl } from "@/utils";
 import { NAvatar, NButton, NSwitch } from "naive-ui";
 import { railStyle } from "@/utils";
@@ -32,7 +32,7 @@ type Song = {
   check: boolean;
   show: boolean;
 };
-
+const Data = ref([]);
 const message = useMessage();
 const dialog = useDialog();
 
@@ -181,9 +181,11 @@ function delmessage(row, index) {
     },
   });
 }
-
-const res = await api.message.getMessage(params);
-const Data = ref([...res.data]);
+onMounted(() => {
+  api.message.getMessage(params).then((res) => {
+    Data.value.push(...res.data);
+  });
+});
 </script>
 
 <style scoped lang="scss"></style>

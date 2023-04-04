@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, h, onBeforeMount, inject, computed, onMounted } from "vue";
+import { ref, h, onServerPrefetch, inject, computed, onMounted } from "vue";
 import { NIcon, useMessage } from "naive-ui";
 import { RouterLink, useRouter, useRoute } from "vue-router";
 import api from "@/api";
@@ -90,20 +90,31 @@ function renderIcon(icon) {
   return () => h(NIcon, { innerHTML: icon });
 }
 
-//请求菜单项
-const res = await api.menuchild.gets();
+async function getMenus() {
+  //请求菜单项
+  const res = await api.menuchild.gets();
 
-res.data.map((item) => {
-  menus.value.splice(1, 0, {
-    name: item.name,
-    ename: item.ename,
-    linkName: "menu",
-    link: item.link,
-    icon: item.logo,
+  res.data.map((item) => {
+    menus.value.splice(1, 0, {
+      name: item.name,
+      ename: item.ename,
+      linkName: "menu",
+      link: item.link,
+      icon: item.logo,
+    });
   });
+}
+onMounted(() => {
+  if (menus.value.length == 4) {
+    getMenus();
+  }
+  getMenuName(menusKey.value);
 });
 
-getMenuName(menusKey.value);
+onServerPrefetch(() => {
+  getMenus();
+  getMenuName(menusKey.value);
+});
 
 let menusRef = undefined;
 //主页菜单

@@ -89,7 +89,7 @@
 
 <script setup lang="ts">
 import frontVue from "@/layout/front.vue";
-import { ref, inject, computed, Ref, onMounted } from "vue";
+import { ref, inject, computed, Ref, onServerPrefetch, onMounted } from "vue";
 import api from "@/api";
 import { useRoute } from "vue-router";
 import { useMessage } from "naive-ui";
@@ -100,35 +100,48 @@ import { useHead } from "@unhead/vue";
 
 const route = useRoute();
 const message = useMessage();
-
+const category = ref(void 0);
 const url = ref("");
 if (!import.meta.env.SSR) {
   url.value = window.location.href;
 }
 
-const article_res = await api.article.get(
-  route.params.pid as unknown as number
-);
-
-const postData = ref(article_res.data);
-const uv = ref(article_res.uv);
+const postData = ref(void 0);
+const uv = ref(void 0);
 
 const imgSrc = computed(() => {
   return postData.value.img ? postData.value.img : "/static/img/fc.jpg";
 });
 
-useHead({
-  title: article_res.data.title,
-  meta: [{ name: "description", content: article_res.data.desc }],
+async function getCategory() {
+  const category_res = await api.category.get();
+  category.value = category_res.data.find((item) => {
+    return item.id == postData.value.cid;
+  });
+}
+async function getArticle() {
+  const article_res = await api.article.get(
+    route.params.pid as unknown as number
+  );
+  postData.value = article_res.data;
+  uv.value = article_res.uv;
+  useHead({
+    title: postData.value.title,
+    meta: [{ name: "description", content: postData.value.desc }],
+  });
+}
+
+onServerPrefetch(() => {
+  getCategory();
+  getArticle();
 });
 
-const category_res = await api.category.get();
-
-const category = ref(
-  category_res.data.find((item) => {
-    return item.id == postData.value.cid;
-  })
-);
+onMounted(() => {
+  if (!category) {
+    getCategory();
+  }
+  getArticle();
+});
 </script>
 
 <style lang="scss" scoped>

@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import api from "@/api";
-import { ref, h, resolveDynamicComponent } from "vue";
+import { ref, h, resolveDynamicComponent, onMounted } from "vue";
 import { timeControl } from "@/utils";
 import { NAvatar, NIcon, NSwitch, NButton } from "naive-ui";
 import { railStyle } from "@/utils";
@@ -23,7 +23,7 @@ import type { DataTableColumns } from "naive-ui";
 import moment from "moment";
 const dialog = useDialog();
 const message = useMessage();
-
+const Data = ref([]);
 type Song = {
   id: number;
   created_at: string;
@@ -250,7 +250,9 @@ function reply(row, index) {
     },
   });
 }
-
-const res = await api.message.getQuestion(params);
-const Data = ref([...res.data]);
+onMounted(() => {
+  api.message.getQuestion(params).then((res) => {
+    Data.value.push(...res.data);
+  });
+});
 </script>

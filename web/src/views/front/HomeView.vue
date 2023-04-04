@@ -20,7 +20,7 @@
       </div>
     </n-carousel>
   </div>
-  <PostListVue v-if="load" :cdata="cdata" />
+  <PostListVue :cdata="cdata" />
 </template>
 
 <script setup lang="ts">
@@ -53,7 +53,6 @@ const cdata = ref({
     },
   ],
 });
-const load = ref(false);
 
 useHead({
   link: [
@@ -85,7 +84,6 @@ onMounted(() => {
         cdata.value.cids.push(item);
       }
     });
-    load.value = true;
   });
 });
 </script>
