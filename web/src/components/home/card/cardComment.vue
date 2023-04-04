@@ -47,14 +47,8 @@ async function getMessage() {
   });
 }
 
-onServerPrefetch(() => {
-  getMessage();
-});
-
 onMounted(() => {
-  if (!data.value) {
-    getMessage();
-  }
+  getMessage();
 });
 </script>
 

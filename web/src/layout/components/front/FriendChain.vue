@@ -1,11 +1,7 @@
 <template>
   <div class="main" v-if="!collapsed">
     <h2>{{ $t("component.chain.name") }}</h2>
-    <!-- <a
-      target="_blank"
-      v-for="fc in config.friendChain"
-      :href="fc.href"
-    >
+    <!-- <a target="_blank" v-for="fc in config.friendChain" :href="fc.href">
       {{ fc.name }}
     </a> -->
     友链维护中

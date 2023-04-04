@@ -10,7 +10,6 @@
         <n-icon size="25" @click="shareShow = true">
           <ShareSocialOutline />
         </n-icon>
-        {{ shareShow }}
       </div>
     </div>
     <div class="menuRight">

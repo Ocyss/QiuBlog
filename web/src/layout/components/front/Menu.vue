@@ -110,7 +110,6 @@ onMounted(() => {
   }
   getMenuName(menusKey.value);
 });
-
 onServerPrefetch(() => {
   getMenus();
   getMenuName(menusKey.value);

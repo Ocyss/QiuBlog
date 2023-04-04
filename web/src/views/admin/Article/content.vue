@@ -31,11 +31,11 @@
               :show-path="true"
               :filterable="true"
             />
-            <!-- <n-input
+            <n-input
               v-model:value="imageurl"
               type="text"
               placeholder="图片url"
-            /> -->
+            />
           </n-space>
         </n-gi>
         <n-gi span="2">
@@ -92,6 +92,7 @@ const menuoptions = ref([]);
 const tags = ref([]);
 const fileList = ref([]);
 const uploadref = ref();
+const imageurl = ref();
 
 MdEditor.config({});
 
