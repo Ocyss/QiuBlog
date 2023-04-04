@@ -1,27 +1,24 @@
 import { basename } from "node:path";
 import { createApp } from "./main";
 import { renderToString } from "vue/server-renderer";
-import { setup } from "@css-render/vue3-ssr";
 import { renderSSRHead } from "@unhead/ssr";
 
 export async function render(url, manifest) {
-  const { app, router, pinia, head } = createApp();
+  const { app, router, pinia, head, collect } = createApp();
 
   await router.push(url);
   await router.isReady();
 
-  const { collect } = setup(app);
   const ctx: any = {};
   const appHtml = await renderToString(app, ctx);
   const cssHtml = collect();
-  const preloadLinks = renderPreloadLinks(ctx.modules, manifest);
-
+  const preloadLinks = renderPreloadLinks(cssHtml, ctx.modules, manifest);
   const headPayload = await renderSSRHead(head);
-  return { appHtml, cssHtml, preloadLinks, headPayload };
+  return { appHtml, preloadLinks, headPayload };
 }
 
-function renderPreloadLinks(modules, manifest) {
-  let links = "";
+function renderPreloadLinks(css, modules, manifest) {
+  let links = css;
   const seen = new Set();
   modules.forEach((id) => {
     const files = manifest[id];

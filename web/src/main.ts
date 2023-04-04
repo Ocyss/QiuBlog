@@ -6,6 +6,9 @@ import { createPinia } from "pinia";
 import { createRouter } from "./router";
 import { febore } from "./router/router-guards";
 import { i18n } from "./lang";
+
+import { setup } from "@css-render/vue3-ssr";
+
 export function createApp() {
   const app = createSSRApp(App);
   app.component(VueQrcode.name, VueQrcode);
@@ -22,5 +25,7 @@ export function createApp() {
   app.use(pinia);
   //国际化语言
   app.use(i18n);
-  return { app, router, pinia, head };
+
+  const { collect } = setup(app);
+  return { app, router, pinia, head, collect };
 }
