@@ -1,11 +1,15 @@
 import { useHead } from "@unhead/vue";
 import { loadingBar } from "@/utils/client";
+import { useProjectSettingStore } from "@/store/modules/projectSetting";
 
 const getCookie = (name) =>
   document.cookie.match(`[;\s+]?${name}=([^;]*)`)?.pop();
 
-export function febore(router) {
+export function febore(router, pinia) {
+  const settingStore = useProjectSettingStore(pinia);
+
   router.beforeEach(async (to, from, next) => {
+    settingStore.Load.start();
     loadingBar.start();
 
     if (!to.name) {
@@ -33,9 +37,14 @@ export function febore(router) {
       next();
     }
   });
+
   router.afterEach((to, _, failure) => {
     loadingBar.finish();
+    setInterval(() => {
+      settingStore.Load.end();
+    }, 2000);
   });
+
   router.onError((error) => {
     console.log(error, "路由错误");
   });

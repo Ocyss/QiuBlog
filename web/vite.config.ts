@@ -25,19 +25,19 @@ export default defineConfig({
   plugins: [
     vue(),
     // VitePluginCompression(),//压缩gzip
-    AutoImport({
-      imports: [
-        "vue",
-        {
-          "naive-ui": [
-            "useDialog",
-            "useMessage",
-            "useNotification",
-            "useLoadingBar",
-          ],
-        },
-      ],
-    }),
+    // AutoImport({
+    //   imports: [
+    //     "vue",
+    //     {
+    //       "naive-ui": [
+    //         "useDialog",
+    //         "useMessage",
+    //         "useNotification",
+    //         "useLoadingBar",
+    //       ],
+    //     },
+    //   ],
+    // }),
     VueI18nPlugin({
       /* options */
       // locale messages resource pre-compile option
@@ -46,9 +46,9 @@ export default defineConfig({
         "./path/to/src/locales/**"
       ),
     }),
-    Components({
-      resolvers: [NaiveUiResolver()],
-    }),
+    // Components({
+    //   resolvers: [NaiveUiResolver()],
+    // }),
     UnheadVite(),
     // 打包分析
     // visualizer({

@@ -10,6 +10,7 @@
         <n-dialog-provider>
           <n-notification-provider>
             <n-message-provider>
+              <loader v-show="settingStore.isLoad" />
               <Suspense>
                 <RouterView />
               </Suspense>
@@ -25,6 +26,7 @@
 <script setup lang="ts">
 import { useDesignSettingStore } from "@/store/modules/designSetting";
 import { useProjectSettingStore } from "@/store/modules/projectSetting";
+import loader from "./components/loader.vue";
 import { zhCN, enUS, dateZhCN, darkTheme, dateEnUS } from "naive-ui";
 import { lighten } from "@/utils/index";
 import { provide, ref, computed, inject, Ref, onMounted } from "vue";
@@ -132,5 +134,9 @@ img {
   .default-theme img {
     border-width: 0px !important;
   }
+}
+.n-icon {
+  width: 20px;
+  height: 20px;
 }
 </style>

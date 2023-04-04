@@ -67,13 +67,14 @@ export async function createServer(
         render = (await import("./dist/server/entry-server.js")).render;
       }
 
-      const { appHtml, preloadLinks, headPayload } = await render(
+      const { appHtml, cssHtml, preloadLinks, headPayload } = await render(
         url,
         manifest
       );
 
       const html = template
         .replace(`<!--ssr-outlet-->`, appHtml)
+        .replace(`<!--css-outlet-->`, cssHtml)
         .replace(`<!--preload-links-->`, preloadLinks)
         .replace(`[!--htmlAttrs--]`, headPayload.htmlAttrs)
         .replace(`[!--bodyAttrs--]`, headPayload.bodyAttrs)
