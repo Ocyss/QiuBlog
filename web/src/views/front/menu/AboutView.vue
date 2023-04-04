@@ -1,16 +1,10 @@
 <template>
   <div class="content">
     <n-tabs type="line" animated>
-      <n-tab-pane
-        name="author"
-        :tab="designStore.getLocale ? '作者介绍' : 'author_introduce'"
-      >
+      <n-tab-pane name="author" :tab="t('component.about.author')">
         <editor v-if="contentRef.author" :content="contentRef.author" />
       </n-tab-pane>
-      <n-tab-pane
-        name="project"
-        :tab="designStore.getLocale ? '项目介绍' : 'project_introduce'"
-      >
+      <n-tab-pane name="project" :tab="t('component.about.project')">
         <editor v-if="contentRef.project" :content="contentRef.project" />
       </n-tab-pane>
     </n-tabs>
@@ -22,7 +16,9 @@ import { ref, onServerPrefetch, inject } from "vue";
 import request from "@/utils/request";
 import editor from "@/components/editor.vue";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const designStore = useDesignSettingStore();
 const contentRef = ref({
   author: "",

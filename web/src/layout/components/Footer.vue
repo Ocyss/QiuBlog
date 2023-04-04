@@ -1,19 +1,19 @@
 <template>
   <div class="main">
     <div class="left">
-      <div>2023 ©{{ designStore.getLocale ? "版权所有" : "Copyright" }} Q</div>
+      <div>2023 ©{{ $t("info.footer.copyright") }} Q</div>
       <div class="record">
         <img
           style="width: 20px; height: 20px"
           src="https://icp.gov.moe/images/ico64.png"
         />
         <a href="https://icp.gov.moe/?keyword=20231028" target="_blank">
-          {{ designStore.getLocale ? "萌ICP备20231028号" : "MoeICP:20231028" }}
+          {{ $t("info.footer.icp.moe") }}
         </a>
       </div>
 
       <div>
-        Go+Vue{{ designStore.getLocale ? "驱动 开源地址" : " Address" }}:
+        Go+Vue{{ $t("info.footer.info") }}:
         <a href="https://github.com/qiu-lzsnmb/QiuBlog">qiu-lzsnmb/QiuBlog</a>
       </div>
     </div>

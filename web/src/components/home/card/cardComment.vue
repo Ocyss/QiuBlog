@@ -1,9 +1,5 @@
 <template>
-  <n-card
-    class="comment"
-    :title="designStore.getLocale ? '最新留言' : 'latest message'"
-    size="small"
-  >
+  <n-card class="comment" :title="t('info.card.title.message')" size="small">
     <div class="subitem" v-for="item in data" :key="item.id">
       <n-avatar
         round
@@ -34,6 +30,9 @@ import { ref, inject, onMounted, onServerPrefetch } from "vue";
 import { randomRgb } from "@/utils";
 import api from "@/api";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const designStore = useDesignSettingStore();
 const data = ref([]);

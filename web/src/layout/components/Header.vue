@@ -16,10 +16,10 @@
       <div>
         <n-switch v-model:value="designStore.darkTheme" :rail-style="railStyle">
           <template #checked>
-            {{ designStore.getLocale ? "下班" : "LowerClass" }}
+            {{ $t("component.header.darkTheme.dark") }}
           </template>
           <template #unchecked>
-            {{ designStore.getLocale ? "上班" : "UpperClass" }}
+            {{ $t("component.header.darkTheme.bright") }}
           </template>
           <template #icon>{{ darkMode ? "🌛" : "🌞" }}</template>
         </n-switch>

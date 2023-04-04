@@ -1,7 +1,7 @@
 <template>
   <n-card
     class="comment"
-    :title="designStore.getLocale ? '标签云' : 'tag cloud'"
+    :title="t('info.card.title.tagCloud')"
     size="small"
     ref="card"
   >
@@ -45,6 +45,9 @@ import { ref, onMounted, inject, computed } from "vue";
 import { randomRgb } from "@/utils";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
 import { useProjectSettingStore } from "@/store/modules/projectSetting";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const designStore = useDesignSettingStore();
 const settingStore = useProjectSettingStore();

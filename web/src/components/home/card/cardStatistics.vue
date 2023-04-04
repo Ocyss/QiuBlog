@@ -1,39 +1,35 @@
 <template>
   <n-card
     class="statistics"
-    :title="designStore.getLocale ? '统计信息' : 'statistics'"
+    :title="t('info.card.title.statistics')"
     size="small"
     v-if="data"
   >
     <div class="main">
       <div class="mainUv">
-        <div>{{ designStore.getLocale ? "浏览量" : "Page_View" }}:</div>
+        <div>{{ $t("info.card.statistics.mainUv") }}:</div>
         <div>{{ data.main_uv }}</div>
       </div>
 
       <div class="wordsTotal">
-        <div>{{ designStore.getLocale ? "总字数" : "Words_Total" }}:</div>
+        <div>{{ $t("info.card.statistics.wordsTotal") }}:</div>
         <div>
           {{ data.words_total }}
           w
         </div>
       </div>
       <div class="articleCount">
-        <div>{{ designStore.getLocale ? "文章数量" : "Article_Count" }}:</div>
+        <div>{{ $t("info.card.statistics.articleCount") }}:</div>
         <div>{{ data.article_count }}</div>
       </div>
       <div class="lastUpdated">
-        <div>{{ designStore.getLocale ? "最后更新于" : "Last_Updated" }}:</div>
+        <div>{{ $t("info.card.statistics.lastUpdated") }}:</div>
         <n-time unix :time="data.last_updated" type="relative" />
       </div>
       <div class="elapsedTime">
-        <div>{{ designStore.getLocale ? "已稳点运行" : "Run_Time" }}:</div>
+        <div>{{ $t("info.card.statistics.elapsedTime") }}:</div>
         <div>
-          {{
-            designStore.getLocale
-              ? `${date.d}天${date.h}时${date.m}分${date.s}秒`
-              : `${date.d} d ${date.h} h ${date.m} m ${date.s} s`
-          }}
+          {{ $t("info.card.statistics.date", date) }}
         </div>
       </div>
     </div>
@@ -45,6 +41,9 @@ import { ref, inject, Ref, onMounted } from "vue";
 import api from "@/api";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
 import moment from "moment";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 const designStore = useDesignSettingStore();
 
 let date: Ref<any> = ref({
