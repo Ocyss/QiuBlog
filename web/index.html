@@ -6,6 +6,7 @@
     <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="theme-color" content="#ffffff" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/css/load.css" />
     <!-- <script src="https://unpkg.com/vue@3.2.47/dist/vue.global.prod.js"></script>
     <script src="https://unpkg.com/naive-ui@2.34.3"></script> -->
     <!--headTags-->
@@ -14,9 +15,23 @@
   </head>
   <body [!--bodyAttrs--]>
     <!--bodyTagsOpen-->
+    <div id="loader-wrapper">
+      <div class="loader"><img src="/static/img/avatar.png" alt="" /></div>
+      <div class="loader-text">
+        <div>L</div>
+        <div>O</div>
+        <div>A</div>
+        <div>D</div>
+        <div>I</div>
+        <div>N</div>
+        <div>G</div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
     <!--ssr-outlet-->
-
-    <!-- <script type="module" src="/src/entry-client.ts"></script> -->
+    <script type="module" src="/src/entry-client.ts"></script>
     <!--bodyTags-->
   </body>
   <!-- <script src="/static/effect/click.js"></script> -->

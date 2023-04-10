@@ -1,26 +1,28 @@
 <template>
-  <div class="popular">
-    <n-carousel
-      autoplay
-      draggable
-      show-arrow
-      :space-between="20"
-      effect="custom"
-      :transition-props="{ name: 'creative' }"
-      trigger="hover"
-      :interval="2000"
-    >
-      <div class="article" v-for="data in datas" :key="data">
-        <n-image
-          preview-disabled
-          class="carousel-img"
-          :src="data"
-          object-fit="cover"
-        />
-      </div>
-    </n-carousel>
+  <div>
+    <div class="popular">
+      <n-carousel
+        autoplay
+        draggable
+        show-arrow
+        :space-between="20"
+        effect="custom"
+        :transition-props="{ name: 'creative' }"
+        trigger="hover"
+        :interval="2000"
+      >
+        <div class="article" v-for="data in datas" :key="data">
+          <n-image
+            preview-disabled
+            class="carousel-img"
+            :src="data"
+            object-fit="cover"
+          />
+        </div>
+      </n-carousel>
+    </div>
+    <PostListVue :cdata="cdata" />
   </div>
-  <PostListVue :cdata="cdata" />
 </template>
 
 <script setup lang="ts">

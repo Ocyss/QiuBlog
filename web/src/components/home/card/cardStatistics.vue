@@ -91,8 +91,11 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
-.main > div {
-  display: flex;
-  justify-content: space-between;
+.main {
+  white-space: nowrap;
+  > div {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 </style>

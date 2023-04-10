@@ -5,11 +5,21 @@ import { useProjectSettingStore } from "@/store/modules/projectSetting";
 const getCookie = (name) =>
   document.cookie.match(`[;\s+]?${name}=([^;]*)`)?.pop();
 
+const loader = (show: Boolean) => {
+  if (!import.meta.env.SSR) {
+    const loader = document.getElementById("loader-wrapper");
+    if (show) {
+      loader.style.display = "block";
+    } else {
+      loader.style.display = "none";
+    }
+  }
+};
 export function febore(router, pinia) {
   const settingStore = useProjectSettingStore(pinia);
 
   router.beforeEach(async (to, from, next) => {
-    settingStore.Load.start();
+    loader(true);
     loadingBar.start();
 
     if (!to.name) {
@@ -40,9 +50,8 @@ export function febore(router, pinia) {
 
   router.afterEach((to, _, failure) => {
     loadingBar.finish();
-    setInterval(() => {
-      settingStore.Load.end();
-    }, 2000);
+
+    loader(false);
   });
 
   router.onError((error) => {

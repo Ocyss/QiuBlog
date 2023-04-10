@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import express from "express";
+import { log } from "node:console";
 
 const isTest = process.env.VITEST;
 
@@ -75,9 +76,9 @@ export async function createServer(
       const html = template
         .replace(`<!--ssr-outlet-->`, appHtml)
         .replace(`<!--css-outlet-->`, cssHtml)
-        .replace(`<!--preload-links-->`, preloadLinks)
-        .replace(`[!--htmlAttrs--]`, headPayload.htmlAttrs)
-        .replace(`[!--bodyAttrs--]`, headPayload.bodyAttrs)
+        // .replace(`<!--preload-links-->`, preloadLinks)
+        .replace(` [!--htmlAttrs--]`, headPayload.htmlAttrs)
+        .replace(` [!--bodyAttrs--]`, headPayload.bodyAttrs)
         .replace(`<!--bodyTags-->`, headPayload.bodyTags)
         .replace(`<!--bodyTagsOpen-->`, headPayload.bodyTagsOpen)
         .replace(`<!--headTags-->`, headPayload.headTags);

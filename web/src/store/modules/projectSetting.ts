@@ -9,7 +9,6 @@ export const useProjectSettingStore = defineStore({
     autuLoad: false, // 是否自动下一页
     allTags: undefined, //所有标签
     isMainUV: false, // 是否统计过
-    isLoad: false, //是否显示加载动画
   }),
   actions: {
     async getAllTags(): Promise<Array<any>> {
@@ -27,22 +26,7 @@ export const useProjectSettingStore = defineStore({
       }
     },
   },
-  getters: {
-    Load(): any {
-      return {
-        start: () => {
-          if (!import.meta.env.SSR) {
-            this.isLoad = true;
-          }
-        },
-        end: () => {
-          if (!import.meta.env.SSR) {
-            this.isLoad = false;
-          }
-        },
-      };
-    },
-  },
+  getters: {},
   persist: {
     paths: ["collapsed", "autuLoad"],
   },

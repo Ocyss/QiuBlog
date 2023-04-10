@@ -10,10 +10,7 @@
         <n-dialog-provider>
           <n-notification-provider>
             <n-message-provider>
-              <loader v-show="settingStore.isLoad" />
-              <Suspense>
-                <RouterView />
-              </Suspense>
+              <RouterView />
             </n-message-provider>
           </n-notification-provider>
         </n-dialog-provider>
@@ -26,12 +23,12 @@
 <script setup lang="ts">
 import { useDesignSettingStore } from "@/store/modules/designSetting";
 import { useProjectSettingStore } from "@/store/modules/projectSetting";
-import loader from "./components/loader.vue";
 import { zhCN, enUS, dateZhCN, darkTheme, dateEnUS } from "naive-ui";
 import { lighten } from "@/utils/index";
 import { provide, ref, computed, inject, Ref, onMounted } from "vue";
 import { useHead } from "@unhead/vue";
 import { useI18n } from "vue-i18n";
+import { log } from "console";
 
 const { t } = useI18n();
 let oldtitle: string;

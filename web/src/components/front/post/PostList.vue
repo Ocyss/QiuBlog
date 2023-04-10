@@ -43,7 +43,7 @@
         <n-empty v-else description="没有东西。。。" />
       </n-tab-pane>
     </n-tabs> -->
-    <div style="height: 2000px">{{ PostSpinShow }}</div>
+    <div style="height: 2000px"></div>
     <template #description>加载中~~~~</template>
   </n-spin>
 </template>

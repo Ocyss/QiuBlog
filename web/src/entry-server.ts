@@ -12,8 +12,6 @@ export async function render(url, manifest) {
   const ctx: any = {};
   const appHtml = await renderToString(app, ctx);
   const cssHtml = collect();
-  console.log("cssHtml", cssHtml);
-
   const preloadLinks = renderPreloadLinks(cssHtml, ctx.modules, manifest);
   const headPayload = await renderSSRHead(head);
   return { appHtml, cssHtml, preloadLinks, headPayload };
