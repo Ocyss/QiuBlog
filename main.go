@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+
 	model.InitDb()
 	db.InitRedis()
 	sitemap.InitSitemap()
