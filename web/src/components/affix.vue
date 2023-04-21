@@ -1,16 +1,11 @@
 <template>
-  <n-el tag="div" class="affix">
-    <Transition>
-      <div id="affixContent"></div>
-    </Transition>
-    <n-back-top
-      to="#affixContent"
-      ref="backTopRef"
-      v-if="scrollableEl"
-      :listen-to="scrollableEl"
-      style="z-index: 5000"
-    />
-  </n-el>
+  <n-back-top
+    to="#affixContent"
+    ref="backTopRef"
+    v-if="scrollableEl"
+    :listen-to="scrollableEl"
+    style="z-index: 5000"
+  />
 </template>
 
 <script setup lang="ts">
@@ -27,22 +22,17 @@ defineExpose({
 });
 </script>
 
-<style scoped lang="scss">
-.affix {
-  position: fixed;
-  right: 15%;
-  height: 30vh;
-  bottom: 0;
-  z-index: 999;
-}
-</style>
-
 <style lang="scss">
 #affixContent {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  position: fixed;
+  right: 30%;
+  height: 30vh;
+  bottom: 0;
+  z-index: 999;
   div {
     width: 44px;
     height: 44px;

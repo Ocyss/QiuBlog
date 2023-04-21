@@ -162,21 +162,28 @@ func GetsArticle(pageSize int, pageNum int, cid int, mid int, tid int) ([]Articl
 }
 
 // GetArticle 获取单个文章
-func GetArticle(Aid int) (int, *Article) {
+func GetArticle(Aid int) (int, *Article, []byte) {
 	var data Article
 	ctx := context.Background()
 	articleJson, err := db.Rdb.HGet(ctx, "article", strconv.Itoa(Aid)).Bytes()
 	if err != nil {
 		err = Db.Preload("Tags").Where("id=?", Aid).Find(&data).Error
 		if err != nil {
-			return errmsg.ERROR, nil
+			return errmsg.ERROR, nil, nil
 		}
 		articleJson, _ = json.Marshal(&data)
 		db.Rdb.HSet(ctx, "article", strconv.Itoa(Aid), articleJson)
 	} else {
 		_ = json.Unmarshal(articleJson, &data)
 	}
-	return errmsg.SUCCESS, &data
+	category, nil := db.Rdb.HGet(ctx, "category", strconv.Itoa(*data.Cid)).Bytes()
+	if err != nil {
+		var c Category
+		err = Db.Take(&c, data.Cid).Error
+		category = []byte(c.Name)
+		db.Rdb.HSet(ctx, "category", strconv.Itoa(*data.Cid), category)
+	}
+	return errmsg.SUCCESS, &data, category
 }
 
 func GetAllArticle() []Article {

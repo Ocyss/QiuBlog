@@ -28,7 +28,6 @@ import { lighten } from "@/utils/index";
 import { provide, ref, computed, inject, Ref, onMounted } from "vue";
 import { useHead } from "@unhead/vue";
 import { useI18n } from "vue-i18n";
-import { log } from "console";
 
 const { t } = useI18n();
 let oldtitle: string;
@@ -132,8 +131,8 @@ img {
     border-width: 0px !important;
   }
 }
-.n-icon {
-  width: 20px;
-  height: 20px;
-}
+// .n-icon {
+//   width: 20px;
+//   height: 20px;
+// }
 </style>

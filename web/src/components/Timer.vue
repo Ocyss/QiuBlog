@@ -9,11 +9,6 @@
       format="yyyy-MM-dd HH:mm:ss"
     />
   </n-tooltip>
-  <n-time
-    time-zone="Asia/Shanghai"
-    :time="new Date(t)"
-    format="yyyy-MM-dd HH:mm:ss"
-  />
 </template>
 
 <script setup lang="ts">

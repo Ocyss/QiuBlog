@@ -182,13 +182,13 @@ async function getQuestion() {
   });
 }
 
-onServerPrefetch(() => {
-  getQuestion();
+onServerPrefetch(async () => {
+  await getQuestion();
 });
 
-onMounted(() => {
-  if (!content.value) {
-    getQuestion();
+onMounted(async () => {
+  if (content.value.length == 0) {
+    await getQuestion();
   }
 });
 </script>

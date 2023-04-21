@@ -17,6 +17,7 @@ import request from "@/utils/request";
 import editor from "@/components/editor.vue";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
 import { useI18n } from "vue-i18n";
+import { onMounted } from "vue";
 
 const { t } = useI18n();
 const designStore = useDesignSettingStore();
@@ -24,15 +25,16 @@ const contentRef = ref({
   author: "",
   project: "",
 });
-onServerPrefetch(async () => {
-  request.get("/about.md").then((res) => {
-    contentRef.value.author = res.data;
-  });
-  request
-    .get("https://raw.githubusercontent.com/Ocyss/QiuBlog/master/README.md")
-    .then((res) => {
-      contentRef.value.project = res.data;
-    });
+
+onMounted(async () => {
+  const aboutRes = await request.get("/about.md");
+  contentRef.value.author = aboutRes.data;
+
+  const projectRes = await request.get(
+    "https://cdn.jsdelivr.net/gh/Ocyss/QiuBlog/README.md"
+  );
+
+  contentRef.value.project = projectRes.data;
 });
 </script>
 

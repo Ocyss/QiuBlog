@@ -144,13 +144,14 @@ async function getMessage() {
     }
   });
 }
-onServerPrefetch(() => {
-  getMessage();
+
+onServerPrefetch(async () => {
+  await getMessage();
 });
 
-onMounted(() => {
-  if (!content.value) {
-    getMessage();
+onMounted(async () => {
+  if (content.value.length == 0) {
+    await getMessage();
   }
 });
 </script>

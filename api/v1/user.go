@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"qiublog/model"
 	"qiublog/utils/ask"
@@ -24,6 +25,7 @@ func Login(c *gin.Context) (int, any) {
 		return ask.ErrParam()
 	}
 	code, uid, token := model.CheckLogin(&data)
+	fmt.Println(token)
 	c.SetCookie("token", token, 259200, "/", c.Request.Referer(), false, false)
 	return code, gin.H{
 		"uid": uid,

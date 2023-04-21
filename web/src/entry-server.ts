@@ -14,7 +14,13 @@ export async function render(url, manifest) {
   const cssHtml = collect();
   const preloadLinks = renderPreloadLinks(cssHtml, ctx.modules, manifest);
   const headPayload = await renderSSRHead(head);
-  return { appHtml, cssHtml, preloadLinks, headPayload };
+  return {
+    appHtml,
+    cssHtml,
+    preloadLinks,
+    headPayload,
+    teleports: ctx.teleports,
+  };
 }
 
 function renderPreloadLinks(css, modules, manifest) {

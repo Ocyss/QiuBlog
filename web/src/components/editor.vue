@@ -8,14 +8,14 @@
     />
     <Teleport to="#affixContent">
       <div class="affixContent">
-        <!-- <n-popover :overlap="overlap" placement="left-end" trigger="hover">
+        <n-popover :overlap="overlap" placement="left-end" trigger="hover">
           <template #trigger><n-icon :component="Receipt" /></template>
           <md-catalog
             editor-id="author-id"
             :scroll-element="scrollableEl"
             :theme="getTheme"
           />
-        </n-popover> -->
+        </n-popover>
       </div>
     </Teleport>
   </div>
@@ -31,6 +31,7 @@ const overlap = ref(false);
 const props = defineProps(["content"]);
 const editorRef = ref(void 0);
 const contentRef = ref(props.content);
+
 const MdCatalog = MdEditor.MdCatalog;
 const scrollableEl: Ref<HTMLElement> = inject("scrollableEl");
 

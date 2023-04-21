@@ -1,5 +1,5 @@
 <template>
-  <div class="login_main" :style="`background-image: url(无)`">
+  <div class="login_main">
     <div class="login">
       <n-icon size="120" v-html="icon"></n-icon>
       <n-space vertical>

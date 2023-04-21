@@ -61,10 +61,11 @@ func GetArticle(c *gin.Context) (int, any) {
 		db.Rdb.PFAdd(ctx, articleUvKey, c.ClientIP())
 		uv, _ = db.Rdb.PFCount(ctx, articleUvKey).Result()
 	}
-	code, data := model.GetArticle(aid)
+	code, data, category := model.GetArticle(aid)
 	return code, gin.H{
-		"data": data,
-		"uv":   uv,
+		"data":     data,
+		"uv":       uv,
+		"category": string(category),
 	}
 }
 

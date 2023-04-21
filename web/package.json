@@ -14,6 +14,7 @@
     "@chenfengyuan/vue-qrcode": "2",
     "@css-render/vue3-ssr": "^0.15.12",
     "@intlify/unplugin-vue-i18n": "^0.10.0",
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@unhead/ssr": "^1.1.25",
     "@unhead/vue": "^1.1.25",
     "@vueuse/core": "^9.13.0",

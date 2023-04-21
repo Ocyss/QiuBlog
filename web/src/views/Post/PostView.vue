@@ -28,7 +28,7 @@
               >
                 <n-icon :size="13" :component="PricetagsSharp" />
               </n-icon-wrapper>
-              {{ category.name }}
+              {{ category }}
             </div>
           </div>
 
@@ -42,16 +42,13 @@
             <n-space :wrap="false">
               <n-tag
                 v-for="tag in postData.tags"
-                :key="tag"
+                :key="tag.id"
                 size="small"
                 round
-                :color="tag.color"
                 :type="
-                  tag.color
-                    ? ''
-                    : ['primary', 'info', 'success', 'warning', 'error'][
-                        Math.floor(Math.random() * 5)
-                      ]
+                  ['primary', 'info', 'success', 'warning', 'error'][
+                    Math.floor(Math.random() * 5)
+                  ]
                 "
               >
                 {{ tag.name }}
@@ -62,7 +59,7 @@
       </div>
       <n-divider />
       <div class="content">
-        <editorVue :content="postData.content" />
+        <editorVue v-if="postData.content" :content="postData.content" />
       </div>
       <n-divider />
       <div class="copyright">
@@ -100,47 +97,54 @@ import { useHead } from "@unhead/vue";
 
 const route = useRoute();
 const message = useMessage();
-const category = ref(void 0);
+const category = ref("");
 const url = ref("");
 if (!import.meta.env.SSR) {
   url.value = window.location.href;
 }
 
-const postData = ref(void 0);
+const postData = ref({
+  id: 0,
+  created_at: "2022-09-07T12:39:08+08:00",
+  updated_at: "2022-09-07T12:39:08+08:00",
+  title: "",
+  img: "",
+  desc: "",
+  content: "",
+  cid: 1,
+  tags: [
+    {
+      id: 0,
+      name: "",
+    },
+  ],
+});
 const uv = ref(void 0);
 
 const imgSrc = computed(() => {
   return postData.value.img ? postData.value.img : "/static/img/fc.jpg";
 });
 
-async function getCategory() {
-  const category_res = await api.category.get();
-  category.value = category_res.data.find((item) => {
-    return item.id == postData.value.cid;
-  });
-}
 async function getArticle() {
   const article_res = await api.article.get(
     route.params.pid as unknown as number
   );
   postData.value = article_res.data;
   uv.value = article_res.uv;
+  category.value = article_res.category;
   useHead({
     title: postData.value.title,
     meta: [{ name: "description", content: postData.value.desc }],
   });
 }
 
-onServerPrefetch(() => {
-  getCategory();
-  getArticle();
+onServerPrefetch(async () => {
+  await getArticle();
+  postData.value.content = "";
 });
 
-onMounted(() => {
-  if (!category) {
-    getCategory();
-  }
-  getArticle();
+onMounted(async () => {
+  await getArticle();
 });
 </script>
 

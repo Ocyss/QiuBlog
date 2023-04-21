@@ -11,19 +11,24 @@
     <div class="content">
       <div class="information">
         <div>
-          <n-icon-wrapper :size="18" :border-radius="15">
-            <n-icon :size="13" :component="Calendar" />
+          <n-icon-wrapper
+            :size="19.2"
+            :border-radius="10"
+            style="margin-right: 0.1rem"
+          >
+            <n-icon :size="14.4" :component="Calendar" />
           </n-icon-wrapper>
           <TimerVue :t="item.created_at" />
         </div>
         <div class="rightInfo">
           <div style="margin-right: 0.5rem">
             <n-icon-wrapper
-              :size="18"
-              :border-radius="15"
+              :size="19.2"
+              :border-radius="10"
               color="rgb(192,202,51)"
+              style="margin-right: 0.1rem"
             >
-              <n-icon :size="13" :component="Book" />
+              <n-icon :size="14.4" :component="Book" />
             </n-icon-wrapper>
             &nbsp;{{ item.uv }}
             {{ designStore.getLocale ? "阅读" : "RDG" }}
@@ -31,10 +36,11 @@
           <div v-if="item.cname">
             <n-icon-wrapper
               color="rgb(67,160,71)"
-              :size="18"
-              :border-radius="15"
+              :size="19.2"
+              :border-radius="10"
+              style="margin-right: 0.1rem"
             >
-              <n-icon :size="13" :component="PricetagsSharp" />
+              <n-icon :size="14.4" :component="PricetagsSharp" />
             </n-icon-wrapper>
             {{ item.cname.name }}
           </div>
@@ -56,16 +62,13 @@
             v-for="tag in item.tags"
             @click="router.push({ name: 'menuTag', query: { id: tag.id } })"
             style="cursor: pointer"
-            :key="tag"
+            :key="tag.id"
             size="small"
             round
-            :color="tag.color"
             :type="
-              tag.color
-                ? ''
-                : ['primary', 'info', 'success', 'warning', 'error'][
-                    Math.floor(Math.random() * 5)
-                  ]
+              ['primary', 'info', 'success', 'warning', 'error'][
+                Math.floor(Math.random() * 5)
+              ]
             "
           >
             {{ tag.name }}

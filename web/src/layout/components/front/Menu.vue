@@ -115,36 +115,35 @@ onServerPrefetch(() => {
   getMenuName(menusKey.value);
 });
 
-let menusRef = undefined;
+// let menusRef = undefined;
 //主页菜单
-// const menusRef = computed(() => {
-//   return menus.value.map((item) => {
-//     return {
-//       label: () =>
-//         h(
-//           RouterLink,
-//           {
-//             to: {
-//               name: item.linkName,
-//               params:
-//                 item.linkName == "menu"
-//                   ? {
-//                       menuName: item.link,
-//                     }
-//                   : {},
-//             },
-//           },
-//           // { default: () => (designStore.getLocale ? item.name : item.ename) }
-//           { default: () => item.name }
-//         ),
+const menusRef = computed(() => {
+  return menus.value.map((item) => {
+    return {
+      label: () =>
+        h(
+          RouterLink,
+          {
+            to: {
+              name: item.linkName,
+              params:
+                item.linkName == "menu"
+                  ? {
+                      menuName: item.link,
+                    }
+                  : {},
+            },
+          },
+          { default: () => (designStore.getLocale ? item.name : item.ename) }
+        ),
 
-//       name: item.name,
-//       ename: item.ename,
-//       key: item.link,
-//       // icon: renderIcon(item.icon),
-//     };
-//   });
-// });
+      name: item.name,
+      ename: item.ename,
+      key: item.link,
+      icon: renderIcon(item.icon),
+    };
+  });
+});
 </script>
 
 <style scoped></style>

@@ -8,6 +8,8 @@ import UnheadVite from "@unhead/addons/vite";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "url";
+import { viteCommonjs } from "@originjs/vite-plugin-commonjs";
+
 //打包分析
 // import { visualizer } from "rollup-plugin-visualizer";
 // import VitePluginCompression from "vite-plugin-compression";//压缩
@@ -24,6 +26,7 @@ const alias = {
 export default defineConfig({
   plugins: [
     vue(),
+    viteCommonjs(),
     // VitePluginCompression(),//压缩gzip
     // AutoImport({
     //   imports: [

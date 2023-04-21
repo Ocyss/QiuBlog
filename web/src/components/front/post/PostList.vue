@@ -1,6 +1,6 @@
 <template>
   <n-spin class="postlist" :show="PostSpinShow" style="min-height: 300px">
-    <!-- <n-tabs
+    <n-tabs
       :bar-width="28"
       type="line"
       class="custom-tabs"
@@ -42,7 +42,7 @@
         </div>
         <n-empty v-else description="没有东西。。。" />
       </n-tab-pane>
-    </n-tabs> -->
+    </n-tabs>
     <div style="height: 2000px"></div>
     <template #description>加载中~~~~</template>
   </n-spin>
