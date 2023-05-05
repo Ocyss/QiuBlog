@@ -2,10 +2,8 @@ package routes
 
 import (
 	"fmt"
-	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"os"
 	"qiublog/middleware"
 	"qiublog/utils"
 	"qiublog/utils/sitemap"
@@ -31,6 +29,7 @@ func InitRouter() {
 func loadStatic(r *gin.Engine) {
 	r.StaticFile("config", "./config/config.json")
 	r.StaticFile("about.md", "./config/about.md")
+
 	r.GET("rss/:type", func(c *gin.Context) {
 		var data struct {
 			Type string `uri:"type"`
@@ -62,6 +61,7 @@ func loadStatic(r *gin.Engine) {
 		}
 		c.Data(http.StatusOK, mimetype, []byte(response))
 	})
+
 	r.GET("sitemap.xml", func(c *gin.Context) {
 		response, err := sitemap.Feed.ToSitemap()
 		if err != nil {
@@ -70,23 +70,4 @@ func loadStatic(r *gin.Engine) {
 		}
 		c.Data(http.StatusOK, "application/xml", []byte(response))
 	})
-	if utils.Config.Server.AppMode == "release" {
-		r.Use(static.Serve("/", static.LocalFile("web", true)))
-		r.NoRoute(func(c *gin.Context) {
-			accept := c.Request.Header.Get("Accept")
-			flag := strings.Contains(accept, "text/html")
-			if flag {
-				content, err := os.ReadFile("web/index.html")
-				if err != nil {
-					c.Writer.WriteHeader(404)
-					c.Writer.WriteString("Not Found")
-					return
-				}
-				c.Writer.WriteHeader(200)
-				c.Writer.Header().Add("Accept", "text/html")
-				c.Writer.Write(content)
-				c.Writer.Flush()
-			}
-		})
-	}
 }

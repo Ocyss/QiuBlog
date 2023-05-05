@@ -27,6 +27,7 @@
     "pinia": "^2.0.33",
     "pinia-plugin-persistedstate": "^3.1.0",
     "qrcode": "1",
+    "serve-static": "^1.15.0",
     "vite-plugin-ssr": "^0.4.103",
     "vue": "3.2.47",
     "vue-i18n": "^9.2.2",

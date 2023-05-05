@@ -10,7 +10,6 @@ export async function createServer(
   root = process.cwd(),
   isProd = process.env.NODE_ENV === "production"
 ) {
-  console.log("isProd: ", isProd);
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   const resolve = (p) => path.resolve(__dirname, p);
 
@@ -23,13 +22,14 @@ export async function createServer(
         fs.readFileSync(resolve("dist/client/ssr-manifest.json"), "utf-8")
       )
     : {};
-
+  const baseUrl = isProd ? "https://api.邱.cf/" : "http://127.0.0.1:3000/";
   const app = express();
 
   /**
    * @type {import('vite').ViteDevServer}
    */
   let vite;
+
   if (!isProd) {
     vite = await (
       await import("vite")
@@ -42,7 +42,7 @@ export async function createServer(
       },
       appType: "custom",
     });
-
+    request = await import("src/utils/request.ts");
     app.use(vite.middlewares);
   } else {
     app.use((await import("compression")).default());
@@ -53,6 +53,13 @@ export async function createServer(
       })
     );
   }
+
+  app.get("rss/:type", (req, res) => {
+    res.redirect(301, baseUrl + "rss/" + req.params.type);
+  });
+  app.get(["sitemap.xml", "config", "about.md"], (req, res) => {
+    res.redirect(301, baseUrl + req.path);
+  });
 
   app.use("*", async (req, res) => {
     const url = req.originalUrl;

@@ -75,13 +75,13 @@ export default defineConfig({
     },
   },
   ssr: {
-    noExternal: ["naive-ui", "date-fns", "vueuc"],
+    noExternal: ["vue-i18n", "naive-ui"],
   },
-  // build: {
-  //   sourcemap: false,
-  //   minify: "esbuild",
-  //   chunkSizeWarningLimit: 800,
-
+  build: {
+    sourcemap: false,
+    minify: "esbuild",
+    chunkSizeWarningLimit: 800,
+  },
   // rollupOptions: {
   //   output: {
   //     //静态资源分类打包

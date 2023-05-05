@@ -1,9 +1,15 @@
 import axios from "axios";
-
 import { message } from "@/utils/client";
 
+let baseURL: string;
+if (process.env.NODE_ENV === "production") {
+  baseURL = "https://api.邱.cf/";
+} else {
+  baseURL = "http://127.0.0.1:3000/";
+}
+
 let request = axios.create({
-  baseURL: "http://127.0.0.1:3000/",
+  baseURL,
   timeout: 8000,
 });
 

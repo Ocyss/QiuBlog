@@ -40,9 +40,9 @@ func init() {
 	var err error
 	// 通过环境变量来判断是否使用默认配置文件，方便开发
 	if filename, ok := os.LookupEnv("QiuBlogConfigFileName"); ok {
-		file, err = ini.Load(fmt.Sprintf("config/%s.ini", filename))
+		file, err = ini.Load(fmt.Sprintf("./config/%s.ini", filename))
 	} else {
-		file, err = ini.Load("config/config.ini")
+		file, err = ini.Load("./config/config.ini")
 	}
 	if err != nil {
 		panic(fmt.Sprintf("配置文件读取错误，请检查文件路径--%s", err))
