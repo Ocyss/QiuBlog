@@ -15,15 +15,13 @@ var Feed *feeds.Feed
 var Author *feeds.Author
 
 func Db() {
-	// 先清空之前数据
-	Feed.Items = nil
 	articles := model.GetAllArticle()
+	// 先清空之前数据
 	Feed.Items = make([]*feeds.Item, 0, len(articles)+100)
-
 	for _, v := range articles {
 		Feed.Items = append(Feed.Items, &feeds.Item{
 			Title:       v.Title,
-			Link:        &feeds.Link{Href: fmt.Sprintf("%s/post/%d", utils.Config.Server.Url, v.ID)},
+			Link:        &feeds.Link{Href: fmt.Sprintf("%s/post/%d", utils.Config.SiteInfo.Url, v.ID)},
 			Author:      Author,
 			Description: v.Desc,
 			Id:          strconv.Itoa(int(v.ID)),
@@ -43,12 +41,12 @@ func Db() {
 
 func InitSitemap() {
 	// 获取博客建站时间
-	CreatedTime := time.Unix(utils.Config.ConstructionTime, 0)
-	Author = &feeds.Author{Name: utils.Config.Frontend.UserInfo.Name, Email: utils.Config.Frontend.UserInfo.Email}
+	CreatedTime := time.Unix(utils.Config.SiteInfo.ConstructionTime, 0)
+	Author = &feeds.Author{Name: utils.Config.SiteInfo.User, Email: utils.Config.SiteInfo.Email}
 	Feed = &feeds.Feed{
-		Title:       utils.Config.Frontend.UserInfo.Title,
-		Link:        &feeds.Link{Href: utils.Config.Server.Url},
-		Description: utils.Config.Frontend.UserInfo.Motto,
+		Title:       utils.Config.SiteInfo.Name,
+		Link:        &feeds.Link{Href: utils.Config.SiteInfo.Url},
+		Description: utils.Config.SiteInfo.Desc,
 		Author:      Author,
 		Created:     CreatedTime,
 	}

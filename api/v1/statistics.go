@@ -55,7 +55,7 @@ func GetStatistics(c *gin.Context) (int, any) {
 		lastUpdated = ar.UpdatedAt.Unix()
 		db.Rdb.Set(ctx, "main:lut", lastUpdated, 3*24*time.Hour)
 	}
-	elapsedTime = utils.Config.ConstructionTime
+	elapsedTime = utils.Config.SiteInfo.ConstructionTime
 	return errmsg.SUCCESS, gin.H{
 		"data": gin.H{
 			"article_count": articleCount,

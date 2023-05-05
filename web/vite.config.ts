@@ -75,7 +75,7 @@ export default defineConfig({
     },
   },
   ssr: {
-    noExternal: ["vue-i18n", "naive-ui"],
+    noExternal: ["naive-ui"],
   },
   build: {
     sourcemap: false,

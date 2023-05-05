@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"encoding/json"
 	"fmt"
 	"gopkg.in/ini.v1"
 	"os"
@@ -10,29 +9,12 @@ import (
 var Config ServerConfig
 
 type ServerConfig struct {
-	Server           server
-	Redis            redis
-	Database         database
-	Oss              oss
-	ConstructionTime int64
-	Push             push
-	Frontend         FrontendConfig
-}
-type FrontendConfig struct {
-	UserInfo struct {
-		Title  string `json:"title"`
-		Name   string `json:"name"`
-		Email  string `json:"email"`
-		Motto  string `json:"motto"`
-		MottoE string `json:"mottoE"`
-	} `json:"userInfo"`
-	FriendChain []struct {
-		Name string `json:"name"`
-		Href string `json:"href"`
-	} `json:"friendChain"`
-	Global struct {
-		RandomImgApi string `json:"randomImgApi"`
-	} `json:"global"`
+	Server   server
+	SiteInfo siteInfo
+	Redis    redis
+	Database database
+	Oss      oss
+	Push     push
 }
 
 func init() {
@@ -47,21 +29,12 @@ func init() {
 	if err != nil {
 		panic(fmt.Sprintf("配置文件读取错误，请检查文件路径--%s", err))
 	}
-	Config.ConstructionTime = file.Section("statistics").Key("ConstructionTime").MustInt64(1662525548)
 	LoadServer(file)
+	LoadSiteInfo(file)
 	LoadRedis(file)
 	LoadData(file)
 	LoadOss(file)
 	LoadPush(file)
-
-	jsonData, err := os.ReadFile("config/config.json")
-	if err != nil {
-		panic("Error reading front-end configuration file")
-	}
-	err = json.Unmarshal(jsonData, &Config.Frontend)
-	if err != nil {
-		panic(fmt.Sprintf("Front-end configuration file parsing error,msg: %v", err))
-	}
 }
 
 type server struct {
@@ -69,7 +42,6 @@ type server struct {
 	HttpPort string
 	Oss      string
 	JwtKey   string
-	Url      string
 }
 
 func LoadServer(file *ini.File) {
@@ -77,7 +49,24 @@ func LoadServer(file *ini.File) {
 	Config.Server.HttpPort = file.Section("server").Key("HttpPort").MustString(":3000")
 	Config.Server.Oss = file.Section("server").Key("Oss").MustString("qiniu")
 	Config.Server.JwtKey = file.Section("server").Key("JwtKey").MustString("111")
-	Config.Server.Url = file.Section("server").Key("Url").MustString("")
+}
+
+type siteInfo struct {
+	Url              string
+	Name             string
+	User             string
+	Email            string
+	Desc             string
+	ConstructionTime int64
+}
+
+func LoadSiteInfo(file *ini.File) {
+	Config.SiteInfo.Url = file.Section("siteInfo").Key("Url").MustString("https://邱.cf")
+	Config.SiteInfo.Name = file.Section("siteInfo").Key("Name").MustString("💘  Ocyss 的博客")
+	Config.SiteInfo.User = file.Section("siteInfo").Key("User").MustString("Ocyss")
+	Config.SiteInfo.Email = file.Section("siteInfo").Key("Email").MustString("qiudie@88.com")
+	Config.SiteInfo.Desc = file.Section("siteInfo").Key("Desc").MustString("故事很短，满是遗憾。")
+	Config.SiteInfo.ConstructionTime = file.Section("siteInfo").Key("ConstructionTime").MustInt64(1662525548)
 }
 
 type redis struct {
@@ -146,7 +135,7 @@ type push struct {
 }
 
 func LoadPush(file *ini.File) {
-	Config.Push.WxPushCorpId = file.Section("Push").Key("WxPushCorpId").String()
-	Config.Push.WxPushAgentid = file.Section("Push").Key("WxPushAgentid").String()
-	Config.Push.WxPushSecret = file.Section("Push").Key("WxPushSecret").String()
+	Config.Push.WxPushCorpId = file.Section("push").Key("WxPushCorpId").String()
+	Config.Push.WxPushAgentid = file.Section("push").Key("WxPushAgentid").String()
+	Config.Push.WxPushSecret = file.Section("push").Key("WxPushSecret").String()
 }

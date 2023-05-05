@@ -10,6 +10,7 @@ export async function createServer(
   root = process.cwd(),
   isProd = process.env.NODE_ENV === "production"
 ) {
+  console.log(isProd);
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   const resolve = (p) => path.resolve(__dirname, p);
 
@@ -42,7 +43,6 @@ export async function createServer(
       },
       appType: "custom",
     });
-    request = await import("src/utils/request.ts");
     app.use(vite.middlewares);
   } else {
     app.use((await import("compression")).default());
