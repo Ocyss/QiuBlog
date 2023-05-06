@@ -1,12 +1,10 @@
 import axios from "axios";
 import { message } from "@/utils/client";
 
-let baseURL: string;
-if (process.env.NODE_ENV === "production") {
-  baseURL = "https://api.邱.cf/";
-} else {
-  baseURL = "http://127.0.0.1:3000/";
-}
+const baseURL =
+  import.meta.env.VITE_HTTPS == "true"
+    ? "https://"
+    : "http://" + import.meta.env.VITE_URL;
 
 let request = axios.create({
   baseURL,

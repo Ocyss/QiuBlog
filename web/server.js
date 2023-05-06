@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import express from "express";
+import proxy from "express-http-proxy-2";
 import { log } from "node:console";
 
 const isTest = process.env.VITEST;
@@ -23,9 +24,8 @@ export async function createServer(
         fs.readFileSync(resolve("dist/client/ssr-manifest.json"), "utf-8")
       )
     : {};
-  const baseUrl = isProd ? "https://api.邱.cf/" : "http://127.0.0.1:3000/";
+  const baseUrl = isProd ? "api.邱.cf" : "127.0.0.1:3000";
   const app = express();
-
   /**
    * @type {import('vite').ViteDevServer}
    */
@@ -54,12 +54,14 @@ export async function createServer(
     );
   }
 
-  app.get("rss/:type", (req, res) => {
-    res.redirect(301, baseUrl + "rss/" + req.params.type);
-  });
-  app.get(["sitemap.xml", "config", "about.md"], (req, res) => {
-    res.redirect(301, baseUrl + req.path);
-  });
+  app.use(
+    ["/rss/*", "/sitemap.xml"],
+    proxy(baseUrl, {
+      proxyReqPathResolver: function (req) {
+        return req.baseUrl;
+      },
+    })
+  );
 
   app.use("*", async (req, res) => {
     const url = req.originalUrl;
@@ -101,7 +103,7 @@ export async function createServer(
 }
 
 createServer().then(({ app }) =>
-  app.listen(6879, () => {
-    console.log("http://localhost:6879");
+  app.listen(process.env.npm_package_config_port, () => {
+    console.log("http://localhost:" + process.env.npm_package_config_port);
   })
 );

@@ -16,6 +16,7 @@ const routes: Array<RouteRecordRaw> = [
           menukey: "home",
           title: "主页",
         },
+        alias: "/home",
       },
       {
         path: "m/tag",

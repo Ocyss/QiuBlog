@@ -55,26 +55,28 @@ const cdata = ref({
     },
   ],
 });
-
+const baseUrl =
+  (import.meta.env.VITE_HTTPS == "true" ? "https://" : "http://") +
+  import.meta.env.VITE_URL;
 useHead({
   link: [
     {
       rel: "alternate",
       type: "application/rss+xml",
       title: "RSS 2.0 Feed",
-      href: "/rss/rss",
+      href: baseUrl + "/rss/rss",
     },
     {
       rel: "alternate",
       type: "application/atom+xml",
       title: "RSS Atom Feed",
-      href: "/rss/atom",
+      href: baseUrl + "/rss/atom",
     },
     {
       rel: "alternate",
       type: "application/rss+json",
       title: "RSS JSON Feed",
-      href: "/rss/json",
+      href: baseUrl + "/rss/json",
     },
   ],
 });
