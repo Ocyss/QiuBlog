@@ -156,6 +156,7 @@ const colsReactive = reactive([
     },
   },
 ]);
+
 onMounted(() => {
   api.article.getList({ pagesize: 6, pagenum: 0, mid: -2 }).then((res) => {
     res.data.map((item) => {

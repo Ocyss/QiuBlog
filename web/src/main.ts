@@ -8,6 +8,7 @@ import { febore } from "./router/router-guards";
 import { i18n } from "./lang";
 import naive from "naive-ui";
 import { setup } from "@css-render/vue3-ssr";
+import Particles from "vue3-particles";
 
 export function createApp() {
   const app = createSSRApp(App);
@@ -31,5 +32,6 @@ export function createApp() {
 
   const { collect } = setup(app);
   app.use(naive);
+  app.use(Particles);
   return { app, router, pinia, head, collect };
 }

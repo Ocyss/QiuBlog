@@ -2,9 +2,10 @@ import axios from "axios";
 import { message } from "@/utils/client";
 
 const baseURL =
-  import.meta.env.VITE_HTTPS == "true"
-    ? "https://"
-    : "http://" + import.meta.env.VITE_URL;
+  (import.meta.env.VITE_HTTPS == "true" ? "https://" : "http://") +
+  import.meta.env.VITE_URL;
+
+// console.log("axios baseUrl = ", baseURL);
 
 let request = axios.create({
   baseURL,

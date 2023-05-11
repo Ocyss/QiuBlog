@@ -4,13 +4,12 @@ import { RouteRecordRaw } from "vue-router";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "home",
     meta: {},
     component: index,
     children: [
       {
-        path: "/",
-        name: "menuHome",
+        path: "",
+        name: "home",
         component: () => import("@/views/front/HomeView.vue"),
         meta: {
           menukey: "home",

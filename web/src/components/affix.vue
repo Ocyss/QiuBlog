@@ -10,6 +10,7 @@
 
 <script setup lang="ts">
 import { inject, Ref, ref, provide, readonly } from "vue";
+
 const backTopRef = ref(void 0);
 const scrollableEl: Ref<HTMLElement> = inject("scrollableEl");
 
@@ -33,13 +34,14 @@ defineExpose({
   height: 30vh;
   bottom: 0;
   z-index: 999;
+
   div {
     width: 44px;
     height: 44px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--popover-color);
+    background-color: var(--n-color);
     border-radius: 50%;
     margin: 5px 0px;
     box-shadow: 0 2px 8px 0px rgba(0, 0, 0, 0.12);

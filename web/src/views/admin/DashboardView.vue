@@ -1,6 +1,8 @@
 <template>
   <div class="main">
-    <div><h1>仪表盘</h1></div>
+    <div class="title">
+      <h1>仪表盘</h1> <span @click="logOut">注销</span>
+    </div>
 
     <div class="digitalData">
       <n-grid cols="1 s:2 m:4" responsive="screen" x-gap="12" y-gap="12">
@@ -10,23 +12,17 @@
           </n-card>
         </n-grid-item>
         <n-grid-item>
-          <n-card
-            :title="`📖${designStore.getLocale ? '文章数' : 'articleCount'}`"
-          >
+          <n-card :title="`📖${designStore.getLocale ? '文章数' : 'articleCount'}`">
             卡片内容
           </n-card>
         </n-grid-item>
         <n-grid-item>
-          <n-card
-            :title="`🧾${designStore.getLocale ? '总字数' : 'wordsTotal'}`"
-          >
+          <n-card :title="`🧾${designStore.getLocale ? '总字数' : 'wordsTotal'}`">
             卡片内容
           </n-card>
         </n-grid-item>
         <n-grid-item>
-          <n-card
-            :title="`📨${designStore.getLocale ? '留言/问答' : 'message/Q&A'}`"
-          >
+          <n-card :title="`📨${designStore.getLocale ? '留言/问答' : 'message/Q&A'}`">
             卡片内容
           </n-card>
         </n-grid-item>
@@ -36,7 +32,9 @@
       <n-table striped>
         <tbody>
           <tr>
-            <td><h2>网站信息</h2></td>
+            <td>
+              <h2>网站信息</h2>
+            </td>
           </tr>
           <tr>
             <td>当前用户</td>
@@ -71,12 +69,33 @@
 <script setup lang="ts">
 import { inject, ref } from "vue";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
-
+import { VueCookies } from "vue-cookies";
+import { useRouter } from "vue-router";
+const $cookie = inject<VueCookies>("$cookies");
 const designStore = useDesignSettingStore();
+const router = useRouter()
+function logOut() {
+  $cookie.remove("token")
+  router.push({ name: "home" })
+}
 </script>
 
-<style scoped>
-.main > div {
+<style scoped lang="scss">
+.main>div {
   margin: 15px 0;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  span {
+    cursor: pointer;
+
+    &:hover {
+      color: rgb(42, 114, 248);
+    }
+  }
 }
 </style>

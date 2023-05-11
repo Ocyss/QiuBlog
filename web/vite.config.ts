@@ -75,6 +75,7 @@ export default defineConfig({
     },
   },
   ssr: {
+    // noExternal: ["naive-ui", "vue-i18n"],  //编译请用这个，否则报错
     noExternal: ["naive-ui"],
   },
   build: {

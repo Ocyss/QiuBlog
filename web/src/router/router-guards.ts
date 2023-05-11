@@ -29,11 +29,7 @@ export function febore(router, pinia) {
     if (to.meta.title != undefined) {
       useHead({ title: to.meta.title });
     }
-    if (
-      !import.meta.env.SSR &&
-      to.matched[0].name == "admin" &&
-      !getCookie("token")
-    ) {
+    if (!import.meta.env.SSR && to.meta.admin && !getCookie("token")) {
       //前往后台，判断是否登陆
       next({ name: "login" });
     } else if (to.name == "login") {

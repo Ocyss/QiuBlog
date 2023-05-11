@@ -131,8 +131,4 @@ img {
     border-width: 0px !important;
   }
 }
-// .n-icon {
-//   width: 20px;
-//   height: 20px;
-// }
 </style>

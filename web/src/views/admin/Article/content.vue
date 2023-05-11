@@ -168,8 +168,8 @@ function customRequest({
     });
   }
   formData.append("file", file.file);
-  api.request
-    .post(action, formData)
+  api
+    .request({ url: action, method: "post", data: formData })
     .then((res) => {
       if (res.status == 200) {
         content.value.img = res.data;
@@ -213,7 +213,11 @@ onMounted(() => {
   }
   //判断是不是修改帖子
   if (route.name == "article-updata") {
-    api.article.get(route.params.id).then((res) => {
+    let pid = Number(route.params.id);
+    if (Number.isNaN(pid)) {
+      router.push({ name: "exception-404" });
+    }
+    api.article.get(pid).then((res) => {
       content.value.cid = res.data.cid;
       content.value.desc = res.data.desc;
       content.value.title = res.data.title;

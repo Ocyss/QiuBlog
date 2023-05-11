@@ -1,21 +1,30 @@
 import { RouteRecordRaw } from "vue-router";
+function randomString() {
+  let chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let result = "";
+  for (let i = 16; i > 0; --i)
+    result += chars[Math.floor(Math.random() * chars.length)];
+  return "/" + result;
+}
 
+const adminPath = import.meta.env.PROD ? randomString() : "/admin";
+const LoginPath = import.meta.env.PROD ? randomString() : "/login";
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/adminadminadminadminadminadminadminadmin",
-    name: "admin",
+    path: adminPath,
     meta: {
       title: "后台管理",
+      admin: true,
     },
     component: () => import("@/views/AdminView.vue"),
-    redirect: "/adminadminadminadminadminadminadminadmin/dashboard",
     children: [
       {
-        path: "dashboard",
-        name: "dashboard",
+        path: "",
+        name: "admin",
         component: () => import("@/views/admin/DashboardView.vue"),
         meta: {
           title: "仪表盘",
+          admin: true,
         },
       },
       {
@@ -24,6 +33,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/admin/OtherView.vue"),
         meta: {
           title: "其他设置",
+          admin: true,
         },
       },
       {
@@ -32,6 +42,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/admin/MessageView.vue"),
         meta: {
           title: "留言/问答",
+          admin: true,
         },
       },
       {
@@ -40,6 +51,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/admin/Article/ArticleView.vue"),
         meta: {
           title: "文章管理",
+          admin: true,
         },
       },
       {
@@ -48,6 +60,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/admin/Article/content.vue"),
         meta: {
           title: "修改文章",
+          admin: true,
         },
       },
       {
@@ -56,12 +69,13 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/admin/Article/content.vue"),
         meta: {
           title: "发布文章",
+          admin: true,
         },
       },
     ],
   },
   {
-    path: "/loginloginloginloginloginlogin",
+    path: LoginPath,
     name: "login",
     meta: {
       title: "登录",

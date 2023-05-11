@@ -54,12 +54,12 @@ const menus = ref([
         RouterLink,
         {
           to: {
-            name: "dashboard",
+            name: "admin",
           },
         },
         { default: () => "仪表盘" }
       ),
-    key: "go-dashboard",
+    key: "go-admin",
     icon: renderIcon(Timer),
   },
   {
