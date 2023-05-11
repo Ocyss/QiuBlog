@@ -67,8 +67,8 @@ func JwtToken(termination bool, role int) gin.HandlerFunc {
 		}
 	}
 	return func(c *gin.Context) {
-		ckToken, err := c.Cookie("token")
-		if err != nil {
+		ckToken := c.GetHeader("Token")
+		if ckToken == "" {
 			//认证字符串判断 !没有认证字符串
 			code = errmsg.ERROR_TOKEN_EXIST
 			cRes(c, code)

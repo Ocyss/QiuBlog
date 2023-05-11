@@ -10,7 +10,7 @@ import api from "@/api";
 
 const route = useRoute();
 const router = useRouter();
-const cdata = ref();
+const cdata = ref(void 0);
 
 async function getMenus() {
   const res = await api.menuchild.get({ link: route.params.menuName });

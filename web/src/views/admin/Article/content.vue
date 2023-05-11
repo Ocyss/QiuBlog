@@ -6,68 +6,31 @@
       </n-button>
       <n-grid x-gap="12" y-gap="12" cols="2">
         <n-gi span="2">
-          <n-input
-            size="large"
-            v-model:value="content.title"
-            type="text"
-            placeholder="标题"
-          />
+          <n-input size="large" v-model:value="content.title" type="text" placeholder="标题" />
         </n-gi>
         <n-gi>
-          <n-input
-            v-model:value="content.desc"
-            type="textarea"
-            placeholder="描述"
-          />
+          <n-input v-model:value="content.desc" type="textarea" placeholder="描述" />
         </n-gi>
         <n-gi>
           <n-space vertical>
-            <n-cascader
-              v-model:value="content.cid"
-              placeholder="选择发布类别"
-              :options="menuoptions"
-              check-strategy="child"
-              expand-trigger="hover"
-              :show-path="true"
-              :filterable="true"
-            />
-            <n-input
-              v-model:value="imageurl"
-              type="text"
-              placeholder="图片url"
-            />
+            <n-cascader v-model:value="content.cid" placeholder="选择发布类别" :options="menuoptions" check-strategy="child"
+              expand-trigger="hover" :show-path="true" :filterable="true" />
+            <n-input v-model:value="imageurl" type="text" placeholder="图片url" />
           </n-space>
         </n-gi>
         <n-gi span="2">
           <n-space>
-            <n-upload
-              ref="uploadref"
-              action="/api/v1/upload/image"
-              :default-file-list="fileList"
-              list-type="image-card"
-              accept="image/*"
-              :data="{ class: 'Article' }"
-              :max="1"
-              with-credentials
-              :custom-request="customRequest"
-            >
+            <n-upload ref="uploadref" action="/api/v1/upload/image" :default-file-list="fileList" list-type="image-card"
+              accept="image/*" :data="{ class: 'Article' }" :max="1" with-credentials :custom-request="customRequest">
               <n-button>上传头图</n-button>
             </n-upload>
             <n-dynamic-tags v-model:value="tags" />
           </n-space>
         </n-gi>
       </n-grid>
-      <md-editor
-        v-model="content.content"
-        :theme="designStore.getDarkTheme ? `dark` : `light`"
-        showCodeRowNumber
-        @onUploadImg="onUploadImg"
-      />
-      <n-button
-        v-if="route.name == 'article-updata'"
-        type="success"
-        @click="save"
-      >
+      <md-editor v-model="content.content" :theme="designStore.getDarkTheme ? `dark` : `light`" showCodeRowNumber
+        @onUploadImg="onUploadImg" />
+      <n-button v-if="route.name == 'article-updata'" type="success" @click="save">
         保存
       </n-button>
       <n-button v-else type="success" @click="send">发布</n-button>
@@ -208,7 +171,7 @@ onServerPrefetch(() => {
 });
 
 onMounted(() => {
-  if (!menuoptions.value) {
+  if (menuoptions.value.length == 0) {
     getMC();
   }
   //判断是不是修改帖子
@@ -247,6 +210,7 @@ onMounted(() => {
   top: 6px;
   left: 4px;
 }
+
 .md-editor-dark {
   --md-bk-color: #333 !important;
   --md-color: rgba(255, 255, 255, 0.82) !important;

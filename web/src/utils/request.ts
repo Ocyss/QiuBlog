@@ -5,17 +5,20 @@ const baseURL =
   (import.meta.env.VITE_HTTPS == "true" ? "https://" : "http://") +
   import.meta.env.VITE_URL;
 
-// console.log("axios baseUrl = ", baseURL);
-
 let request = axios.create({
   baseURL,
-  timeout: 8000,
+  timeout: 8000, // 超时时间
 });
 
 // 添加请求拦截器
 request.interceptors.request.use(
   function (config) {
-    // 在发送请求之前做些什么
+    if (!import.meta.env.SSR) {
+      let token = document.cookie.match(`[;\s+]?token=([^;]*)`)?.pop();
+      if (token) {
+        config.headers.Token = token;
+      }
+    }
     return config;
   },
   function (error) {

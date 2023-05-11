@@ -23,6 +23,10 @@ func InitRedis() {
 	if err != nil {
 		panic(fmt.Sprintf("连接redis出错，错误信息：%v", err))
 	}
+	// 开发环境，清空缓存
+	//if utils.IsDev() {
+	//	Rdb.FlushAll(ctx)
+	//}
 }
 
 // Allow 通过redis的value判断第几次访问并返回是否允许访问

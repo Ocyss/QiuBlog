@@ -9,12 +9,50 @@ import (
 var Config ServerConfig
 
 type ServerConfig struct {
-	Server   server
-	SiteInfo siteInfo
-	Redis    redis
-	Database database
-	Oss      oss
-	Push     push
+	Server struct {
+		AppMode  string
+		HttpPort string
+		Oss      string
+		JwtKey   string
+	}
+	SiteInfo struct {
+		Url              string
+		Name             string
+		User             string
+		Email            string
+		Desc             string
+		ConstructionTime int64
+	}
+	Redis struct {
+		RedisHost     string
+		RedisPort     string
+		RedisPassword string
+		RedisDb       int
+	}
+	Database struct {
+		Db         string
+		DbHost     string
+		DbPort     string
+		DbUser     string
+		DbPassWord string
+		DbName     string
+	}
+	Oss struct {
+		QiniuAccessKey string
+		QiniuSecretKey string
+		QiniuBucket    string
+		QiniuSever     string
+
+		AliyunAccessKeyId     string
+		AliyunAccessKeySecret string
+		AliyunEndpoint        string
+		AliyunBucketName      string
+	}
+	Push struct {
+		WxPushCorpId  string
+		WxPushAgentid string
+		WxPushSecret  string
+	}
 }
 
 func init() {
@@ -37,29 +75,12 @@ func init() {
 	LoadPush(file)
 }
 
-type server struct {
-	AppMode  string
-	HttpPort string
-	Oss      string
-	JwtKey   string
-}
-
 func LoadServer(file *ini.File) {
 	Config.Server.AppMode = file.Section("server").Key("AppMode").MustString("debug")
 	Config.Server.HttpPort = file.Section("server").Key("HttpPort").MustString(":3000")
 	Config.Server.Oss = file.Section("server").Key("Oss").MustString("qiniu")
 	Config.Server.JwtKey = file.Section("server").Key("JwtKey").MustString("111")
 }
-
-type siteInfo struct {
-	Url              string
-	Name             string
-	User             string
-	Email            string
-	Desc             string
-	ConstructionTime int64
-}
-
 func LoadSiteInfo(file *ini.File) {
 	Config.SiteInfo.Url = file.Section("siteInfo").Key("Url").MustString("https://邱.cf")
 	Config.SiteInfo.Name = file.Section("siteInfo").Key("Name").MustString("💘  Ocyss 的博客")
@@ -68,30 +89,12 @@ func LoadSiteInfo(file *ini.File) {
 	Config.SiteInfo.Desc = file.Section("siteInfo").Key("Desc").MustString("故事很短，满是遗憾。")
 	Config.SiteInfo.ConstructionTime = file.Section("siteInfo").Key("ConstructionTime").MustInt64(1662525548)
 }
-
-type redis struct {
-	RedisHost     string
-	RedisPort     string
-	RedisPassword string
-	RedisDb       int
-}
-
 func LoadRedis(file *ini.File) {
 	Config.Redis.RedisHost = file.Section("redis").Key("RedisHost").MustString("localhost")
 	Config.Redis.RedisPort = file.Section("redis").Key("RedisPort").MustString("6379")
 	Config.Redis.RedisPassword = file.Section("redis").Key("RedisPassword").MustString("123456")
 	Config.Redis.RedisDb = file.Section("redis").Key("RedisDb").MustInt(0)
 }
-
-type database struct {
-	Db         string
-	DbHost     string
-	DbPort     string
-	DbUser     string
-	DbPassWord string
-	DbName     string
-}
-
 func LoadData(file *ini.File) {
 	Config.Database.Db = file.Section("database").Key("Db").MustString("mysql")
 	Config.Database.DbHost = file.Section("database").Key("DbHost").MustString("localhost")
@@ -100,19 +103,6 @@ func LoadData(file *ini.File) {
 	Config.Database.DbPassWord = file.Section("database").Key("DbPassWord").MustString("123456")
 	Config.Database.DbName = file.Section("database").Key("DbName").MustString("qiublog")
 }
-
-type oss struct {
-	QiniuAccessKey string
-	QiniuSecretKey string
-	QiniuBucket    string
-	QiniuSever     string
-
-	AliyunAccessKeyId     string
-	AliyunAccessKeySecret string
-	AliyunEndpoint        string
-	AliyunBucketName      string
-}
-
 func LoadOss(file *ini.File) {
 	switch Config.Server.Oss {
 	case "aliyun":
@@ -127,15 +117,12 @@ func LoadOss(file *ini.File) {
 		Config.Oss.QiniuSever = file.Section("qiniu").Key("QiniuSever").String()
 	}
 }
-
-type push struct {
-	WxPushCorpId  string
-	WxPushAgentid string
-	WxPushSecret  string
-}
-
 func LoadPush(file *ini.File) {
 	Config.Push.WxPushCorpId = file.Section("push").Key("WxPushCorpId").String()
 	Config.Push.WxPushAgentid = file.Section("push").Key("WxPushAgentid").String()
 	Config.Push.WxPushSecret = file.Section("push").Key("WxPushSecret").String()
+}
+
+func IsDev() bool {
+	return Config.Server.AppMode == "debug"
 }

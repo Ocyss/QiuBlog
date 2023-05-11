@@ -8,7 +8,7 @@ import (
 )
 
 func IsAdmin(c *gin.Context, role int) (*middleware.MyClaims, bool) {
-	ckToken, _ := c.Cookie("token")
+	ckToken := c.GetHeader("token")
 	key, tCode := middleware.CheckToken(ckToken)
 	if tCode == errmsg.ERROR || key.Role < role || time.Now().Unix() > key.ExpiresAt {
 		return nil, false
