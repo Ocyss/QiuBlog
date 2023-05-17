@@ -36,12 +36,19 @@ func Db() {
 		return
 	}
 	data, _ := json.Marshal(&Feed.Items)
-	file.Write(data)
-	file.Close()
+	_, err = file.Write(data)
+	if err != nil {
+		log.Error("sitemap.cache 写入失败,", err)
+		return
+	}
+	err = file.Close()
+	if err != nil {
+		log.Error("sitemap.cache 关闭失败,", err)
+	}
 }
 
 func InitSitemap() {
-	log.Debug("init sitemap...")
+	log.Info("init sitemap...")
 	// 获取博客建站时间
 	CreatedTime := time.Unix(utils.Config.SiteInfo.ConstructionTime, 0)
 	Author = &feeds.Author{Name: utils.Config.SiteInfo.User, Email: utils.Config.SiteInfo.Email}
@@ -63,5 +70,5 @@ func InitSitemap() {
 			Db()
 		}
 	}
-	log.Debug("init sitemap success!")
+	log.Info("init sitemap success!")
 }

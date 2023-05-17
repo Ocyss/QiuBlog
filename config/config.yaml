@@ -41,8 +41,8 @@ Server:
 Log:
   # 是否启用
   Enable: true
-  # 日志等级
-  Level: debug
+  # 日志等级 生产环境推荐 warn
+  Level: warn
   # 日志文件名
   Filename: Log\log.log
   # 最大大小

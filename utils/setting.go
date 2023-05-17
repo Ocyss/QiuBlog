@@ -17,7 +17,7 @@ func init() {
 	var err error
 	// 通过环境变量来判断是否使用默认配置文件，方便开发
 	if filename, ok := os.LookupEnv("QiuBlogConfigFileName"); ok {
-		file, err = os.ReadFile(fmt.Sprintf("./config/%s.yaml", filename))
+		file, err = os.ReadFile(filename)
 	} else {
 		file, err = os.ReadFile("./config/config.yaml")
 	}

@@ -5,14 +5,14 @@ import (
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 	"net/http"
-	"qiublog/middleware"
 	"qiublog/utils"
+	"qiublog/utils/middleware"
 	"qiublog/utils/sitemap"
 	"strings"
 )
 
 func InitRouter() {
-	log.Debug("init router...")
+	log.Info("init router...")
 	if utils.Config.Server.AppMode == "production" {
 		gin.SetMode(gin.ReleaseMode)
 	} else {
@@ -27,10 +27,10 @@ func InitRouter() {
 	loadStatic(r)
 	startAuth(r)
 	startUser(r)
-	log.Debug("init router run~")
+	log.Info("init router run~")
 	err := r.Run(fmt.Sprintf("%s:%s", utils.Config.Server.Host, utils.Config.Server.Port))
 	if err != nil {
-		panic(fmt.Sprintf("Server startup failure, %v", err))
+		log.Panic(fmt.Sprintf("Server startup failure, %v", err))
 	}
 }
 

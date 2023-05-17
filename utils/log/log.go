@@ -1,4 +1,4 @@
-package utils
+package log
 
 import (
 	"fmt"
@@ -7,10 +7,11 @@ import (
 	log "github.com/sirupsen/logrus"
 	"io"
 	"os"
-	"qiublog/middleware"
+	"qiublog/utils"
+	"qiublog/utils/middleware"
 )
 
-func InitLog() {
+func InitLogger() {
 
 	formatter := log.TextFormatter{
 		ForceColors:               true,
@@ -20,8 +21,8 @@ func InitLog() {
 		DisableQuote:              true,
 	}
 	log.SetFormatter(&formatter)
-	logConf := Config.Log
-	if Dev {
+	logConf := utils.Config.Log
+	if utils.Dev {
 		log.SetLevel(log.DebugLevel)
 	} else {
 		level, err := log.ParseLevel(logConf.Level)
@@ -30,7 +31,7 @@ func InitLog() {
 		}
 		log.SetLevel(level)
 	}
-	if Debug {
+	if utils.Debug {
 		log.SetReportCaller(true)
 	}
 	if logConf.Enable {
@@ -41,7 +42,7 @@ func InitLog() {
 			MaxAge:     logConf.MaxAge,
 			Compress:   logConf.Compress,
 		}
-		if Dev || Debug {
+		if utils.Dev || utils.Debug {
 			w = io.MultiWriter(os.Stdout, w)
 		}
 		log.SetOutput(w)

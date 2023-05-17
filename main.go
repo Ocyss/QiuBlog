@@ -4,12 +4,12 @@ import (
 	"qiublog/db"
 	"qiublog/model"
 	"qiublog/routes"
-	"qiublog/utils"
+	"qiublog/utils/log"
 	"qiublog/utils/sitemap"
 )
 
 func main() {
-	utils.InitLog()
+	log.InitLogger()
 	model.InitDb()
 	db.InitRedis()
 	sitemap.InitSitemap()

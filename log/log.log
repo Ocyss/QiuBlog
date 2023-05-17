@@ -1,0 +1,121 @@
+[37mDEBU[0m[2023-05-17 15:24:05]E:/Golang/src/QiuBlog/Blog/utils/log/log.go:51 qiublog/utils/log.InitLogger() init logrus success!                         
+[37mDEBU[0m[2023-05-17 15:24:05]E:/Golang/src/QiuBlog/Blog/model/db.go:23 qiublog/model.InitDb() init database...                             
+[37mDEBU[0m[2023-05-17 15:25:16]E:/Golang/src/QiuBlog/Blog/utils/log/log.go:51 qiublog/utils/log.InitLogger() init logrus success!                         
+[37mDEBU[0m[2023-05-17 15:25:16]E:/Golang/src/QiuBlog/Blog/model/db.go:23 qiublog/model.InitDb() init database...                             
+[37mDEBU[0m[2023-05-17 15:27:43] init logrus success!                         
+[37mDEBU[0m[2023-05-17 15:27:43] init database...                             
+[37mDEBU[0m[2023-05-17 15:27:43] init database success!                       
+[37mDEBU[0m[2023-05-17 15:27:43] init redis...                                
+[37mDEBU[0m[2023-05-17 15:27:43] init redis success!                          
+[37mDEBU[0m[2023-05-17 15:27:43] init sitemap...                              
+[37mDEBU[0m[2023-05-17 15:27:43] init sitemap success!                        
+[37mDEBU[0m[2023-05-17 15:27:43] init router...                               
+[37mDEBU[0m[2023-05-17 15:27:43] GET    /about.md                              [37mhandlerName[0m=github.com/gin-gonic/gin.(*RouterGroup).StaticFile.func1 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] HEAD   /about.md                              [37mhandlerName[0m=github.com/gin-gonic/gin.(*RouterGroup).StaticFile.func1 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] GET    /rss/:type                             [37mhandlerName[0m=qiublog/routes.loadStatic.func1 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] GET    /sitemap.xml                           [37mhandlerName[0m=qiublog/routes.loadStatic.func2 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] POST   /api/v1/article/add                    [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=6
+[37mDEBU[0m[2023-05-17 15:27:43] PUT    /api/v1/article/:id                    [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=6
+[37mDEBU[0m[2023-05-17 15:27:43] DELETE /api/v1/article/:id                    [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=6
+[37mDEBU[0m[2023-05-17 15:27:43] POST   /api/v1/menuchild/add                  [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=6
+[37mDEBU[0m[2023-05-17 15:27:43] PUT    /api/v1/menuchild/set                  [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=6
+[37mDEBU[0m[2023-05-17 15:27:43] POST   /api/v1/category/add                   [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=6
+[37mDEBU[0m[2023-05-17 15:27:43] PUT    /api/v1/category/list                  [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=6
+[37mDEBU[0m[2023-05-17 15:27:43] POST   /api/v1/upload/image                   [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=6
+[37mDEBU[0m[2023-05-17 15:27:43] PUT    /api/v1/message/updata                 [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=6
+[37mDEBU[0m[2023-05-17 15:27:43] DELETE /api/v1/message/del                    [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=6
+[37mDEBU[0m[2023-05-17 15:27:43] PUT    /api/v1/message/reply                  [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=6
+[37mDEBU[0m[2023-05-17 15:27:43] DELETE /api/v1/message/clear                  [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=6
+[37mDEBU[0m[2023-05-17 15:27:43] GET    /api/v1/article/list                   [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] GET    /api/v1/article/:id                    [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] POST   /api/v1/user/register                  [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] POST   /api/v1/user/login                     [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] GET    /api/v1/menuchilds                     [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] GET    /api/v1/menuchild                      [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] GET    /api/v1/category                       [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] GET    /api/v1/tags                           [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] POST   /api/v1/message                        [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] POST   /api/v1/question                       [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] GET    /api/v1/message                        [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] GET    /api/v1/question                       [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] POST   /api/v1/statistics/set/mainuv          [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] GET    /api/v1/statistics                     [37mhandlerName[0m=qiublog/routes.Handler.func1.1 [37mnuHandlers[0m=5
+[37mDEBU[0m[2023-05-17 15:27:43] init router run~                             
+[37mDEBU[0m[2023-05-17 15:34:39] init logrus success!                         
+[36mINFO[0m[2023-05-17 15:34:39] init database...                             
+[36mINFO[0m[2023-05-17 15:34:39] init database success!                       
+[36mINFO[0m[2023-05-17 15:34:39] init redis...                                
+[36mINFO[0m[2023-05-17 15:34:39] init redis success!                          
+[36mINFO[0m[2023-05-17 15:34:39] init sitemap...                              
+[36mINFO[0m[2023-05-17 15:34:39] init sitemap success!                        
+[36mINFO[0m[2023-05-17 15:34:39] init router...                               
+[36mINFO[0m[2023-05-17 15:34:39] GET    /about.md                              [36mhandlerName[0m=github.com/gin-gonic/gin.(*RouterGroup).StaticFile.func1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] HEAD   /about.md                              [36mhandlerName[0m=github.com/gin-gonic/gin.(*RouterGroup).StaticFile.func1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] GET    /rss/:type                             [36mhandlerName[0m=qiublog/routes.loadStatic.func1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] GET    /sitemap.xml                           [36mhandlerName[0m=qiublog/routes.loadStatic.func2 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] POST   /api/v1/article/add                    [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:34:39] PUT    /api/v1/article/:id                    [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:34:39] DELETE /api/v1/article/:id                    [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:34:39] POST   /api/v1/menuchild/add                  [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:34:39] PUT    /api/v1/menuchild/set                  [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:34:39] POST   /api/v1/category/add                   [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:34:39] PUT    /api/v1/category/list                  [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:34:39] POST   /api/v1/upload/image                   [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:34:39] PUT    /api/v1/message/updata                 [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:34:39] DELETE /api/v1/message/del                    [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:34:39] PUT    /api/v1/message/reply                  [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:34:39] DELETE /api/v1/message/clear                  [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:34:39] GET    /api/v1/article/list                   [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] GET    /api/v1/article/:id                    [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] POST   /api/v1/user/register                  [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] POST   /api/v1/user/login                     [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] GET    /api/v1/menuchilds                     [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] GET    /api/v1/menuchild                      [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] GET    /api/v1/category                       [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] GET    /api/v1/tags                           [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] POST   /api/v1/message                        [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] POST   /api/v1/question                       [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] GET    /api/v1/message                        [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] GET    /api/v1/question                       [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] POST   /api/v1/statistics/set/mainuv          [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] GET    /api/v1/statistics                     [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:34:39] init router run~                             
+[37mDEBU[0m[2023-05-17 15:35:51] init logrus success!                         
+[36mINFO[0m[2023-05-17 15:35:51] init database...                             
+[36mINFO[0m[2023-05-17 15:35:51] init database success!                       
+[36mINFO[0m[2023-05-17 15:35:51] init redis...                                
+[36mINFO[0m[2023-05-17 15:35:51] init redis success!                          
+[36mINFO[0m[2023-05-17 15:35:51] init sitemap...                              
+[36mINFO[0m[2023-05-17 15:35:51] init sitemap success!                        
+[36mINFO[0m[2023-05-17 15:35:51] init router...                               
+[36mINFO[0m[2023-05-17 15:35:51] GET    /about.md                              [36mhandlerName[0m=github.com/gin-gonic/gin.(*RouterGroup).StaticFile.func1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] HEAD   /about.md                              [36mhandlerName[0m=github.com/gin-gonic/gin.(*RouterGroup).StaticFile.func1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] GET    /rss/:type                             [36mhandlerName[0m=qiublog/routes.loadStatic.func1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] GET    /sitemap.xml                           [36mhandlerName[0m=qiublog/routes.loadStatic.func2 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] POST   /api/v1/article/add                    [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:35:51] PUT    /api/v1/article/:id                    [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:35:51] DELETE /api/v1/article/:id                    [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:35:51] POST   /api/v1/menuchild/add                  [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:35:51] PUT    /api/v1/menuchild/set                  [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:35:51] POST   /api/v1/category/add                   [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:35:51] PUT    /api/v1/category/list                  [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:35:51] POST   /api/v1/upload/image                   [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:35:51] PUT    /api/v1/message/updata                 [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:35:51] DELETE /api/v1/message/del                    [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:35:51] PUT    /api/v1/message/reply                  [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:35:51] DELETE /api/v1/message/clear                  [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=6
+[36mINFO[0m[2023-05-17 15:35:51] GET    /api/v1/article/list                   [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] GET    /api/v1/article/:id                    [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] POST   /api/v1/user/register                  [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] POST   /api/v1/user/login                     [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] GET    /api/v1/menuchilds                     [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] GET    /api/v1/menuchild                      [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] GET    /api/v1/category                       [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] GET    /api/v1/tags                           [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] POST   /api/v1/message                        [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] POST   /api/v1/question                       [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] GET    /api/v1/message                        [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] GET    /api/v1/question                       [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] POST   /api/v1/statistics/set/mainuv          [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] GET    /api/v1/statistics                     [36mhandlerName[0m=qiublog/routes.Handler.func1.1 [36mnuHandlers[0m=5
+[36mINFO[0m[2023-05-17 15:35:51] init router run~                             

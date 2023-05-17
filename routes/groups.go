@@ -3,7 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	v1 "qiublog/api/v1"
-	"qiublog/middleware"
+	"qiublog/utils/middleware"
 )
 
 func startAuth(r *gin.Engine) {

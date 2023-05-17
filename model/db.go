@@ -20,7 +20,7 @@ type Model struct {
 }
 
 func InitDb() {
-	log.Debug("init database...")
+	log.Info("init database...")
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		utils.Config.Server.Database.User, utils.Config.Server.Database.PassWord, utils.Config.Server.Database.Host, utils.Config.Server.Database.Port, utils.Config.Server.Database.Name)
 	Db, err = gorm.Open(mysql.New(mysql.Config{
@@ -36,15 +36,15 @@ func InitDb() {
 		},
 	})
 	if err != nil {
-		panic(fmt.Sprintf("数据库连接失败,%s", err))
+		log.Panic(fmt.Sprintf("数据库连接失败,%s", err))
 	}
 	sqlDB, err := Db.DB()
 	if err != nil {
-		panic(fmt.Sprintf("数据库初始化配置失败,%s", err))
+		log.Panic(fmt.Sprintf("数据库初始化配置失败,%s", err))
 	}
 	err = Db.AutoMigrate(&User{}, &Menuchild{}, &Category{}, &Article{}, &Tags{}, &Message{}, &Question{})
 	if err != nil {
-		panic(fmt.Sprintf("数据库迁移失败,%s", err))
+		log.Panic(fmt.Sprintf("数据库迁移失败,%s", err))
 	}
 	// SetMaxIdleConns 设置空闲连接池中连接的最大数量
 	sqlDB.SetMaxIdleConns(10)
@@ -53,5 +53,5 @@ func InitDb() {
 	// SetConnMaxLifetime 设置了连接可复用的最大时间。
 	sqlDB.SetConnMaxLifetime(10 * time.Second)
 	//Db.Create(&User{Username: "root", Password: "123456", Role: 0})
-	log.Debug("init database success!")
+	log.Info("init database success!")
 }

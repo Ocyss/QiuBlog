@@ -1,6 +1,6 @@
 module qiublog
 
-go 1.19
+go 1.20
 
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.5+incompatible

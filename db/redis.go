@@ -3,7 +3,7 @@ package db
 import (
 	"context"
 	"fmt"
-	redis "github.com/redis/go-redis/v9"
+	"github.com/redis/go-redis/v9"
 	log "github.com/sirupsen/logrus"
 	"qiublog/utils"
 	"time"
@@ -12,7 +12,7 @@ import (
 var Rdb *redis.Client
 
 func InitRedis() {
-	log.Debug("init redis...")
+	log.Info("init redis...")
 	Rdb = redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", utils.Config.Server.Database.Redis.Host, utils.Config.Server.Database.Redis.Port),
 		Password: utils.Config.Server.Database.Redis.Password, // no password set
@@ -23,13 +23,13 @@ func InitRedis() {
 	_, err := Rdb.Ping(ctx).Result()
 	//fmt.Println(pong, err)
 	if err != nil {
-		panic(fmt.Sprintf("连接redis出错，错误信息：%v", err))
+		log.Panic(fmt.Sprintf("连接redis出错，错误信息：%v", err))
 	}
 	// 开发环境，清空缓存
 	//if utils.IsDev() {
 	//	Rdb.FlushAll(ctx)
 	//}
-	log.Debug("init redis success!")
+	log.Info("init redis success!")
 }
 
 // Allow 通过redis的value判断第几次访问并返回是否允许访问

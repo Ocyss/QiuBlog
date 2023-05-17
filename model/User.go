@@ -2,8 +2,8 @@ package model
 
 import (
 	"gopkg.in/hlandau/passlib.v1"
-	"qiublog/middleware"
 	"qiublog/utils/errmsg"
+	"qiublog/utils/middleware"
 )
 
 // User 用户
