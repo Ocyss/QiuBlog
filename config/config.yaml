@@ -1,0 +1,68 @@
+Server:
+  # development 开发模式 production 生产模式
+  AppMode: production
+  Host: localhost
+  Port: 3000
+  # Jwt加密秘钥
+  JwtKey:
+  Database:
+    Type: mysql
+    Host: localhost
+    Port: 3307
+    User: root
+    PassWord:
+    Name: qiublog
+    Redis:
+      Host: wsl
+      Port: 6379
+      Password:
+      Db: 0
+  Sss:
+    #oss服务商，支持[qiniu,aliyun]
+    Name: aliyun
+    qiniu:
+      AccessKey:
+      SecretKey:
+      Bucket:
+      Sever:
+    aliyun:
+      AccessKeyId:
+      AccessKeySecret:
+      Endpoint:
+      BucketName:
+  Push:
+    # 企业ID
+    WxPushCorpId:
+    # 应用ID
+    WxPushAgentid:
+    # 应用secret
+    WxPushSecret:
+    # 需要注意企业微信，后面新建的应用必须要ip白名单，不然用不了
+Log:
+  # 是否启用
+  Enable: true
+  # 日志等级
+  Level: debug
+  # 日志文件名
+  Filename: Log\log.log
+  # 最大大小
+  MaxSize: 10
+  # 最长时间
+  MaxAge: 28
+  # 最大备份
+  MaxBackups: 5
+  # 是否压缩
+  Compress: false
+SiteInfo:
+  # 网址带 http,用于生成站点地图
+  Url: https://邱.cf
+  # 博客名
+  Name: 💘  Ocyss 的博客
+  # 博主名
+  User: Ocyss
+  # 邮箱地址
+  Email: qiudie@88.com
+  # 博客描述
+  Desc: 故事很短，满是遗憾。
+  # 建站时间 秒级时间戳 2022-09-07T12:39:08+08:00
+  ConstructionTime: 1662525548

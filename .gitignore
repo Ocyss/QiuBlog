@@ -6,7 +6,7 @@
 *.iml
 out
 gen
-/config/debugConfig.ini
+*_dev.*
 *.cache
 /main
 log

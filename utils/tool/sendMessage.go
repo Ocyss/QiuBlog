@@ -38,7 +38,7 @@ type tooken struct {
 
 func WxPush(content string) error {
 	data := body{
-		Agentid: utils.Config.Push.WxPushAgentid,
+		Agentid: utils.Config.Server.Push.WxPushAgentid,
 		Touser:  "@all",
 		Text: struct {
 			Content string `json:"content"`
@@ -47,7 +47,7 @@ func WxPush(content string) error {
 		},
 		Msgtype: "text",
 	}
-	tookenUrl := fmt.Sprintf("https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=%s&corpsecret=%s", utils.Config.Push.WxPushCorpId, utils.Config.Push.WxPushSecret)
+	tookenUrl := fmt.Sprintf("https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=%s&corpsecret=%s", utils.Config.Server.Push.WxPushCorpID, utils.Config.Server.Push.WxPushSecret)
 	get, err := http.Get(tookenUrl)
 	if err != nil {
 		return errors.New("WxPush:Token Get error")

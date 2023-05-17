@@ -44,7 +44,7 @@ func GetStatistics(c *gin.Context) (int, any) {
 	mainUV, _ = db.Rdb.PFCount(ctx, "main:uv").Result()
 	wordsTotal, err = db.Rdb.Get(ctx, "main:wt").Float64()
 	if err != nil {
-		sql := fmt.Sprintf("select ROUND(DATA_LENGTH/80000,2) from information_schema.TABLES where table_schema='%s' and table_name='article';", utils.Config.Database.DbName)
+		sql := fmt.Sprintf("select ROUND(DATA_LENGTH/80000,2) from information_schema.TABLES where table_schema='%s' and table_name='article';", utils.Config.Server.Database.Name)
 		model.Db.Raw(sql).Scan(&wordsTotal)
 		db.Rdb.Set(ctx, "main:wt", wordsTotal, 3*24*time.Hour)
 	}

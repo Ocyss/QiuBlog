@@ -3,6 +3,7 @@ package routes
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"qiublog/middleware"
 	"qiublog/utils"
@@ -11,16 +12,23 @@ import (
 )
 
 func InitRouter() {
-	gin.SetMode(utils.Config.Server.AppMode)
-	r := gin.Default()
-	r.MaxMultipartMemory = 8 << 20 // 8 MiB
-	r.Use(gin.Recovery())
-	r.Use(middleware.RateMiddleware()) // 胜率限制
-	r.Use(middleware.Cors())
+	log.Debug("init router...")
+	if utils.Config.Server.AppMode == "production" {
+		gin.SetMode(gin.ReleaseMode)
+	} else {
+		gin.SetMode(gin.DebugMode)
+	}
+	r := gin.New()
+	r.MaxMultipartMemory = 8 << 20                 // 8 MiB
+	r.Use(middleware.Logger(log.StandardLogger())) // 使用Logger记录日志
+	r.Use(gin.Recovery())                          // 恐慌恢复
+	r.Use(middleware.RateMiddleware())             // 速率限制
+	r.Use(middleware.Cors())                       // 跨域处理
 	loadStatic(r)
 	startAuth(r)
 	startUser(r)
-	err := r.Run(utils.Config.Server.HttpPort)
+	log.Debug("init router run~")
+	err := r.Run(fmt.Sprintf("%s:%s", utils.Config.Server.Host, utils.Config.Server.Port))
 	if err != nil {
 		panic(fmt.Sprintf("Server startup failure, %v", err))
 	}

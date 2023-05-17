@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	redis "github.com/redis/go-redis/v9"
+	log "github.com/sirupsen/logrus"
 	"qiublog/utils"
 	"time"
 )
@@ -11,10 +12,11 @@ import (
 var Rdb *redis.Client
 
 func InitRedis() {
+	log.Debug("init redis...")
 	Rdb = redis.NewClient(&redis.Options{
-		Addr:     fmt.Sprintf("%s:%s", utils.Config.Redis.RedisHost, utils.Config.Redis.RedisPort),
-		Password: utils.Config.Redis.RedisPassword, // no password set
-		DB:       utils.Config.Redis.RedisDb,       // use default DB
+		Addr:     fmt.Sprintf("%s:%s", utils.Config.Server.Database.Redis.Host, utils.Config.Server.Database.Redis.Port),
+		Password: utils.Config.Server.Database.Redis.Password, // no password set
+		DB:       utils.Config.Server.Database.Redis.Db,       // use default DB
 	})
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -27,6 +29,7 @@ func InitRedis() {
 	//if utils.IsDev() {
 	//	Rdb.FlushAll(ctx)
 	//}
+	log.Debug("init redis success!")
 }
 
 // Allow 通过redis的value判断第几次访问并返回是否允许访问

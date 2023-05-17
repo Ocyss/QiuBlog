@@ -2,6 +2,7 @@ package model
 
 import (
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
@@ -19,8 +20,9 @@ type Model struct {
 }
 
 func InitDb() {
+	log.Debug("init database...")
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		utils.Config.Database.DbUser, utils.Config.Database.DbPassWord, utils.Config.Database.DbHost, utils.Config.Database.DbPort, utils.Config.Database.DbName)
+		utils.Config.Server.Database.User, utils.Config.Server.Database.PassWord, utils.Config.Server.Database.Host, utils.Config.Server.Database.Port, utils.Config.Server.Database.Name)
 	Db, err = gorm.Open(mysql.New(mysql.Config{
 		DSN:                       dsn,
 		DefaultStringSize:         256,  // string 类型字段的默认长度
@@ -51,4 +53,5 @@ func InitDb() {
 	// SetConnMaxLifetime 设置了连接可复用的最大时间。
 	sqlDB.SetConnMaxLifetime(10 * time.Second)
 	//Db.Create(&User{Username: "root", Password: "123456", Role: 0})
+	log.Debug("init database success!")
 }

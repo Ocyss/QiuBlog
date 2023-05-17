@@ -15,9 +15,9 @@ var Oss = utils.Config.Server.Oss
 
 func UpLoadFile(uploadName string, file multipart.File, fileSize int64) (int, string) {
 
-	if Oss == "qiniu" {
+	if Oss.Name == "qiniu" {
 		return uploadQiniu(uploadName, file, fileSize)
-	} else if Oss == "aliyun" {
+	} else if Oss.Name == "aliyun" {
 		return uploadAliyun(uploadName, file, fileSize)
 	} else {
 		return errmsg.ERROR, ""
@@ -25,10 +25,10 @@ func UpLoadFile(uploadName string, file multipart.File, fileSize int64) (int, st
 }
 
 func uploadQiniu(uploadName string, file multipart.File, fileSize int64) (int, string) {
-	var AccessKey = utils.Config.Oss.QiniuAccessKey
-	var SecretKey = utils.Config.Oss.QiniuSecretKey
-	var Bucket = utils.Config.Oss.QiniuBucket
-	var ImgUrl = utils.Config.Oss.QiniuSever
+	var AccessKey = Oss.Qiniu.AccessKey
+	var SecretKey = Oss.Qiniu.SecretKey
+	var Bucket = Oss.Qiniu.Bucket
+	var ImgUrl = Oss.Qiniu.Sever
 	putPolicy := storage.PutPolicy{
 		Scope: Bucket,
 	}
@@ -52,10 +52,10 @@ func uploadQiniu(uploadName string, file multipart.File, fileSize int64) (int, s
 }
 
 func uploadAliyun(uploadName string, file multipart.File, fileSize int64) (int, string) {
-	var AliyunAccessKeyId = utils.Config.Oss.AliyunAccessKeyId
-	var AliyunAccessKeySecret = utils.Config.Oss.AliyunAccessKeySecret
-	var AliyunEndpoint = utils.Config.Oss.AliyunEndpoint
-	var AliyunBucketName = utils.Config.Oss.AliyunBucketName
+	var AliyunAccessKeyId = Oss.Aliyun.AccessKeyID
+	var AliyunAccessKeySecret = Oss.Aliyun.AccessKeySecret
+	var AliyunEndpoint = Oss.Aliyun.Endpoint
+	var AliyunBucketName = Oss.Aliyun.BucketName
 	client, err := oss.New(AliyunEndpoint, AliyunAccessKeyId, AliyunAccessKeySecret)
 	if err != nil {
 		return errmsg.ERROR, ""

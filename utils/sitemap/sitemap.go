@@ -3,6 +3,7 @@ package sitemap
 import (
 	"encoding/json"
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"os"
 	"qiublog/model"
 	"qiublog/utils"
@@ -21,7 +22,7 @@ func Db() {
 	for _, v := range articles {
 		Feed.Items = append(Feed.Items, &feeds.Item{
 			Title:       v.Title,
-			Link:        &feeds.Link{Href: fmt.Sprintf("%s/post/%d", utils.Config.SiteInfo.Url, v.ID)},
+			Link:        &feeds.Link{Href: fmt.Sprintf("%s/post/%d", utils.Config.SiteInfo.URL, v.ID)},
 			Author:      Author,
 			Description: v.Desc,
 			Id:          strconv.Itoa(int(v.ID)),
@@ -40,12 +41,13 @@ func Db() {
 }
 
 func InitSitemap() {
+	log.Debug("init sitemap...")
 	// 获取博客建站时间
 	CreatedTime := time.Unix(utils.Config.SiteInfo.ConstructionTime, 0)
 	Author = &feeds.Author{Name: utils.Config.SiteInfo.User, Email: utils.Config.SiteInfo.Email}
 	Feed = &feeds.Feed{
 		Title:       utils.Config.SiteInfo.Name,
-		Link:        &feeds.Link{Href: utils.Config.SiteInfo.Url},
+		Link:        &feeds.Link{Href: utils.Config.SiteInfo.URL},
 		Description: utils.Config.SiteInfo.Desc,
 		Author:      Author,
 		Created:     CreatedTime,
@@ -61,4 +63,5 @@ func InitSitemap() {
 			Db()
 		}
 	}
+	log.Debug("init sitemap success!")
 }
