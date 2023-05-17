@@ -1,14 +1,8 @@
 <template>
-  <n-data-table
-    size="small"
-    max-height="68vh"
-    style="max-width: 93%; margin: auto"
-    :columns="cols"
-    :data="Data"
+  <n-data-table size="small" max-height="68vh" style="max-width: 93%; margin: auto" :columns="cols" :data="Data"
     :pagination="{
       pageSize: 10,
-    }"
-  />
+    }" />
 </template>
 
 <script setup lang="ts">
@@ -183,7 +177,7 @@ function delmessage(row, index) {
 }
 onMounted(() => {
   api.message.getMessage(params).then((res) => {
-    Data.value.push(...res.data);
+    Data.value.push(...res.data.list);
   });
 });
 </script>

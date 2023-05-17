@@ -55,7 +55,7 @@ func GetMessage(c *gin.Context) (int, any) {
 	_, admin := tool.IsAdmin(c, 100)
 	data, total := model.GetMessage(pageSize, pageNum, admin)
 	return errmsg.SUCCESS, gin.H{
-		"data":  data,
+		"list":  data,
 		"total": total,
 	}
 }
@@ -65,7 +65,7 @@ func GetQuestion(c *gin.Context) (int, any) {
 	_, admin := tool.IsAdmin(c, 100)
 	data, total := model.GetQuestion(pageSize, pageNum, admin)
 	return errmsg.SUCCESS, gin.H{
-		"data":  data,
+		"list":  data,
 		"total": total,
 	}
 }

@@ -9,15 +9,11 @@
       <n-card>
         <n-thing>
           <template #avatar>
-            <n-avatar
-              round
-              size="large"
-              :src="
-                item.qq
-                  ? `https://q.qlogo.cn/headimg_dl?dst_uin=${item.qq}&spec=640&img_type=jpg`
-                  : `https://api.multiavatar.com/${item.content}.png`
-              "
-            />
+            <n-avatar round size="large" :src="
+              item.qq
+                ? `https://q.qlogo.cn/headimg_dl?dst_uin=${item.qq}&spec=640&img_type=jpg`
+                : `https://api.multiavatar.com/${item.content}.png`
+            " />
           </template>
           <template #header>{{ item.name }}</template>
           <template #header-extra>
@@ -39,56 +35,23 @@
       </n-card>
     </n-gi>
   </n-grid>
-  <n-modal
-    v-model:show="showModal"
-    preset="dialog"
-    title="发布留言："
-    content="你确认?"
-    positive-text="确认"
-    negative-text="算了"
-    @positive-click="submitCallback"
-  >
+  <n-modal v-model:show="showModal" preset="dialog" title="发布留言：" content="你确认?" positive-text="确认" negative-text="算了"
+    @positive-click="submitCallback">
     <n-space>
-      <n-input
-        v-model:value="data.name"
-        :allow-input="noSpace"
-        placeholder="*昵称"
-      ></n-input>
-      <n-input
-        v-model:value="data.email"
-        :allow-input="noSpace"
-        placeholder="Email"
-      ></n-input>
-      <n-input
-        v-model:value="data.qq"
-        :allow-input="noSpace"
-        placeholder="QQ"
-      ></n-input>
-      <n-avatar
-        round
-        size="large"
-        :src="
-          data.qq
-            ? `https://q.qlogo.cn/headimg_dl?dst_uin=${data.qq}&spec=640&img_type=jpg`
-            : `https://api.multiavatar.com/${data.content}.png`
-        "
-      />
+      <n-input v-model:value="data.name" :allow-input="noSpace" placeholder="*昵称"></n-input>
+      <n-input v-model:value="data.email" :allow-input="noSpace" placeholder="Email"></n-input>
+      <n-input v-model:value="data.qq" :allow-input="noSpace" placeholder="QQ"></n-input>
+      <n-avatar round size="large" :src="
+        data.qq
+          ? `https://q.qlogo.cn/headimg_dl?dst_uin=${data.qq}&spec=640&img_type=jpg`
+          : `https://api.multiavatar.com/${data.content}.png`
+      " />
     </n-space>
     <n-divider />
-    <n-input
-      v-model:value="data.content"
-      type="textarea"
-      placeholder="*留言内容 最少10字"
-      show-count
-      minlength="10"
-      maxlength="150"
-      :allow-input="noSideSpace"
-    >
+    <n-input v-model:value="data.content" type="textarea" placeholder="*留言内容 最少10字" show-count minlength="10"
+      maxlength="150" :allow-input="noSideSpace">
       <template #count="{ value }">
-        <span
-          style="font-size: 13px"
-          :style="value.length < 10 ? `color: #FF0000` : ``"
-        >
+        <span style="font-size: 13px" :style="value.length < 10 ? `color: #FF0000` : ``">
           {{ value.length }} / 150
         </span>
       </template>
@@ -138,7 +101,7 @@ function submitCallback() {
 async function getMessage() {
   const params = { pagesize: 10, pagenum: 1 };
   const res = await api.message.getMessage(params);
-  res.data.map((item) => {
+  res.data.list.map((item) => {
     if (item.show == true || item.show == undefined) {
       content.value.push(item);
     }

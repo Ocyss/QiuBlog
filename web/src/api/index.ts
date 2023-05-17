@@ -5,6 +5,7 @@ import * as article from "./v1/article";
 import * as user from "./v1/user";
 import * as message from "./v1/message";
 import * as statistics from "./v1/statistics";
+import * as utils from "./v1/utils";
 import request from "@/utils/request";
 
 function upload(files, type) {
@@ -20,13 +21,14 @@ function upload(files, type) {
 }
 
 export default {
-  request,
-  upload,
-  category,
-  menuchild,
-  tags,
-  article,
-  user,
-  message,
-  statistics,
+    utils,
+    request,
+    upload,
+    category,
+    menuchild,
+    tags,
+    article,
+    user,
+    message,
+    statistics,
 };

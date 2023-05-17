@@ -39,6 +39,8 @@ func startUser(r *gin.Engine) {
 		//用户
 		router.POST("user/register", Handler()(v1.Register)) //注册用户
 		router.POST("user/login", Handler()(v1.Login))       //登陆用户
+		router.GET("captcha", Handler()(v1.GetCaptcha))      //获取验证码
+		router.POST("captcha", Handler()(v1.CheckCaptcha))   //验证验证码
 		//菜单子项
 		router.GET("menuchilds", Handler()(v1.GetMenuchild))     //获取菜单子项
 		router.GET("menuchild", Handler()(v1.GetSingleMenuItem)) //获取单个菜单项

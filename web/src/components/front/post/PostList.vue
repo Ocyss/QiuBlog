@@ -1,44 +1,20 @@
 <template>
   <n-spin class="postlist" :show="PostSpinShow" style="min-height: 300px">
-    <n-tabs
-      :bar-width="28"
-      type="line"
-      class="custom-tabs"
-      animated
-      @update:value="changeCategory"
-    >
-      <n-tab-pane
-        v-for="citem in cdata.cids"
-        :key="citem"
-        :name="String(citem.id)"
-        :tab="citem.name"
-      >
+    <n-tabs :bar-width="28" type="line" class="custom-tabs" animated @update:value="changeCategory">
+      <n-tab-pane v-for="citem in cdata.cids" :key="citem" :name="String(citem.id)" :tab="citem.name">
         <div class="PostSpin" v-if="PostData[citem.id] != false">
           <div class="PostPage">
             <div>{{ page[citem.id] }}/{{ pageCount[citem.id] }}</div>
 
-            <n-checkbox
-              v-if="settingStore.autuLoad"
-              v-model:checked="settingStore.autuLoad"
-            >
+            <n-checkbox v-if="settingStore.autuLoad" v-model:checked="settingStore.autuLoad">
               自动加载
             </n-checkbox>
           </div>
 
-          <PostVue
-            v-for="(item, index) in PostData[citem.id]"
-            :class="index % 2 === 0 ? 'left' : 'right'"
-            :key="item"
-            :item="item"
-          />
+          <PostVue v-for="(item, index) in PostData[citem.id]" :class="index % 2 === 0 ? 'left' : 'right'" :key="item"
+            :item="item" />
 
-          <Pagination
-            :page="page"
-            :cid="citem.id"
-            :pageCount="pageCount"
-            @upage="upPage"
-            @load="load"
-          />
+          <Pagination :page="page" :cid="citem.id" :pageCount="pageCount" @upage="upPage" @load="load" />
         </div>
         <n-empty v-else description="没有东西。。。" />
       </n-tab-pane>
@@ -88,14 +64,14 @@ function getPosts() {
       PostData.value[cid.value] = [];
     }
     PostData.value[cid.value].push(
-      ...res.data.map((item) => {
+      ...res.data.list.map((item) => {
         item.cname = props.cdata.cids.find((citem) => {
           return citem.id == item.cid;
         });
         return item;
       })
     );
-    pageCount.value[cid.value] = Math.ceil(res.total / params.pagesize);
+    pageCount.value[cid.value] = Math.ceil(res.data.total / params.pagesize);
     PostSpinShow.value = false;
   });
 }
@@ -133,11 +109,13 @@ onMounted(() => {
   flex-direction: column;
   min-width: 200px;
   align-items: center;
+
   .PostPage {
     margin-right: auto;
     display: flex;
     justify-content: left;
-    > div {
+
+    >div {
       margin-right: 8px;
     }
   }

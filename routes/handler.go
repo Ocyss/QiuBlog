@@ -19,17 +19,13 @@ func Handler() func(h MyHandler) gin.HandlerFunc {
 			}
 			if code == errmsg.SUCCESS {
 				//判断数据类型
-				if val, ok := data.(gin.H); ok {
-					for k, v := range val {
-						req[k] = v
-					}
-				} else if data != nil {
+				if data != nil {
 					req["data"] = data
 				}
-				c.JSON(200, req)
+				c.JSON(errmsg.SUCCESS, req)
 			} else {
 				//判断是否debug模式，是的话返回错误信息
-				if utils.Config.Server.AppMode == "debug" {
+				if utils.Config.Server.AppMode == "development" {
 					req["errmsg"] = data
 				}
 				c.AbortWithStatusJSON(http.StatusTooManyRequests, req)

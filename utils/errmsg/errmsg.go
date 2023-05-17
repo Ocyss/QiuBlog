@@ -9,6 +9,7 @@ const (
 	ERROR_PWDERR_WRONG     = 1001
 	ERROR_MANYERR          = 1002
 	ERROR_REPEAT           = 1003
+	ERROR_CAPTCHA          = 1004
 	ERROR_TOKEN_EXIST      = 1101
 	ERROR_TOKEN_RUNTIME    = 1102
 	ERROR_TOKEN_WRONG      = 1103
@@ -39,6 +40,7 @@ var codemsg = map[int]string{
 	ERROR_PWDERR_WRONG:     "用户名或者密码有误",
 	ERROR_MANYERR:          "错误次数过多",
 	ERROR_REPEAT:           "注册失败：重复的用户名",
+	ERROR_CAPTCHA:          "验证失败",
 	ERROR_TOKEN_EXIST:      "Token不存在",
 	ERROR_TOKEN_RUNTIME:    "Token过期",
 	ERROR_TOKEN_WRONG:      "Token不正确",

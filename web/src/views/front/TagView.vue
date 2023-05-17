@@ -5,26 +5,12 @@
         <div class="title">{{ tname }} :</div>
         <div>{{ page["0"] }}/{{ pageCount["0"] }}</div>
 
-        <n-checkbox
-          v-if="settingStore.autuLoad"
-          v-model:checked="settingStore.autuLoad"
-        >
+        <n-checkbox v-if="settingStore.autuLoad" v-model:checked="settingStore.autuLoad">
           自动加载
         </n-checkbox>
       </div>
-      <PostVue
-        v-for="(item, index) in PostData"
-        :class="index % 2 === 0 ? 'left' : 'right'"
-        :key="item"
-        :item="item"
-      />
-      <Pagination
-        :page="page"
-        cid="0"
-        :pageCount="pageCount"
-        @upage="upPage"
-        @load="load"
-      />
+      <PostVue v-for="(item, index) in PostData" :class="index % 2 === 0 ? 'left' : 'right'" :key="item" :item="item" />
+      <Pagination :page="page" cid="0" :pageCount="pageCount" @upage="upPage" @load="load" />
     </div>
     <n-empty v-else description="没有东西。。。" />
   </n-spin>
@@ -70,14 +56,14 @@ function getPosts() {
   };
   api.article.getList(params).then((res) => {
     PostData.value.push(
-      ...res.data.map((item) => {
+      ...res.data.list.map((item) => {
         item.cname = cdata.value.find((citem) => {
           return citem.id == item.cid;
         });
         return item;
       })
     );
-    pageCount.value["0"] = Math.ceil(res.total / params.pagesize);
+    pageCount.value["0"] = Math.ceil(res.data.total / params.pagesize);
     PostSpinShow.value = false;
   });
 }

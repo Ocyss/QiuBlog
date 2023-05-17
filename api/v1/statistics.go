@@ -25,7 +25,7 @@ func MainSetUV(c *gin.Context) (int, any) {
 	return errmsg.SUCCESS, nil
 }
 
-func GetStatistics(c *gin.Context) (int, any) {
+func GetStatistics(_ *gin.Context) (int, any) {
 	var (
 		err          error
 		articleCount int64   //文章总数
@@ -57,12 +57,10 @@ func GetStatistics(c *gin.Context) (int, any) {
 	}
 	elapsedTime = utils.Config.SiteInfo.ConstructionTime
 	return errmsg.SUCCESS, gin.H{
-		"data": gin.H{
-			"article_count": articleCount,
-			"main_uv":       mainUV,
-			"words_total":   wordsTotal,
-			"elapsed_time":  elapsedTime,
-			"last_updated":  lastUpdated,
-		},
+		"article_count": articleCount,
+		"main_uv":       mainUV,
+		"words_total":   wordsTotal,
+		"elapsed_time":  elapsedTime,
+		"last_updated":  lastUpdated,
 	}
 }

@@ -9,16 +9,11 @@
       <n-card>
         <n-thing>
           <template #avatar>
-            <n-avatar
-              round
-              size="large"
-              v-if="item.name"
-              :src="
-                item.qq
-                  ? `https://q.qlogo.cn/headimg_dl?dst_uin=${item.qq}&spec=640&img_type=jpg`
-                  : `https://api.multiavatar.com/${item.question}.png`
-              "
-            ></n-avatar>
+            <n-avatar round size="large" v-if="item.name" :src="
+              item.qq
+                ? `https://q.qlogo.cn/headimg_dl?dst_uin=${item.qq}&spec=640&img_type=jpg`
+                : `https://api.multiavatar.com/${item.question}.png`
+            "></n-avatar>
             <n-icon v-else size="38">
               <LogoSnapchat />
             </n-icon>
@@ -45,27 +40,16 @@
       </n-card>
     </n-gi>
   </n-grid>
-  <n-modal
-    v-model:show="showModal"
-    preset="dialog"
-    title="灵魂提问："
-    content="你确认?"
-    positive-text="确认"
-    negative-text="算了"
-    @positive-click="submitCallback"
-  >
+  <n-modal v-model:show="showModal" preset="dialog" title="灵魂提问：" content="你确认?" positive-text="确认" negative-text="算了"
+    @positive-click="submitCallback">
     <div style="margin-bottom: 20px">
       <n-switch v-model:value="switchData.sf" :rail-style="railStyle">
         <template #unchecked>公开</template>
         <template #checked>匿名</template>
         <template #icon>{{ switchData.sf ? `😈` : `😇` }}</template>
       </n-switch>
-      <n-switch
-        v-model:value="switchData.ty"
-        :rail-style="railStyle"
-        style="margin-left: 20%"
-        @update:value="switchData.tyupdate"
-      >
+      <n-switch v-model:value="switchData.ty" :rail-style="railStyle" style="margin-left: 20%"
+        @update:value="switchData.tyupdate">
         <template #unchecked>大众</template>
         <template #checked>私密</template>
         <template #icon>{{ switchData.ty ? `🙈` : `😊` }}</template>
@@ -73,46 +57,20 @@
     </div>
 
     <n-space v-if="!switchData.sf">
-      <n-input
-        v-model:value="data.name"
-        :allow-input="noSpace"
-        placeholder="*昵称"
-      ></n-input>
-      <n-input
-        v-model:value="data.email"
-        :allow-input="noSpace"
-        placeholder="Email"
-      ></n-input>
-      <n-input
-        v-model:value="data.qq"
-        :allow-input="noSpace"
-        placeholder="QQ"
-      ></n-input>
-      <n-avatar
-        round
-        size="large"
-        :src="
-          data.qq
-            ? `https://q.qlogo.cn/headimg_dl?dst_uin=${data.qq}&spec=640&img_type=jpg`
-            : `https://api.multiavatar.com/${data.question}.png`
-        "
-      />
+      <n-input v-model:value="data.name" :allow-input="noSpace" placeholder="*昵称"></n-input>
+      <n-input v-model:value="data.email" :allow-input="noSpace" placeholder="Email"></n-input>
+      <n-input v-model:value="data.qq" :allow-input="noSpace" placeholder="QQ"></n-input>
+      <n-avatar round size="large" :src="
+        data.qq
+          ? `https://q.qlogo.cn/headimg_dl?dst_uin=${data.qq}&spec=640&img_type=jpg`
+          : `https://api.multiavatar.com/${data.question}.png`
+      " />
     </n-space>
     <n-divider />
-    <n-input
-      v-model:value="data.question"
-      type="textarea"
-      placeholder="*提问内容 最少10字"
-      show-count
-      minlength="10"
-      maxlength="150"
-      :allow-input="noSideSpace"
-    >
+    <n-input v-model:value="data.question" type="textarea" placeholder="*提问内容 最少10字" show-count minlength="10"
+      maxlength="150" :allow-input="noSideSpace">
       <template #count="{ value }">
-        <span
-          style="font-size: 13px"
-          :style="value.length < 10 ? `color: #FF0000` : ``"
-        >
+        <span style="font-size: 13px" :style="value.length < 10 ? `color: #FF0000` : ``">
           {{ value.length }} / 150
         </span>
       </template>
@@ -175,7 +133,7 @@ function submitCallback() {
 async function getQuestion() {
   const params = { pagesize: 10, pagenum: 1 };
   const res = await api.message.getQuestion(params);
-  res.data.map((item) => {
+  res.data.list.map((item) => {
     if (item.show == true || item.show == undefined) {
       content.value.push(item);
     }

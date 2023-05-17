@@ -20,6 +20,9 @@
             <n-input v-model:value="Data.password2" type="password" :disabled="!Data.password" :minlength="6"
               :maxlength="16" @keydown.enter.prevent />
           </n-form-item>
+          <GoCaptchaBtn class="go-captcha-btn" v-model:value="status" width="100%" height="80px"
+            :image-base64="capt.image" :thumb-base64="capt.thumb" @confirm="handleConfirm"
+            @refresh="handleRequestCaptCode" />
           <n-form-item class="button">
             <n-button attr-type="button" @click="Validate">
               {{ loginty ? "登录" : "注册" }}
@@ -33,13 +36,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, Ref } from "vue";
+import { ref, inject, Ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import api from "@/api";
 import { VueCookies } from "vue-cookies";
 import { loadFull } from "tsparticles";
 import { FormInst, useMessage, FormItemInst } from 'naive-ui'
-
+import lodash from 'lodash'
+import GoCaptchaBtn from '@/components/admin/Captcha/GoCaptchaBtn.vue'
 const ParticlesOptions = {
   fpsLimit: 60,
   particles: {
@@ -207,7 +211,16 @@ const message = useMessage();
 const loginty = ref(true);
 const FormRef: Ref<FormInst | null> = ref(void 0)
 const Password2: Ref<FormItemInst | null> = ref(void 0)
-const Data = ref({ username: "", password: "", password2: "" });
+const Data = ref({
+  username: "", password: "", password2: "", key: "", dot: ""
+});
+const capt = ref({
+  image: "",
+  thumb: "",
+  key: "",
+  autoRefreshCount: 0,
+})
+const status = ref("default")
 const Rules = ref({
   username: [{
     required: true,
@@ -245,9 +258,13 @@ function Validate(e: MouseEvent) {
   e.preventDefault()
   FormRef.value?.validate(async (errors) => {
     if (!errors) {
+      if (!Data.value.key || !Data.value.dot) {
+        message.error("辣么大个验证框看不到？")
+        return
+      }
       if (loginty.value) {
         const res = await api.user.login(Data.value)
-        if (res.status == 200 && res.token) {
+        if (res.status == 200 && res.data.token) {
           $cookies.set("token", res.token);
           message.success("登陆成功！！");
           router.push({ name: "admin" });
@@ -269,6 +286,48 @@ function handlePasswordInput() {
     Password2.value?.validate({ trigger: 'password-input' })
   }
 }
+
+function handleRequestCaptCode() {
+  api.utils.getCaptcha().then(res => {
+    capt.value.image = res.data.image_base64
+    capt.value.thumb = res.data.thumb_base64
+    capt.value.key = res.data.captcha_key
+  })
+}
+
+function handleConfirm(dots) {
+  if (lodash.size(dots) <= 0) {
+    message.warning(`请进行人机验证再操作`)
+    return
+  }
+
+  let dotArr = []
+  lodash.forEach(dots, (dot) => {
+    dotArr.push(dot.x, dot.y)
+  })
+
+  api.utils.checkCaptcha(capt.value.key, dotArr.join(',')).then((res) => {
+
+    message.success(`人机验证成功`)
+    status.value = 'success'
+    capt.value.autoRefreshCount = 0
+    Data.value.key = capt.value.key
+    Data.value.dot = dotArr.join(',')
+
+  }).catch(err => {
+    message.warning(`人机验证失败`)
+    if (capt.value.autoRefreshCount > 5) {
+      capt.value.autoRefreshCount = 0
+      status.value = 'over'
+      return
+    }
+    capt.value.autoRefreshCount += 1
+    status.value = 'error'
+    console.log(capt.value);
+
+  })
+}
+
 </script>
 
 <style scoped lang="scss">

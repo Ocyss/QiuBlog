@@ -9,6 +9,7 @@ require (
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/redis/go-redis/v9 v9.0.2
 	github.com/sirupsen/logrus v1.9.0
+	github.com/wenlng/go-captcha v1.2.5
 	gopkg.in/hlandau/passlib.v1 v1.0.11
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/mysql v1.3.6
@@ -20,7 +21,9 @@ require (
 	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
-	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
+	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
+	golang.org/x/image v0.7.0 // indirect
+	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/time v0.1.0 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	gopkg.in/hlandau/easymetric.v1 v1.0.0 // indirect
@@ -46,9 +49,9 @@ require (
 	github.com/qiniu/go-sdk/v7 v7.11.1
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90 // indirect
-	golang.org/x/net v0.0.0-20220906165146-f3363e06e74c // indirect
-	golang.org/x/sys v0.0.0-20220906165534-d0df966e6959 // indirect
-	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/net v0.6.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
+	golang.org/x/text v0.9.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

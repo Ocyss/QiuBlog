@@ -1,33 +1,14 @@
 <template>
   <div>
-    <n-button
-      style="margin-bottom: 10px"
-      type="primary"
-      @click="router.push({ name: 'article-create' })"
-    >
+    <n-button style="margin-bottom: 10px" type="primary" @click="router.push({ name: 'article-create' })">
       文章发布
     </n-button>
 
-    <n-data-table
-      size="small"
-      max-height="68vh"
-      :columns="colsReactive"
-      :data="data"
-      :pagination="{
-        pageSize: 10,
-      }"
-      :row-props="rowProps"
-    />
-    <n-dropdown
-      placement="bottom-start"
-      trigger="manual"
-      :x="dropdown.x"
-      :y="dropdown.y"
-      :options="dropdown.options"
-      :show="dropdown.showDropdown"
-      :on-clickoutside="onClickoutside"
-      @select="handleSelect"
-    />
+    <n-data-table size="small" max-height="68vh" :columns="colsReactive" :data="data" :pagination="{
+      pageSize: 10,
+    }" :row-props="rowProps" />
+    <n-dropdown placement="bottom-start" trigger="manual" :x="dropdown.x" :y="dropdown.y" :options="dropdown.options"
+      :show="dropdown.showDropdown" :on-clickoutside="onClickoutside" @select="handleSelect" />
   </div>
 </template>
 
@@ -159,7 +140,7 @@ const colsReactive = reactive([
 
 onMounted(() => {
   api.article.getList({ pagesize: 6, pagenum: 0, mid: -2 }).then((res) => {
-    res.data.map((item) => {
+    res.data.list.map((item) => {
       data.value.push(item);
     });
   });

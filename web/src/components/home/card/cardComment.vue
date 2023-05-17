@@ -1,23 +1,16 @@
 <template>
   <n-card class="comment" :title="t('info.card.title.message')" size="small">
     <div class="subitem" v-for="item in data" :key="item.id">
-      <n-avatar
-        round
-        :size="35"
-        :src="
-          item.qq
-            ? `https://q.qlogo.cn/headimg_dl?dst_uin=${item.qq}&spec=640&img_type=jpg`
-            : `https://api.multiavatar.com/${item.content}.png`
-        "
-      />
+      <n-avatar round :size="35" :src="
+        item.qq
+          ? `https://q.qlogo.cn/headimg_dl?dst_uin=${item.qq}&spec=640&img_type=jpg`
+          : `https://api.multiavatar.com/${item.content}.png`
+      " />
       <div class="text">
         <div class="name">
           {{ item.name }}
         </div>
-        <div
-          class="content"
-          :style="{ backgroundColor: randomRgb(130, 250, 0.5) }"
-        >
+        <div class="content" :style="{ backgroundColor: randomRgb(130, 250, 0.5) }">
           {{ item.content }}
         </div>
       </div>
@@ -39,7 +32,7 @@ const data = ref([]);
 
 async function getMessage() {
   const res = await api.message.getMessage({ pagesize: 6, pagenum: 1 });
-  res.data.map((item) => {
+  res.data.list.map((item) => {
     if (item.show == true || item.show == undefined) {
       data.value.push(item);
     }
@@ -62,11 +55,13 @@ onMounted(() => {
 .subitem {
   display: flex;
   line-height: 1.3;
+
   .name {
     font-size: 11px;
     line-height: 25px;
   }
 }
+
 .text {
   width: 85%;
 }

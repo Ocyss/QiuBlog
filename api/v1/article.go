@@ -37,7 +37,7 @@ func GetsArticle(c *gin.Context) (int, any) {
 		tiduv, _ = db.Rdb.PFCount(ctx, tidUvKey).Result()
 	}
 	return errmsg.SUCCESS, gin.H{
-		"data":  data,
+		"list":  data,
 		"total": total,
 		"uv": gin.H{
 			"cid_uv": ciduv,
@@ -110,6 +110,6 @@ func ModifyArticle(c *gin.Context) (int, any) {
 }
 
 // DeleteArticle 删除文章
-func DeleteArticle(c *gin.Context) (int, any) {
+func DeleteArticle(_ *gin.Context) (int, any) {
 	return 0, nil
 }
