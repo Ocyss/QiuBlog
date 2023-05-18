@@ -11,21 +11,13 @@
               <TimerVue :t="postData.created_at" />
             </div>
             <div>
-              <n-icon-wrapper
-                :size="18"
-                :border-radius="15"
-                color="rgb(192,202,51)"
-              >
+              <n-icon-wrapper :size="18" :border-radius="15" color="rgb(192,202,51)">
                 <n-icon :size="13" :component="Book" />
               </n-icon-wrapper>
               {{ uv }}阅读
             </div>
             <div v-if="category">
-              <n-icon-wrapper
-                color="rgb(67,160,71)"
-                :size="18"
-                :border-radius="15"
-              >
+              <n-icon-wrapper color="rgb(67,160,71)" :size="18" :border-radius="15">
                 <n-icon :size="13" :component="PricetagsSharp" />
               </n-icon-wrapper>
               {{ category }}
@@ -40,17 +32,11 @@
           </div>
           <div class="info-tags">
             <n-space :wrap="false">
-              <n-tag
-                v-for="tag in postData.tags"
-                :key="tag.id"
-                size="small"
-                round
-                :type="
-                  ['primary', 'info', 'success', 'warning', 'error'][
-                    Math.floor(Math.random() * 5)
-                  ]
-                "
-              >
+              <n-tag v-for="tag in postData.tags" :key="tag.id" size="small" round :type="
+                ['primary', 'info', 'success', 'warning', 'error'][
+                Math.floor(Math.random() * 5)
+                ]
+              ">
                 {{ tag.name }}
               </n-tag>
             </n-space>
@@ -70,11 +56,8 @@
         <br />
         <strong>版权声明：</strong>
         本文采用
-        <a
-          href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh"
-          target="_blank"
-          rel="external nofollow noopener noreferrer"
-        >
+        <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank"
+          rel="external nofollow noopener noreferrer">
           CC BY-NC-SA 3.0 CN
         </a>
         协议进行许可
@@ -129,9 +112,9 @@ async function getArticle() {
   const article_res = await api.article.get(
     route.params.pid as unknown as number
   );
-  postData.value = article_res.data;
-  uv.value = article_res.uv;
-  category.value = article_res.category;
+  postData.value = article_res.data.data;
+  uv.value = article_res.data.uv;
+  category.value = article_res.data.category;
   useHead({
     title: postData.value.title,
     meta: [{ name: "description", content: postData.value.desc }],
@@ -143,8 +126,8 @@ onServerPrefetch(async () => {
   postData.value.content = "";
 });
 
-onMounted(async () => {
-  await getArticle();
+onMounted(() => {
+  getArticle();
 });
 </script>
 
@@ -154,6 +137,7 @@ onMounted(async () => {
   max-width: 1000px;
   width: 80%;
 }
+
 .cover {
   width: 100%;
   position: relative;
@@ -164,6 +148,7 @@ onMounted(async () => {
   text-shadow: 0 0.1875rem 0.3125rem #1c1f21;
   background-position: 50%;
   background-size: cover;
+
   &::before {
     content: "";
     position: absolute;
@@ -174,6 +159,7 @@ onMounted(async () => {
     z-index: 1;
     background-color: rgba(0, 0, 0, 0.4);
   }
+
   .info {
     min-height: 230px;
     position: relative;
@@ -188,11 +174,13 @@ onMounted(async () => {
     align-items: center;
     justify-content: space-evenly;
     flex-direction: column;
+
     .info-text {
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
+
       .title {
         font-weight: 700;
         font-size: 1.6rem;
@@ -200,12 +188,14 @@ onMounted(async () => {
         letter-spacing: 0.25rem;
       }
     }
+
     .info-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
       font-size: 0.3rem;
-      > div {
+
+      >div {
         display: flex;
         align-items: center;
         margin: 5px;

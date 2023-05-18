@@ -181,17 +181,17 @@ onMounted(() => {
       router.push({ name: "exception-404" });
     }
     api.article.get(pid).then((res) => {
-      content.value.cid = res.data.cid;
-      content.value.desc = res.data.desc;
-      content.value.title = res.data.title;
-      content.value.content = res.data.content;
-      res.data.tags.map((item) => {
+      content.value.cid = res.data.data.cid;
+      content.value.desc = res.data.data.desc;
+      content.value.title = res.data.data.title;
+      content.value.content = res.data.data.content;
+      res.data.data.tags.map((item) => {
         tags.value.push(item.name);
       });
       fileList.value.push({
         id: 0,
         status: "finished",
-        url: res.data.img,
+        url: res.data.data.img,
       });
     });
   }
