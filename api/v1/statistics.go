@@ -8,6 +8,7 @@ import (
 	"qiublog/model"
 	"qiublog/utils"
 	"qiublog/utils/errmsg"
+	"qiublog/utils/res"
 	"time"
 )
 
@@ -16,16 +17,17 @@ import (
 	浏览量：文章浏览60% +1
 */
 
-func MainSetUV(c *gin.Context) (int, any) {
+func MainSetUV(c *gin.Context) {
 	ctx := context.Background()
 	err := db.Rdb.PFAdd(ctx, "main:uv", c.ClientIP()).Err()
 	if err != nil {
-		return errmsg.ERROR, nil
+		res.Err(c, errmsg.ERROR)
+		return
 	}
-	return errmsg.SUCCESS, nil
+	res.OK(c)
 }
 
-func GetStatistics(_ *gin.Context) (int, any) {
+func GetStatistics(c *gin.Context) {
 	var (
 		err          error
 		articleCount int64   //文章总数
@@ -56,11 +58,12 @@ func GetStatistics(_ *gin.Context) (int, any) {
 		db.Rdb.Set(ctx, "main:lut", lastUpdated, 3*24*time.Hour)
 	}
 	elapsedTime = utils.Config.SiteInfo.ConstructionTime
-	return errmsg.SUCCESS, gin.H{
+	res.OKData(c, gin.H{
 		"article_count": articleCount,
 		"main_uv":       mainUV,
 		"words_total":   wordsTotal,
 		"elapsed_time":  elapsedTime,
 		"last_updated":  lastUpdated,
-	}
+	})
+
 }

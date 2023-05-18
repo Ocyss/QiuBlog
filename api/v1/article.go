@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"qiublog/db"
 	"qiublog/model"
-	"qiublog/utils/ask"
 	"qiublog/utils/errmsg"
+	"qiublog/utils/res"
 	"qiublog/utils/tool"
 	"strconv"
 )
@@ -15,7 +15,7 @@ import (
 var code int
 
 // GetsArticle 获取文章列表
-func GetsArticle(c *gin.Context) (int, any) {
+func GetsArticle(c *gin.Context) {
 	pageSize, pageNum := tool.PageTool(c)  //分页最大数,分页偏移量
 	cid, _ := strconv.Atoi(c.Query("cid")) //分类ID
 	mid, _ := strconv.Atoi(c.Query("mid")) //菜单ID
@@ -36,7 +36,7 @@ func GetsArticle(c *gin.Context) (int, any) {
 		db.Rdb.PFAdd(ctx, tidUvKey, c.ClientIP())
 		tiduv, _ = db.Rdb.PFCount(ctx, tidUvKey).Result()
 	}
-	return errmsg.SUCCESS, gin.H{
+	res.OKData(c, gin.H{
 		"list":  data,
 		"total": total,
 		"uv": gin.H{
@@ -44,14 +44,15 @@ func GetsArticle(c *gin.Context) (int, any) {
 			"mid_uv": miduv,
 			"tid_uv": tiduv,
 		},
-	}
+	})
 }
 
 // GetArticle 获取单文章
-func GetArticle(c *gin.Context) (int, any) {
+func GetArticle(c *gin.Context) {
 	aid, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return ask.ErrParam()
+		res.ErrParam(c)
+		return
 	}
 	var uv int64
 	//统计每篇文章的浏览量
@@ -62,19 +63,20 @@ func GetArticle(c *gin.Context) (int, any) {
 		uv, _ = db.Rdb.PFCount(ctx, articleUvKey).Result()
 	}
 	code, data, category := model.GetArticle(aid)
-	return code, gin.H{
+	res.ReturnData(c, code, gin.H{
 		"data":     data,
 		"uv":       uv,
 		"category": string(category),
-	}
+	})
 }
 
 // ReleaseArticle 发布文章
-func ReleaseArticle(c *gin.Context) (int, any) {
+func ReleaseArticle(c *gin.Context) {
 	var data model.Article
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
-		return ask.ErrParam()
+		res.ErrParam(c)
+		return
 	}
 	tx := model.Db.Begin()
 	code, Aid := model.CreateArticle(tx, &data)
@@ -83,21 +85,21 @@ func ReleaseArticle(c *gin.Context) (int, any) {
 	} else if code == errmsg.SUCCESS {
 		tx.Commit()
 	}
-	return code, gin.H{
-		"Aid": Aid,
-	}
+	res.ReturnData(c, code, Aid)
 }
 
 // ModifyArticle 修改文章
-func ModifyArticle(c *gin.Context) (int, any) {
+func ModifyArticle(c *gin.Context) {
 	var data model.Article
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return ask.ErrParam()
+		res.ErrParam(c)
+		return
 	}
 	err = c.ShouldBindJSON(&data)
 	if err != nil {
-		return ask.ErrParam()
+		res.ErrParam(c)
+		return
 	}
 	tx := model.Db.Begin()
 	code = model.ModifyArticle(tx, id, &data)
@@ -106,10 +108,10 @@ func ModifyArticle(c *gin.Context) (int, any) {
 	} else if code == errmsg.SUCCESS {
 		tx.Commit()
 	}
-	return code, nil
+	res.Return(c, code)
 }
 
 // DeleteArticle 删除文章
-func DeleteArticle(_ *gin.Context) (int, any) {
-	return 0, nil
+func DeleteArticle(_ *gin.Context) {
+
 }

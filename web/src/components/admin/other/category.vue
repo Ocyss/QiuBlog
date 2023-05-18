@@ -9,21 +9,12 @@
       <h2 v-else>主页不显示：</h2>
     </template>
     <n-spin :show="cateSpin">
-      <draggable
-        v-model="CheckList"
-        group="cat"
-        @start="drag = true"
-        @end="drag = false"
-        item-key="id"
-      >
+      <draggable v-model="CheckList" group="cat" @start="drag = true" @end="drag = false" item-key="id">
         <template #item="{ element, index }">
           <n-list-item>
             <div class="listcontent">
               <h3>{{ element.name }}</h3>
-              <n-popconfirm
-                @positive-click="setNamepositive(index)"
-                :show-icon="false"
-              >
+              <n-popconfirm @positive-click="setNamepositive(index)" :show-icon="false">
                 <template #trigger>
                   <n-button quaternary circle @click="setName = element.name">
                     <template #icon>
@@ -33,11 +24,7 @@
                     </template>
                   </n-button>
                 </template>
-                <n-input
-                  v-model:value="setName"
-                  type="text"
-                  placeholder="输入name"
-                />
+                <n-input v-model:value="setName" type="text" placeholder="输入name" />
               </n-popconfirm>
             </div>
           </n-list-item>
@@ -51,11 +38,7 @@
           <template #trigger>
             <n-button size="small" secondary strong>新建</n-button>
           </template>
-          <n-input
-            v-model:value="newData.name"
-            type="text"
-            placeholder="输入name"
-          />
+          <n-input v-model:value="newData.name" type="text" placeholder="输入name" />
         </n-popconfirm>
         <n-button size="small" secondary strong>重置</n-button>
       </n-space>
@@ -68,13 +51,7 @@
       </h2>
     </template>
     <n-spin :show="cateSpin">
-      <draggable
-        v-model="uncheckedList"
-        group="cat"
-        @start="drag = true"
-        @end="drag = false"
-        item-key="id"
-      >
+      <draggable v-model="uncheckedList" group="cat" @start="drag = true" @end="drag = false" item-key="id">
         <template #item="{ element, index }">
           <n-list-item>
             <div class="listcontent">
@@ -172,7 +149,7 @@ function setNamepositive(index) {
 function AddCategory() {
   api.category.add(newData.value).then((res) => {
     message.success("新建分类成功！");
-    categoryList.value.push({ ...newData.value, id: res.id });
+    categoryList.value.push({ ...newData.value, id: res.data });
     newData.value = { name: "", homeshow: false, mid: 0 };
   });
 }

@@ -8,8 +8,8 @@ import (
 
 var (
 	Config ServerConfig
-	Dev    bool
-	Debug  bool
+	Dev    bool //是否开发环境
+	Debug  bool // 是否Debug模式
 )
 
 func init() {

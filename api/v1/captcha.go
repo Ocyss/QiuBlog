@@ -6,25 +6,26 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/wenlng/go-captcha/captcha"
 	"qiublog/db"
-	"qiublog/utils/ask"
 	"qiublog/utils/errmsg"
+	"qiublog/utils/res"
 	"qiublog/utils/tool"
 	"time"
 )
 
-func GetCaptcha(_ *gin.Context) (int, any) {
+func GetCaptcha(c *gin.Context) {
 	capt := captcha.GetCaptcha()
 	dots, b64, tb64, key, err := capt.Generate()
 	if err != nil {
-		return errmsg.ERROR, err
+		res.Err(c, errmsg.ERROR)
+		return
 	}
 	ctx := context.Background()
 	dotsByte, _ := json.Marshal(dots)
 	db.Rdb.Set(ctx, "Captcha:"+key, dotsByte, 2*time.Minute)
-	return errmsg.SUCCESS, gin.H{"image_base64": b64, "thumb_base64": tb64, "captcha_key": key}
+	res.OKData(c, gin.H{"image_base64": b64, "thumb_base64": tb64, "captcha_key": key})
 }
 
-func CheckCaptcha(c *gin.Context) (int, any) {
+func CheckCaptcha(c *gin.Context) {
 	var data struct {
 		Key  string `json:"key"`
 		Dots string `json:"dots"`
@@ -32,11 +33,13 @@ func CheckCaptcha(c *gin.Context) (int, any) {
 
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
-		return ask.ErrParam()
+		res.ErrParam(c)
+		return
 	}
 
 	if v := tool.CheckCaptcha(data.Key, data.Dots); v != "" {
-		return errmsg.SUCCESS, v
+		res.OKData(c, v)
+		return
 	}
-	return errmsg.ERROR_CAPTCHA, nil
+	res.Err(c, errmsg.ERROR_CAPTCHA)
 }

@@ -3,37 +3,37 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"qiublog/model"
-	"qiublog/utils/ask"
-	"qiublog/utils/errmsg"
+	"qiublog/utils/res"
 	"strconv"
 )
 
 // AddCategory 添加分类
-func AddCategory(c *gin.Context) (int, any) {
+func AddCategory(c *gin.Context) {
 	var data model.Category
 	_ = c.ShouldBindJSON(&data)
 	code, id := model.AddCategory(&data)
-	return code, gin.H{"id": id}
+	res.ReturnData(c, code, id)
 }
 
 // GetCategory 获取分类
-func GetCategory(c *gin.Context) (int, any) {
+func GetCategory(c *gin.Context) {
 	show, err := strconv.ParseBool(c.Query("show"))
 	if err != nil {
-		return ask.ErrParam()
+		res.ErrParam(c)
+		return
 	}
-	return errmsg.SUCCESS, model.GetCategory(show)
+	res.OKData(c, model.GetCategory(show))
 }
 
 // GetTags 获取全部标签
-func GetTags(c *gin.Context) (int, any) {
-	return errmsg.SUCCESS, model.GetTags()
+func GetTags(c *gin.Context) {
+	res.OKData(c, model.GetTags())
 }
 
 // ModifyCategorys 批量修改分类
-func ModifyCategorys(c *gin.Context) (int, any) {
+func ModifyCategorys(c *gin.Context) {
 	var data []model.Category
 	_ = c.ShouldBindJSON(&data)
 	code = model.ModifyCategorys(&data)
-	return code, nil
+	res.Return(c, code)
 }

@@ -6,22 +6,24 @@ import (
 	"path"
 	"qiublog/model"
 	"qiublog/utils/errmsg"
+	"qiublog/utils/res"
 	"time"
 )
 
-func Upload(c *gin.Context) (int, any) {
+func Upload(c *gin.Context) {
 	file, fileHeader, err := c.Request.FormFile("file")
 	class := c.Request.FormValue("class")
 	if err != nil {
-		return errmsg.ERROR_FILE_WRONG, err
+		res.Err(c, errmsg.ERROR_FILE_WRONG)
+		return
 	}
 	fileSize := fileHeader.Size
 	fileName := fileHeader.Filename
 	if class == "Tags" || class == "User" || class == "Other" || class == "Article" {
 		now := time.Now()
 		uploadName := fmt.Sprintf("%s/%d%s", class, now.UnixNano(), path.Ext(fileName))
-		return model.UpLoadFile(uploadName, file, fileSize)
-	} else {
-		return errmsg.ERROR_CLASS_WRONG, nil
+		code, url := model.UpLoadFile(uploadName, file, fileSize)
+		res.ReturnData(c, code, url)
 	}
+	res.Err(c, errmsg.ERROR_CLASS_WRONG)
 }
