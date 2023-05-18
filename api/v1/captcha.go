@@ -9,6 +9,7 @@ import (
 	"qiublog/utils/ask"
 	"qiublog/utils/errmsg"
 	"qiublog/utils/tool"
+	"time"
 )
 
 func GetCaptcha(_ *gin.Context) (int, any) {
@@ -19,7 +20,7 @@ func GetCaptcha(_ *gin.Context) (int, any) {
 	}
 	ctx := context.Background()
 	dotsByte, _ := json.Marshal(dots)
-	db.Rdb.HSet(ctx, "Captcha", key, dotsByte)
+	db.Rdb.Set(ctx, "Captcha:"+key, dotsByte, 2*time.Minute)
 	return errmsg.SUCCESS, gin.H{"image_base64": b64, "thumb_base64": tb64, "captcha_key": key}
 }
 
@@ -34,8 +35,8 @@ func CheckCaptcha(c *gin.Context) (int, any) {
 		return ask.ErrParam()
 	}
 
-	if tool.CheckCaptcha(data.Key, data.Dots) {
-		return errmsg.SUCCESS, nil
+	if v := tool.CheckCaptcha(data.Key, data.Dots); v != "" {
+		return errmsg.SUCCESS, v
 	}
 	return errmsg.ERROR_CAPTCHA, nil
 }

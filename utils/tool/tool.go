@@ -1,6 +1,7 @@
 package tool
 
 import (
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -9,6 +10,7 @@ import (
 	"qiublog/db"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // SplitToIntList 字符串切割成int数组
@@ -48,6 +50,7 @@ func PageTool(c *gin.Context) (int, int) {
 	return pageSize, pageNum
 }
 
+// PageIds 页码获取id列表
 func PageIds(pageNum, pageSize int, dataIds []string) (ids []string) {
 	n := len(dataIds)
 	if pageNum > n || (pageNum-1)*pageSize > n {
@@ -62,15 +65,17 @@ func PageIds(pageNum, pageSize int, dataIds []string) (ids []string) {
 	return
 }
 
-func CheckCaptcha(key, dots string) bool {
+// CheckCaptcha 校验验证码
+func CheckCaptcha(key, dots string) string {
 	if len(key) == 0 || len(dots) == 0 {
-		return false
+		return ""
 	}
 	ctx := context.Background()
-	dotsByte, err := db.Rdb.HGet(ctx, "Captcha", key).Bytes()
+	dotsByte, err := db.Rdb.Get(ctx, "Captcha:"+key).Bytes()
 	if err != nil {
-		return false
+		return ""
 	}
+	db.Rdb.Del(ctx, "Captcha:"+key)
 	var (
 		dct map[int]captcha.CharDot
 		src []string
@@ -94,7 +99,9 @@ func CheckCaptcha(key, dots string) bool {
 		}
 	}
 	if chkRet {
-		return true
+		v := fmt.Sprintf("%x", sha256.Sum256([]byte(key)))
+		db.Rdb.Set(ctx, "Captcha:Yes:"+v, 0, 2*time.Minute)
+		return v
 	}
-	return false
+	return ""
 }

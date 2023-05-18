@@ -49,7 +49,7 @@ require (
 	github.com/qiniu/go-sdk/v7 v7.11.1
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90 // indirect
-	golang.org/x/net v0.6.0 // indirect
+	golang.org/x/net v0.6.0
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect

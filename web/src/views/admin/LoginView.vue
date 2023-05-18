@@ -212,7 +212,7 @@ const loginty = ref(true);
 const FormRef: Ref<FormInst | null> = ref(void 0)
 const Password2: Ref<FormItemInst | null> = ref(void 0)
 const Data = ref({
-  username: "", password: "", password2: "", key: "", dot: ""
+  username: "", password: "", password2: "", token: ""
 });
 const capt = ref({
   image: "",
@@ -258,7 +258,7 @@ function Validate(e: MouseEvent) {
   e.preventDefault()
   FormRef.value?.validate(async (errors) => {
     if (!errors) {
-      if (!Data.value.key || !Data.value.dot) {
+      if (!Data.value.token) {
         message.error("辣么大个验证框看不到？")
         return
       }
@@ -311,8 +311,7 @@ function handleConfirm(dots) {
     message.success(`人机验证成功`)
     status.value = 'success'
     capt.value.autoRefreshCount = 0
-    Data.value.key = capt.value.key
-    Data.value.dot = dotArr.join(',')
+    Data.value.token = res.data
 
   }).catch(err => {
     message.warning(`人机验证失败`)

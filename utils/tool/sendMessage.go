@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/qiniu/go-sdk/v7/sms/bytes"
+	log "github.com/sirupsen/logrus"
 	"io"
 	"net/http"
 	"qiublog/utils"
@@ -85,7 +86,8 @@ func WxPush(content string) error {
 		return errors.New("WxPush:Push json.Unmarshal error")
 	}
 	if resData.Errcode != 0 {
-		fmt.Println(resData.Errcode, resData.Errmsg)
+		log.Error("WxPush: ", resData.Errcode, resData.Errmsg)
+		return fmt.Errorf("WxPush: %v, %s", resData.Errcode, resData.Errmsg)
 	}
 	return nil
 }

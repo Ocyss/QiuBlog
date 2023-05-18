@@ -1,8 +1,10 @@
 package v1
 
 import (
+	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"qiublog/db"
 	"qiublog/model"
 	"qiublog/utils/ask"
 	"qiublog/utils/errmsg"
@@ -31,23 +33,39 @@ type (
 )
 
 func AddMessage(c *gin.Context) (int, any) {
-	var data model.Message
+	var data struct {
+		model.Message
+		Token string `json:"token"`
+	}
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
 		return ask.ErrParam()
 	}
+	ctx := context.Background()
+	if db.Rdb.Get(ctx, "Captcha:Yes:"+data.Token).Err() != nil {
+		return errmsg.ERROR_CAPTCHA, nil
+	}
+	db.Rdb.Del(ctx, "Captcha:Yes:"+data.Token)
 	_ = tool.WxPush(fmt.Sprintf("QiuBlog提醒您:\n有一条新的留言\n\n昵称: %s\nQQ: %s\n邮箱: %s\n内容: %s", data.Name, data.Qq, data.Email, data.Content))
-	return model.AddMessage(&data), nil
+	return model.AddMessage(&data.Message), nil
 }
 
 func AddQuestion(c *gin.Context) (int, any) {
-	var data model.Question
+	var data struct {
+		model.Question
+		Token string `json:"token"`
+	}
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
 		return ask.ErrParam()
 	}
-	_ = tool.WxPush(fmt.Sprintf("QiuBlog提醒您:\n有一条新的问答\n\n昵称: %s\nQQ: %s\n邮箱: %s\n问题: %s", data.Name, data.Qq, data.Email, data.Question))
-	return model.AddQuestion(&data), nil
+	ctx := context.Background()
+	if db.Rdb.Get(ctx, "Captcha:Yes:"+data.Token).Err() != nil {
+		return errmsg.ERROR_CAPTCHA, nil
+	}
+	db.Rdb.Del(ctx, "Captcha:Yes:"+data.Token)
+	_ = tool.WxPush(fmt.Sprintf("QiuBlog提醒您:\n有一条新的问答\n\n昵称: %s\nQQ: %s\n邮箱: %s\n问题: %s", data.Name, data.Qq, data.Email, data.Question.Question))
+	return model.AddQuestion(&data.Question), nil
 }
 
 func GetMessage(c *gin.Context) (int, any) {

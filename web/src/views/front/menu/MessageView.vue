@@ -56,6 +56,8 @@
         </span>
       </template>
     </n-input>
+    <GoCaptchaBtn class="go-captcha-btn" v-model:value="status" width="100%" height="80px" :image-base64="capt.image"
+      style="margin-top: 20px;" :thumb-base64="capt.thumb" @confirm="handleConfirm" @refresh="handleRequestCaptCode" />
   </n-modal>
 </template>
 
@@ -65,6 +67,9 @@ import { useMessage } from "naive-ui";
 import api from "@/api";
 import TimerVue from "@/components/Timer.vue";
 import { ThumbsUpSharp } from "@vicons/ionicons5";
+import lodash from 'lodash'
+import GoCaptchaBtn from '@/components/admin/Captcha/GoCaptchaBtn.vue'
+
 const message = useMessage();
 const showModal = ref(false);
 const content = ref([]);
@@ -73,9 +78,17 @@ const data = ref({
   qq: "",
   email: "",
   content: "",
+  token: ""
 });
 const noSpace = (value) => !value || !/\s+/.test(value);
 const noSideSpace = (value) => !value.startsWith(" ") && !value.endsWith(" ");
+const capt = ref({
+  image: "",
+  thumb: "",
+  key: "",
+  autoRefreshCount: 0,
+})
+const status = ref("default")
 function submitCallback() {
   if (data.value.content.length < 10) {
     message.error("字数不能少于10!!!");
@@ -83,18 +96,19 @@ function submitCallback() {
   } else if (data.value.name.split(" ").join("") == "") {
     message.error("昵称不可为空!!!");
     return false;
+  } else if (!data.value.token) {
+    message.error("辣么大个验证看不到!?!");
+    return false;
   } else {
+
     api.message.addMessage(data.value).then((res) => {
-      if (res.status == 200) {
-        message.success("发布成功，等待审核！");
-        data.value.name = "";
-        data.value.qq = "";
-        data.value.email = "";
-        data.value.content = "";
-      } else {
-        message.error(res.message);
-      }
+      message.success("发布成功，等待审核！");
+      data.value.name = "";
+      data.value.qq = "";
+      data.value.email = "";
+      data.value.content = "";
     });
+    data.value.token = ""
     return true;
   }
 }
@@ -108,6 +122,44 @@ async function getMessage() {
   });
 }
 
+function handleRequestCaptCode() {
+  api.utils.getCaptcha().then(res => {
+    capt.value.image = res.data.image_base64
+    capt.value.thumb = res.data.thumb_base64
+    capt.value.key = res.data.captcha_key
+  })
+}
+function handleConfirm(dots) {
+  if (lodash.size(dots) <= 0) {
+    message.warning(`请进行人机验证再操作`)
+    return
+  }
+
+  let dotArr = []
+  lodash.forEach(dots, (dot) => {
+    dotArr.push(dot.x, dot.y)
+  })
+
+  api.utils.checkCaptcha(capt.value.key, dotArr.join(',')).then((res) => {
+
+    message.success(`人机验证成功`)
+    status.value = 'success'
+    capt.value.autoRefreshCount = 0
+    data.value.token = res.data
+
+  }).catch(err => {
+    message.warning(`人机验证失败`)
+    if (capt.value.autoRefreshCount > 5) {
+      capt.value.autoRefreshCount = 0
+      status.value = 'over'
+      return
+    }
+    capt.value.autoRefreshCount += 1
+    status.value = 'error'
+    console.log(capt.value);
+
+  })
+}
 onServerPrefetch(async () => {
   await getMessage();
 });
