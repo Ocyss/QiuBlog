@@ -14,7 +14,9 @@ import (
 var Oss = utils.Config.Server.Oss
 
 func UpLoadFile(uploadName string, file multipart.File, fileSize int64) (int, string) {
-
+	fmt.Println(Oss)
+	Oss = utils.Config.Server.Oss
+	fmt.Println(Oss)
 	if Oss.Name == "qiniu" {
 		return uploadQiniu(uploadName, file, fileSize)
 	} else if Oss.Name == "aliyun" {

@@ -42,7 +42,7 @@
 import { ref, onMounted, inject, computed, onServerPrefetch } from "vue";
 import { useMessage } from "naive-ui";
 import { useRouter, useRoute } from "vue-router";
-import MdEditor from "md-editor-v3";
+import { MdEditor } from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
 import api from "@/api";
 import { useDesignSettingStore } from "@/store/modules/designSetting";
@@ -57,7 +57,7 @@ const fileList = ref([]);
 const uploadref = ref();
 const imageurl = ref();
 
-MdEditor.config({});
+// MdEditor.config({});
 
 const content = ref({
   tags: computed(() => {

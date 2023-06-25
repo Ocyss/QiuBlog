@@ -17,7 +17,7 @@ Server:
       Port: 6379
       Password:
       Db: 0
-  Sss:
+  Oss:
     #oss服务商，支持[qiniu,aliyun]
     Name: aliyun
     qiniu:

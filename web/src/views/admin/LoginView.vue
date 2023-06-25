@@ -265,7 +265,7 @@ function Validate(e: MouseEvent) {
       if (loginty.value) {
         const res = await api.user.login(Data.value)
         if (res.status == 200 && res.data.token) {
-          $cookies.set("token", res.token);
+          $cookies.set("token", res.data.token);
           message.success("登陆成功！！");
           router.push({ name: "admin" });
         } else {
@@ -322,8 +322,6 @@ function handleConfirm(dots) {
     }
     capt.value.autoRefreshCount += 1
     status.value = 'error'
-    console.log(capt.value);
-
   })
 }
 

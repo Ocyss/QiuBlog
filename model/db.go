@@ -23,6 +23,7 @@ func InitDb() {
 	log.Info("init database...")
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		utils.Config.Server.Database.User, utils.Config.Server.Database.PassWord, utils.Config.Server.Database.Host, utils.Config.Server.Database.Port, utils.Config.Server.Database.Name)
+
 	Db, err = gorm.Open(mysql.New(mysql.Config{
 		DSN:                       dsn,
 		DefaultStringSize:         256,  // string 类型字段的默认长度

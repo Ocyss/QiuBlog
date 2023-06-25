@@ -24,6 +24,8 @@ func Upload(c *gin.Context) {
 		uploadName := fmt.Sprintf("%s/%d%s", class, now.UnixNano(), path.Ext(fileName))
 		code, url := model.UpLoadFile(uploadName, file, fileSize)
 		res.ReturnData(c, code, url)
+		return
 	}
+
 	res.Err(c, errmsg.ERROR_CLASS_WRONG)
 }
