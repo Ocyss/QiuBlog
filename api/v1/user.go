@@ -6,6 +6,7 @@ import (
 	"qiublog/db"
 	"qiublog/model"
 	"qiublog/utils/errmsg"
+	"qiublog/utils/middleware"
 	"qiublog/utils/res"
 )
 
@@ -50,5 +51,13 @@ func Login(c *gin.Context) {
 	res.ReturnData(c, code, gin.H{
 		"uid":   uid,
 		"token": token,
+	})
+}
+
+func Check(c *gin.Context) {
+	ckToken := c.GetHeader("Token")
+	_, tCode := middleware.CheckToken(ckToken)
+	res.ReturnData(c, errmsg.SUCCESS, gin.H{
+		"code": tCode,
 	})
 }

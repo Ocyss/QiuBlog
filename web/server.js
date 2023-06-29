@@ -20,12 +20,12 @@ export async function createServer(
     : "";
 
   const manifest = isProd
-    ? JSON.parse(
-        fs.readFileSync(resolve("dist/client/ssr-manifest.json"), "utf-8")
+      ? JSON.parse(
+          fs.readFileSync(resolve("dist/client/ssr-manifest.json"), "utf-8")
       )
-    : {};
-  const baseUrl = isProd ? "api.邱.cf" : "127.0.0.1:3000";
-  const app = express();
+      : {};
+    const baseUrl = isProd ? "api.ocyss.icu" : "127.0.0.1:3000";
+    const app = express();
   /**
    * @type {import('vite').ViteDevServer}
    */
@@ -53,15 +53,15 @@ export async function createServer(
       })
     );
   }
-
-  app.use(
-    ["/rss/*", "/sitemap.xml"],
-    proxy(baseUrl, {
-      proxyReqPathResolver: function (req) {
-        return req.baseUrl;
-      },
-    })
-  );
+    app.use(express.static("files"));
+    app.use(
+        ["/rss/*", "/sitemap.xml"],
+        proxy(baseUrl, {
+            proxyReqPathResolver: function (req) {
+                return req.baseUrl;
+            },
+        })
+    );
 
   app.use("*", async (req, res) => {
     const url = req.originalUrl;

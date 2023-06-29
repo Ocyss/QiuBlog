@@ -22,4 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-/web.rar
+
+# user
+web.rar
+
+/files/*
+/!files/README.md

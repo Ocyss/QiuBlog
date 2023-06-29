@@ -45,9 +45,21 @@ type Oss struct {
 	} `yaml:"aliyun"`
 }
 type Push struct {
-	WxPushCorpID  string `yaml:"WxPushCorpId,omitempty"`
-	WxPushAgentid string `yaml:"WxPushAgentid,omitempty"`
-	WxPushSecret  string `yaml:"WxPushSecret,omitempty"`
+	Enable string `yaml:"Enable,omitempty"`
+	WxPush WxPush `yaml:"WxPush,omitempty"`
+	Email  Email  `yaml:"Email,omitempty"`
+}
+type WxPush struct {
+	CorpId  string `yaml:"CorpId,omitempty"`
+	Agentid string `yaml:"Agentid,omitempty"`
+	Secret  string `yaml:"Secret,omitempty"`
+}
+type Email struct {
+	To       string `yaml:"To,omitempty"`
+	Password string `yaml:"Password,omitempty"`
+	From     string `yaml:"From,omitempty"`
+	Host     string `yaml:"Host,omitempty"`
+	Port     string `yaml:"Port,omitempty"`
 }
 type Log struct {
 	Enable     bool   `yaml:"Enable,omitempty"`

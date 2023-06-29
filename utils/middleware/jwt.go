@@ -82,7 +82,7 @@ func JwtToken(termination bool, role int) gin.HandlerFunc {
 			return
 		}
 		if key.Role < role {
-			//认证字符串时间判断 !过期
+			//认证字符串 权限不够
 			code = errmsg.ERROR_ROLE_LOW
 			cRes(c, code)
 			return

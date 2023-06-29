@@ -48,7 +48,10 @@ func AddMessage(c *gin.Context) {
 		return
 	}
 	db.Rdb.Del(ctx, "Captcha:Yes:"+data.Token)
-	_ = tool.WxPush(fmt.Sprintf("QiuBlog提醒您:\n有一条新的留言\n\n昵称: %s\nQQ: %s\n邮箱: %s\n内容: %s", data.Name, data.Qq, data.Email, data.Content))
+	_ = tool.Send(
+		"QiuBlogBot:您有一条新的留言",
+		fmt.Sprintf("\n\n昵称: %s\nQQ: %s\n邮箱: %s\n内容: %s", data.Name, data.Qq, data.Email, data.Content),
+	)
 	res.OKData(c, model.AddMessage(&data.Message))
 }
 
@@ -68,7 +71,10 @@ func AddQuestion(c *gin.Context) {
 		return
 	}
 	db.Rdb.Del(ctx, "Captcha:Yes:"+data.Token)
-	_ = tool.WxPush(fmt.Sprintf("QiuBlog提醒您:\n有一条新的问答\n\n昵称: %s\nQQ: %s\n邮箱: %s\n问题: %s", data.Name, data.Qq, data.Email, data.Question.Question))
+	_ = tool.Send(
+		"QiuBlogBot:您有一条新的问答",
+		fmt.Sprintf("\n\n昵称: %s\nQQ: %s\n邮箱: %s\n问题: %s", data.Name, data.Qq, data.Email, data.Question.Question),
+	)
 	res.Return(c, model.AddQuestion(&data.Question))
 }
 
