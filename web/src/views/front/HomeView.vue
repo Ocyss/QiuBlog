@@ -1,23 +1,10 @@
 <template>
   <div>
     <div class="popular">
-      <n-carousel
-        autoplay
-        draggable
-        show-arrow
-        :space-between="20"
-        effect="custom"
-        :transition-props="{ name: 'creative' }"
-        trigger="hover"
-        :interval="2000"
-      >
+      <n-carousel autoplay draggable show-arrow :space-between="20" effect="custom"
+        :transition-props="{ name: 'creative' }" trigger="hover" :interval="2000">
         <div class="article" v-for="data in datas" :key="data">
-          <n-image
-            preview-disabled
-            class="carousel-img"
-            :src="data"
-            object-fit="cover"
-          />
+          <n-image preview-disabled class="carousel-img" :src="data" object-fit="cover" />
         </div>
       </n-carousel>
     </div>
@@ -55,33 +42,31 @@ const cdata = ref({
     },
   ],
 });
-const baseUrl =
-  (import.meta.env.VITE_HTTPS == "true" ? "https://" : "http://") +
-  import.meta.env.VITE_URL;
-useHead({
-  link: [
-    {
-      rel: "alternate",
-      type: "application/rss+xml",
-      title: "RSS 2.0 Feed",
-      href: baseUrl + "/rss/rss",
-    },
-    {
-      rel: "alternate",
-      type: "application/atom+xml",
-      title: "RSS Atom Feed",
-      href: baseUrl + "/rss/atom",
-    },
-    {
-      rel: "alternate",
-      type: "application/rss+json",
-      title: "RSS JSON Feed",
-      href: baseUrl + "/rss/json",
-    },
-  ],
-});
 
 onMounted(() => {
+  const baseUrl = window.location.protocol + "//" + window.location.host;
+  useHead({
+    link: [
+      {
+        rel: "alternate",
+        type: "application/rss+xml",
+        title: "RSS 2.0 Feed",
+        href: baseUrl + "/rss/rss",
+      },
+      {
+        rel: "alternate",
+        type: "application/atom+xml",
+        title: "RSS Atom Feed",
+        href: baseUrl + "/rss/atom",
+      },
+      {
+        rel: "alternate",
+        type: "application/rss+json",
+        title: "RSS JSON Feed",
+        href: baseUrl + "/rss/json",
+      },
+    ],
+  });
   api.category.get().then((res) => {
     res.data.map((item) => {
       if (item.homeshow) {
@@ -94,18 +79,22 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 $popularHeight: 320px;
+
 .popular {
   width: 100%;
   height: $popularHeight;
   vertical-align: middle;
+
   .article {
     display: flex;
     height: $popularHeight;
   }
 }
+
 .carousel-img {
   width: 100%;
 }
+
 .carousel-img :deep(img) {
   width: 100%;
 }
@@ -120,11 +109,13 @@ $popularHeight: 320px;
 :deep(.creative-leave-active) {
   transition: all 0.3s ease;
 }
+
 .content {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .skeleton {
   z-index: 10;
   margin-top: 20px;
