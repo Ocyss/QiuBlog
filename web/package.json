@@ -9,6 +9,7 @@
   },
   "author": "Ocyss",
   "config": {
+    "host": "api.ocyss.icu",
     "port": "16879"
   },
   "scripts": {

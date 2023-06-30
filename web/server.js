@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import express from "express";
-import proxy from "express-http-proxy-2";
+import axios from "axios";
 import { log } from "node:console";
 
 const isTest = process.env.VITEST;
@@ -20,12 +20,12 @@ export async function createServer(
     : "";
 
   const manifest = isProd
-      ? JSON.parse(
-          fs.readFileSync(resolve("dist/client/ssr-manifest.json"), "utf-8")
+    ? JSON.parse(
+        fs.readFileSync(resolve("dist/client/ssr-manifest.json"), "utf-8")
       )
-      : {};
-    const baseUrl = isProd ? "api.ocyss.icu" : "127.0.0.1:3000";
-    const app = express();
+    : {};
+  const baseUrl = isProd ? "https://api.ocyss.icu" : "http://127.0.0.1:3000";
+  const app = express();
   /**
    * @type {import('vite').ViteDevServer}
    */
@@ -53,15 +53,14 @@ export async function createServer(
       })
     );
   }
-    app.use(express.static("files"));
-    app.use(
-        ["/rss/*", "/sitemap.xml"],
-        proxy(baseUrl, {
-            proxyReqPathResolver: function (req) {
-                return req.baseUrl;
-            },
-        })
-    );
+  app.use(express.static("files"));
+  app.get(["/rss/*", "/sitemap.xml"], async (req, res) => {
+    const r = await axios.get(baseUrl + req.url);
+    for (let h in r.headers) {
+      res.set(h, r.headers[h]);
+    }
+    res.send(r.data);
+  });
 
   app.use("*", async (req, res) => {
     const url = req.originalUrl;
