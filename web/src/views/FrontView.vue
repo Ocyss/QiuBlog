@@ -24,5 +24,6 @@ const affixRef = ref(void 0);
 .content {
   width: 100%;
   max-width: 768px;
+  min-height: 140vh;
 }
 </style>

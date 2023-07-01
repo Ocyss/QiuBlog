@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 	"qiublog/db"
 	"qiublog/model"
 	"qiublog/utils/errmsg"
@@ -48,10 +49,12 @@ func AddMessage(c *gin.Context) {
 		return
 	}
 	db.Rdb.Del(ctx, "Captcha:Yes:"+data.Token)
-	_ = tool.Send(
+	if err := tool.Send(
 		"QiuBlogBot:您有一条新的留言",
 		fmt.Sprintf("\n\n昵称: %s\nQQ: %s\n邮箱: %s\n内容: %s", data.Name, data.Qq, data.Email, data.Content),
-	)
+	); err != nil {
+		log.Error("SendErr:", err)
+	}
 	res.OKData(c, model.AddMessage(&data.Message))
 }
 
@@ -71,10 +74,13 @@ func AddQuestion(c *gin.Context) {
 		return
 	}
 	db.Rdb.Del(ctx, "Captcha:Yes:"+data.Token)
-	_ = tool.Send(
+
+	if err := tool.Send(
 		"QiuBlogBot:您有一条新的问答",
 		fmt.Sprintf("\n\n昵称: %s\nQQ: %s\n邮箱: %s\n问题: %s", data.Name, data.Qq, data.Email, data.Question.Question),
-	)
+	); err != nil {
+		log.Error("SendErr:", err)
+	}
 	res.Return(c, model.AddQuestion(&data.Question))
 }
 
@@ -143,4 +149,31 @@ func ClearMessage(c *gin.Context) {
 	}
 	model.ClearMessage(data.Message, data.Question)
 	res.OK(c)
+}
+
+func LikeMessage(c *gin.Context) {
+	type d struct {
+		Type string `json:"type"`
+		Id   uint   `json:"id"`
+	}
+	var data d
+	err := c.ShouldBindJSON(&data)
+	if err != nil || (data.Type != "message" && data.Type != "question") {
+		res.ErrParam(c)
+		return
+	}
+	key := data.Type + ":like"
+	ctx := context.Background()
+	temp := db.Rdb.PFCount(ctx, key).Val()
+	db.Rdb.PFAdd(ctx, key, c.ClientIP(), data.Id)
+	if temp != db.Rdb.PFCount(ctx, key).Val() {
+		err = model.LikeMessage(data.Type, data.Id)
+		if err != nil {
+			res.ErrData(c, errmsg.ERROR, err)
+		} else {
+			res.OK(c)
+		}
+	} else {
+		res.OKData(c, "你已经点过赞啦!")
+	}
 }

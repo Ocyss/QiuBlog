@@ -37,7 +37,7 @@ const scrollableEl: Ref<HTMLElement> = inject("scrollableEl");
   position: relative;
 
   .n-card,
-  .n-affix > .n-card {
+  .n-affix>.n-card {
     max-width: 280px;
     width: 20vw;
     border-radius: 8px;

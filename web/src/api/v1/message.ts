@@ -46,3 +46,14 @@ export const clearMessage = (data: { message: boolean; question: boolean }) => {
     data: data,
   });
 };
+
+export const likeMessage = (type, id) => {
+  return request({
+    url: "/api/v1/message/like",
+    method: "post",
+    data: {
+      type,
+      id,
+    },
+  });
+};

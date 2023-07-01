@@ -21,7 +21,7 @@ func MainSetUV(c *gin.Context) {
 	ctx := context.Background()
 	err := db.Rdb.PFAdd(ctx, "main:uv", c.ClientIP()).Err()
 	if err != nil {
-		res.Err(c, errmsg.ERROR)
+		res.ErrData(c, errmsg.ERROR, err)
 		return
 	}
 	res.OK(c)

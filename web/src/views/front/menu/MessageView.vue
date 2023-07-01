@@ -5,19 +5,18 @@
   </n-space>
   <n-divider />
   <n-grid x-gap="12" y-gap="12" cols="1 s:2 m:3 l:4" responsive="screen">
-    <n-gi v-for="item in content" :key="item.id">
+    <n-gi v-for="(item, index) in content" :key="item.id">
       <n-card>
         <n-thing>
           <template #avatar>
-            <n-avatar round size="large" :src="
-              item.qq
-                ? `https://q.qlogo.cn/headimg_dl?dst_uin=${item.qq}&spec=640&img_type=jpg`
-                : `https://api.multiavatar.com/${item.content}.png`
-            " />
+            <n-avatar round size="large" :src="item.qq
+              ? `https://q.qlogo.cn/headimg_dl?dst_uin=${item.qq}&spec=640&img_type=jpg`
+              : `https://api.multiavatar.com/${item.id}.png`
+              " />
           </template>
           <template #header>{{ item.name }}</template>
           <template #header-extra>
-            <n-button circle size="small">
+            <n-button circle size="small" @click="() => like(item.id, index)">
               <template #icon>
                 <ThumbsUpSharp />
               </template>
@@ -41,11 +40,10 @@
       <n-input v-model:value="data.name" :allow-input="noSpace" placeholder="*昵称"></n-input>
       <n-input v-model:value="data.email" :allow-input="noSpace" placeholder="Email"></n-input>
       <n-input v-model:value="data.qq" :allow-input="noSpace" placeholder="QQ"></n-input>
-      <n-avatar round size="large" :src="
-        data.qq
-          ? `https://q.qlogo.cn/headimg_dl?dst_uin=${data.qq}&spec=640&img_type=jpg`
-          : `https://api.multiavatar.com/${data.content}.png`
-      " />
+      <n-avatar round size="large" :src="data.qq
+        ? `https://q.qlogo.cn/headimg_dl?dst_uin=${data.qq}&spec=640&img_type=jpg`
+        : `https://api.multiavatar.com/${data.content}.png`
+        " />
     </n-space>
     <n-divider />
     <n-input v-model:value="data.content" type="textarea" placeholder="*留言内容 最少10字" show-count minlength="10"
@@ -159,6 +157,18 @@ function handleConfirm(dots) {
     console.log(capt.value);
 
   })
+}
+
+function like(id, index) {
+  api.message.likeMessage("message", id).then(
+    res => {
+      if (res.data) {
+        message.error(res.data)
+      } else {
+        content.value[index].like += 1
+      }
+    }
+  )
 }
 onServerPrefetch(async () => {
   await getMessage();

@@ -16,7 +16,7 @@ request.interceptors.request.use(
     if (!import.meta.env.SSR) {
       let token = document.cookie.match(`[;\s+]?token=([^;]*)`)?.pop();
       if (token) {
-        config.headers.Token = token;
+        config.headers.set("Token", token);
       }
     }
     return config;

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"gorm.io/gorm"
 	"qiublog/db"
 	"qiublog/utils/errmsg"
 	"qiublog/utils/tool"
@@ -244,4 +245,15 @@ func ReplyQuestion(id uint, content string) int {
 	db.Rdb.HDel(ctx, "questions", "admin:false")
 	db.Rdb.HDel(ctx, "question", strconv.Itoa(int(id)))
 	return errmsg.SUCCESS
+}
+
+// LikeMessage 点赞
+func LikeMessage(t string, id uint) error {
+	err := Db.Table(t).Where("id = ?", id).UpdateColumn("like", gorm.Expr("`like` + ?", 1)).Error
+	if err != nil {
+		return err
+	}
+	ctx := context.Background()
+	db.Rdb.HDel(ctx, t, strconv.Itoa(int(id)))
+	return nil
 }

@@ -1,11 +1,10 @@
 <template>
   <n-card class="comment" :title="t('info.card.title.message')" size="small">
     <div class="subitem" v-for="item in data" :key="item.id">
-      <n-avatar round :size="35" :src="
-        item.qq
-          ? `https://q.qlogo.cn/headimg_dl?dst_uin=${item.qq}&spec=640&img_type=jpg`
-          : `https://api.multiavatar.com/${item.content}.png`
-      " />
+      <n-avatar round :size="35" :src="item.qq
+        ? `https://q.qlogo.cn/headimg_dl?dst_uin=${item.qq}&spec=640&img_type=jpg`
+        : `https://api.multiavatar.com/${item.id}.png`
+        " />
       <div class="text">
         <div class="name">
           {{ item.name }}
@@ -46,10 +45,18 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .comment {
+  max-height: 320px;
+
   :deep(.n-card__content) {
     max-height: 350px;
     overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
+
+
 }
 
 .subitem {

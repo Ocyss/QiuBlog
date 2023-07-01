@@ -51,10 +51,11 @@ func startUser(r *gin.Engine) {
 		//标签
 		router.GET("tags", v1.GetTags) //获取全部标签
 		//消息
-		router.POST("message", v1.AddMessage)   //进行留言
-		router.POST("question", v1.AddQuestion) //进行提问
-		router.GET("message", v1.GetMessage)    //获取留言
-		router.GET("question", v1.GetQuestion)  //获取提问
+		router.POST("message", v1.AddMessage)       //进行留言
+		router.POST("question", v1.AddQuestion)     //进行提问
+		router.GET("message", v1.GetMessage)        //获取留言
+		router.GET("question", v1.GetQuestion)      //获取提
+		router.POST("message/like", v1.LikeMessage) //留言&问答点赞
 		//统计
 		router.POST("statistics/set/mainuv", v1.MainSetUV)
 		router.GET("statistics", v1.GetStatistics)
