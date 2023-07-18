@@ -47,7 +47,7 @@
     "vue-i18n": "^9.2.2",
     "vue-router": "4.2.2",
     "vue3-particles": "^2.10.1",
-    "vuedraggable": "^2.24.3"
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",
