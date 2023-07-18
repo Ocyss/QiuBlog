@@ -1,10 +1,25 @@
 import { RouteRecordRaw } from "vue-router";
+
 function randomString() {
-  let chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  let result = "";
-  for (let i = 16; i > 0; --i)
-    result += chars[Math.floor(Math.random() * chars.length)];
-  return "/" + result;
+  const d = new Date().toDateString();
+  let key = "01589ABCFGHIJNOPSTUWXYZ";
+  let st = key.length;
+  let a = key.split("");
+  let s = "",
+    b,
+    b1,
+    b2,
+    b3;
+  for (let i = 0; i < d.length; i++) {
+    b = d.charCodeAt(i);
+    b1 = b % st;
+    b = (b - b1) / st;
+    b2 = b % st;
+    b = (b - b2) / st;
+    b3 = b % st;
+    s += a[b3] + a[b2] + a[b1];
+  }
+  return "/" + s;
 }
 
 const adminPath = import.meta.env.PROD ? randomString() : "/admin";

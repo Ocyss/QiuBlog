@@ -55,7 +55,7 @@ Log:
   # 日志等级 生产环境推荐 warn
   Level: warn
   # 日志文件名
-  Filename: Log\log.log
+  Filename: log/log.log
   # 最大大小
   MaxSize: 10
   # 最长时间

@@ -21,6 +21,7 @@ export function febore(router, pinia) {
   router.beforeEach(async (to, from, next) => {
     loader(true);
     loadingBar.start();
+    // next();
 
     if (!to.name) {
       //判断有没有路由

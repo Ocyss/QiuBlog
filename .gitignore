@@ -10,3 +10,4 @@ gen
 *.cache
 /main
 /log/
+/Log/

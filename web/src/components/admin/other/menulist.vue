@@ -5,10 +5,8 @@
         <h2>菜单子项：</h2>
       </template>
       <n-spin :show="setMenuShow">
-        <n-list-item
-          :class="menuValue.ename == 'home' ? 'checked' : ''"
-          @click="selectMenu({ id: 0, name: '主页', ename: 'home', sort: -1 })"
-        >
+        <n-list-item :class="menuValue.ename == 'home' ? 'checked' : ''"
+          @click="selectMenu({ id: 0, name: '主页', ename: 'home', sort: -1 })">
           <div class="home">
             <n-icon size="26" v-html="home.logo" />
             <div class="listname">
@@ -17,26 +15,17 @@
             </div>
           </div>
         </n-list-item>
-        <draggable
-          v-model="menulist"
-          group="people"
-          @start="drag = true"
-          @end="drag = false"
-          item-key="id"
-        >
+        <draggable v-model="menulist" group="people" @start="drag = true" @end="drag = false" item-key="id">
           >
           <template #item="{ element, index }">
-            <n-list-item
-              :class="menuValue.id == element.id ? 'checked' : ''"
-              @click="
-                selectMenu({
-                  id: element.id,
-                  name: element.name,
-                  ename: element.ename,
-                  sort: index,
-                })
-              "
-            >
+            <n-list-item :class="menuValue.id == element.id ? 'checked' : ''" @click="
+              selectMenu({
+                id: element.id,
+                name: element.name,
+                ename: element.ename,
+                sort: index,
+              })
+              ">
               <div class="listcontent">
                 <n-icon size="26" v-html="element.logo" />
                 <div class="listname">
@@ -72,12 +61,7 @@
           <n-button size="small" secondary strong @click="showModalnew = true">
             新建
           </n-button>
-          <n-button
-            size="small"
-            secondary
-            strong
-            @click="menulist = [...menulist2]"
-          >
+          <n-button size="small" secondary strong @click="menulist = [...menulist2]">
             重置
           </n-button>
         </n-space>
@@ -86,24 +70,12 @@
     <div class="cate">
       <categoryVue ref="categoryRef" />
     </div>
-    <n-modal
-      v-model:show="showModalnew"
-      preset="dialog"
-      title="新建菜单子项"
-      positive-text="确认"
-      negative-text="算了"
-      @positive-click="newMenu"
-    >
+    <n-modal v-model:show="showModalnew" preset="dialog" title="新建菜单子项" positive-text="确认" negative-text="算了"
+      @positive-click="newMenu">
       <menueditVue :value="newvalue" />
     </n-modal>
-    <n-modal
-      v-model:show="showModaledit"
-      preset="dialog"
-      title="编辑菜单子项"
-      positive-text="确认"
-      negative-text="算了"
-      @positive-click="editMenu"
-    >
+    <n-modal v-model:show="showModaledit" preset="dialog" title="编辑菜单子项" positive-text="确认" negative-text="算了"
+      @positive-click="editMenu">
       <menueditVue :value="editvalue" />
     </n-modal>
   </div>
@@ -117,6 +89,7 @@ import menueditVue from "./menuedit.vue";
 import { useMessage } from "naive-ui";
 import categoryVue from "./category.vue";
 import api from "@/api";
+const ssr = import.meta.env.SSR
 const home = ref({
   id: -1,
   name: "主页",
