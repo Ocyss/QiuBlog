@@ -5,8 +5,7 @@
         <h2>菜单子项：</h2>
       </template>
       <n-spin :show="setMenuShow">
-        <n-list-item :class="menuValue.ename == 'home' ? 'checked' : ''"
-          @click="selectMenu({ id: 0, name: '主页', ename: 'home', sort: -1 })">
+        <n-list-item>
           <div class="home">
             <n-icon size="26" v-html="home.logo" />
             <div class="listname">
@@ -18,14 +17,7 @@
         <draggable v-model="menulist" group="people" @start="drag = true" @end="drag = false" item-key="id">
           >
           <template #item="{ element, index }">
-            <n-list-item :class="menuValue.id == element.id ? 'checked' : ''" @click="
-              selectMenu({
-                id: element.id,
-                name: element.name,
-                ename: element.ename,
-                sort: index,
-              })
-              ">
+            <n-list-item>
               <div class="listcontent">
                 <n-icon size="26" v-html="element.logo" />
                 <div class="listname">
@@ -68,7 +60,7 @@
       </template>
     </n-list>
     <div class="cate">
-      <categoryVue ref="categoryRef" />
+      <categoryVue :menulist="menulist" />
     </div>
     <n-modal v-model:show="showModalnew" preset="dialog" title="新建菜单子项" positive-text="确认" negative-text="算了"
       @positive-click="newMenu">
@@ -113,7 +105,7 @@ let savedata = [];
 const setMenuShow = ref(false);
 const message = useMessage();
 const menuValue = ref({ id: 0, name: "主页", ename: "home", sort: -1 });
-const categoryRef = ref();
+
 //新建菜单
 function newMenu() {
   menulist.value.push(newvalue.value);
@@ -189,11 +181,6 @@ function saveMenu() {
     savedata = [];
   });
   setMenuShow.value = false;
-}
-//选中菜单
-function selectMenu(data) {
-  menuValue.value = data;
-  categoryRef.value?.toggleMenu(data);
 }
 
 onMounted(() => {

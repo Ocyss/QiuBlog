@@ -1,10 +1,10 @@
 .List {
   width: 210px;
   min-width: 210px;
-  min-height: 700px;
+  // min-height: 700px;
   .n-spin-container {
     overflow-y: scroll;
-    height: 700px;
+    // height: 700px;
   }
 }
 
@@ -25,6 +25,6 @@
 
 .n-list-item {
   :deep(.n-list-item__main) {
-    height: 41.58px;
+    // height: 41.58px;
   }
 }
