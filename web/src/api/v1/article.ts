@@ -21,3 +21,7 @@ export const getList = (params: {
 export const put = (id, data) => {
   return request({ url: `/api/v1/article/${id}`, method: "put", data });
 };
+
+export const del = (id) => {
+  return request({ url: `/api/v1/article/${id}`, method: "delete" });
+};

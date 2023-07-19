@@ -195,6 +195,8 @@ func AddCategory(data *Category) (int, *uint) {
 	if err != nil {
 		return errmsg.ERROR, nil
 	}
+	ctx := context.Background()
+	db.Rdb.Del(ctx, "categorys")
 	return errmsg.SUCCESS, &data.ID
 }
 

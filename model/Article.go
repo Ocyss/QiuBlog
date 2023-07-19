@@ -86,6 +86,18 @@ func ModifyArticle(tx *gorm.DB, id int, data *Article) int {
 	return errmsg.SUCCESS
 }
 
+// DeleteArticle 删除文章(软删除)
+func DeleteArticle(id int) int {
+	err := Db.Where("id = ?", id).Delete(&Article{}).Error
+	if err != nil {
+		return errmsg.ERROR
+	}
+	ctx := context.Background()
+	db.Rdb.Del(ctx, "articles")
+	db.Rdb.Del(ctx, "tags")
+	return errmsg.SUCCESS
+}
+
 // GetsArticle 获取文章列表
 func GetsArticle(pageSize int, pageNum int, cid int, mid int, tid int) ([]Articles, int64) {
 	// 存在缓存中的json数据

@@ -112,6 +112,16 @@ func ModifyArticle(c *gin.Context) {
 }
 
 // DeleteArticle 删除文章
-func DeleteArticle(_ *gin.Context) {
-
+func DeleteArticle(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		res.ErrParam(c)
+		return
+	}
+	code := model.DeleteArticle(id)
+	if code != errmsg.SUCCESS {
+		res.ErrData(c, code, err)
+	} else {
+		res.OK(c)
+	}
 }

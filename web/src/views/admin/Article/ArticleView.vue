@@ -15,12 +15,12 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import { h, reactive, nextTick, ref, onMounted } from "vue";
-import { NButton, NTag, NImage } from "naive-ui";
+import { NButton, NTag, NImage, useMessage } from "naive-ui";
 import { timeControl } from "@/utils";
 import api from "@/api";
 import moment from "moment";
 const router = useRouter();
-
+const message = useMessage();
 const data = ref([]);
 const dropdown = ref({
   x: 0,
@@ -50,6 +50,11 @@ const handleSelect = (key) => {
         id: dropdown.value.row.id,
       },
     });
+  } else if (key == "delete") {
+    api.article.del(dropdown.value.row.id).then(res => {
+      message.success(dropdown.value.row.id + "删除成功!")
+      data.value = data.value.filter(item => item.id !== dropdown.value.row.id);
+    })
   }
 };
 const rowProps = (row) => {
