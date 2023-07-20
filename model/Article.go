@@ -99,7 +99,7 @@ func DeleteArticle(id int) int {
 }
 
 // GetsArticle 获取文章列表
-func GetsArticle(pageSize int, pageNum int, cid int, mid int, tid int) ([]Articles, int64) {
+func GetsArticle(pageSize int, pageNum int, cid int, mid int, tid int, menu bool) ([]Articles, int64) {
 	// 存在缓存中的json数据
 	var dataJson []byte
 	//缓存中的格式
@@ -145,7 +145,7 @@ func GetsArticle(pageSize int, pageNum int, cid int, mid int, tid int) ([]Articl
 			if mid == -2 {
 				articlesHset(midKey, nil)
 			} else {
-				articlesHset(midKey, map[string]interface{}{"cid": GetMidCid(mid)})
+				articlesHset(midKey, map[string]interface{}{"cid": GetMidCid(mid, menu)})
 			}
 		}
 	}

@@ -17,6 +17,7 @@ func AddCategory(c *gin.Context) {
 
 // GetCategory 获取分类
 func GetCategory(c *gin.Context) {
+	// 是否主页显示
 	show, err := strconv.ParseBool(c.Query("show"))
 	if err != nil {
 		res.ErrParam(c)

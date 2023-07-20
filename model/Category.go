@@ -15,6 +15,7 @@ type Category struct {
 	Name     string    `gorm:"type:varchar(255);not null;unique;comment:分类名" json:"name"`
 	Mid      *uint     `gorm:"type:int;comment:菜单子项ID" json:"mid"`
 	Homeshow bool      `gorm:"type:bool;comment:主页是否显示;default:true;not null;" json:"homeshow,omitempty"`
+	Menushow bool      `gorm:"type:bool;comment:菜单内是否显示;default:true;not null;" json:"menushow,omitempty"`
 	Articles []Article `gorm:"foreignkey:Cid"`
 }
 
@@ -205,6 +206,7 @@ type GetCategoryTy struct {
 	Name     string `json:"name"`
 	Mid      uint   `json:"mid"`
 	Homeshow bool   `json:"homeshow"`
+	Menushow bool   `json:"menushow"`
 }
 
 // GetCategory 获取分类
@@ -226,7 +228,7 @@ func GetCategory(homeshow bool) []GetCategoryTy {
 }
 
 // GetMidCid 根据mid获取所有cid
-func GetMidCid(mid int) []int {
+func GetMidCid(mid int, menu bool) []int {
 	var data []Category
 	var r []int
 	ctx := context.Background()
@@ -240,6 +242,9 @@ func GetMidCid(mid int) []int {
 			where["mid"] = mid
 		} else if mid == -1 {
 			where["homeshow"] = false
+		}
+		if menu {
+			where["menushow"] = true
 		}
 		err := Db.Where(where).Find(&data).Error
 		if err != nil {
@@ -269,5 +274,7 @@ func ModifyCategorys(data *[]Category) int {
 	tx.Commit()
 	ctx := context.Background()
 	db.Rdb.Del(ctx, "categorys")
+	db.Rdb.Del(ctx, "articles")
+	db.Rdb.Del(ctx, "tags")
 	return errmsg.SUCCESS
 }

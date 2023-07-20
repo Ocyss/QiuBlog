@@ -32,7 +32,8 @@ type Category = {
   id: number
   name: string
   mid: number | undefined,
-  homeshow: boolean
+  homeshow: boolean,
+  menushow: boolean
 }
 const categoryList: Ref<Category[]> = ref([]); //分类列表
 const categoryList1: Category[] = []; //分类列表
@@ -129,6 +130,22 @@ const columns: DataTableColumns<Category> = [
           checked: row.homeshow,
           onUpdateChecked: (v) => {
             row.homeshow = v
+            categoryChange[row.id] = row
+          }
+        }
+      )
+    }
+  },
+  {
+    title: '菜单内是否显示',
+    key: 'menushow',
+    render(row) {
+      return h(
+        NCheckbox,
+        {
+          checked: row.menushow,
+          onUpdateChecked: (v) => {
+            row.menushow = v
             categoryChange[row.id] = row
           }
         }

@@ -16,12 +16,13 @@ var code int
 
 // GetsArticle 获取文章列表
 func GetsArticle(c *gin.Context) {
-	pageSize, pageNum := tool.PageTool(c)  //分页最大数,分页偏移量
-	cid, _ := strconv.Atoi(c.Query("cid")) //分类ID
-	mid, _ := strconv.Atoi(c.Query("mid")) //菜单ID
-	tid, _ := strconv.Atoi(c.Query("tid")) //标签ID
+	pageSize, pageNum := tool.PageTool(c)         //分页最大数,分页偏移量
+	cid, _ := strconv.Atoi(c.Query("cid"))        //分类ID
+	mid, _ := strconv.Atoi(c.Query("mid"))        //菜单ID
+	tid, _ := strconv.Atoi(c.Query("tid"))        //标签ID
+	menu, _ := strconv.ParseBool(c.Query("menu")) //是否菜单项请求
 	//cids := model.GetMidCid(mid)
-	data, total := model.GetsArticle(pageSize, pageNum, cid, mid, tid)
+	data, total := model.GetsArticle(pageSize, pageNum, cid, mid, tid, menu)
 	//统计每个分类和菜单的访问次数
 	var miduv, ciduv, tiduv int64
 	ctx := context.Background()
