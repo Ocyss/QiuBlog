@@ -5,10 +5,10 @@
 
   <h1 align="center">QiuBlog</h1>
   <p align="center">
-    无限趋近于完美的自用博客，长期维护 <b>自用，学习</b>
+    无限趋近于<del>完美</del>答辩的自用博客，随缘维护 <b>自用，学习</b>
     <br />
      <br />
-    <a href="http://xn--xe4a.cf/">查看Demo</a>
+    <a href="https://ocyss.icu/">查看Demo</a>
     <a href="https://github.com/qiu-lzsnmb/QiuBlog/issues">报告Bug</a>
     <a href="https://github.com/qiu-lzsnmb/QiuBlog/issues">提出新特性</a>
   </p>
@@ -32,32 +32,21 @@
 
 ## 部署方法
 
-前端在web目录下输入指令 `yarn build` 进行编译
+前端在web目录下输入指令 `pnpm build` 进行编译
 
 后端在根目录输入指令`go build`进行编译
 
-也可直接下载编译好的版本
+建议使用 docker 部署
 
-```go
-├─config // 配置目录
-│  ├─ config.ini //后端配置文件
-├─web // 前端目录
-│  ├─assets
-│  ├─static // 静态文件
-|  |  ├─ config.json5 //前端配置文件
-│  └─index.html 
-└─main // 二进制可执行文件
+### Docker 部署
+
+您可以使用以下命令拉取并运行 QiuBlog 的 Docker 镜像：
+
+```bash
+docker pull ghcr.io/ocyss/qiublog:latest
 ```
 
-可在宝塔面板，Go项目中部署
-
-> 项目执行文件  `选择main // 二进制可执行文件`
->
-> 项目端口 `后端配置文件中的HttpPort(不带:)`
->
-> 执行命令 `默认`
->
-> 其他按需配置
+[https://github.com/Ocyss/QiuBlog/pkgs/container/QiuBlog]
 
 ## 预览
 
@@ -69,7 +58,7 @@
 
 <img src="https://qiu-blog.oss-cn-hangzhou.aliyuncs.com/Q/2022-10-30/1.png" style="zoom: 25%;" />
 
-### 文件目录说明
+### 文件目录说明 - 未更新
 ```
 │─api // 接口
 │  └─v1
@@ -101,12 +90,6 @@
 ### 版本控制
 
 该项目使用Git进行版本管理。您可以在repository参看当前可用版本。
-
-### 联系方式
-
-​	qiudie@88.com
-
-​	<a href="http://www.coolapk.com/u/3117607">酷安:熬鈛愿庸 </a>
 
 ### 版权说明
 
