@@ -1,6 +1,23 @@
 services:
+  db:
+    restart: always
+    image: mysql:8.0.25
+    ports:
+      - "127.0.0.1:3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    volumes:
+      - ./data:/var/lib/mysql
+
+  redis:
+    image: redis:8.0.25
+    restart: always
+
   web:
-    image: qiublog:241026
+    image: qiublog:241027
+    depends_on:
+      - db
+      - redis
     ports:
       - "3000:3000"
     volumes:

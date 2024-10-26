@@ -29,7 +29,8 @@ WORKDIR /app
 RUN npm install -g pnpm
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --no-frozen-lockfile
 
-RUN pnpm run build
+RUN pnpm run build:client
+RUN pnpm run build:server
 
 # 第三阶段: 准备运行环境
 FROM node:22-slim AS runner
