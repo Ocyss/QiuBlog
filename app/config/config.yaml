@@ -2,18 +2,18 @@ Server:
   # development 开发模式 production 生产模式
   AppMode: production
   Host: localhost
-  Port: 3000
+  Port: 16879
   # Jwt加密秘钥
   JwtKey:
   Database:
     Type: mysql
     Host: localhost
-    Port: 3307
+    Port: 3306
     User: root
     PassWord:
-    Name: qiublog
+    Name: qblog
     Redis:
-      Host: wsl
+      Host: localhost
       Port: 6379
       Password:
       Db: 0

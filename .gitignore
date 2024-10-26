@@ -11,3 +11,4 @@ gen
 /main
 /log/
 /Log/
+app/config/config.local.yaml

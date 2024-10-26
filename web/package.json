@@ -1,5 +1,5 @@
 {
-  "name": "QiuBlog",
+  "name": "qiu-blog",
   "private": true,
   "version": "0.23.506",
   "type": "module",
@@ -8,10 +8,6 @@
     "url": "https://github.com/Ocyss/QiuBlog.git"
   },
   "author": "Ocyss",
-  "config": {
-    "host": "api.ocyss.icu",
-    "port": "16879"
-  },
   "scripts": {
     "dev": "node server",
     "pro": "NODE_ENV=\"production\"  node server",
@@ -62,7 +58,6 @@
     "unplugin-vue-components": "^0.25.1",
     "vfonts": "^0.0.3",
     "vite": "^4.3.9",
-    "vite-plugin-compression": "^0.5.1",
-    "yarn": "^1.22.19"
+    "vite-plugin-compression": "^0.5.1"
   }
 }

@@ -6,22 +6,16 @@ import axios from "axios";
 
 const isTest = process.env.VITEST;
 
-export async function createServer(
-  root = process.cwd(),
-  isProd = process.env.NODE_ENV === "production"
-) {
+export async function createServer(root = process.cwd()) {
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   const resolve = (p) => path.resolve(__dirname, p);
 
-  const indexProd = isProd
-    ? fs.readFileSync(resolve("dist/client/index.html"), "utf-8")
-    : "";
+  const indexProd = fs.readFileSync(resolve("client/index.html"), "utf-8");
 
-  const manifest = isProd
-    ? JSON.parse(
-        fs.readFileSync(resolve("dist/client/ssr-manifest.json"), "utf-8")
-      )
-    : {};
+  const manifest = JSON.parse(
+    fs.readFileSync(resolve("client/ssr-manifest.json"), "utf-8")
+  );
+
   const baseUrl = "http://127.0.0.1:3000";
   const app = express();
   /**
@@ -29,28 +23,14 @@ export async function createServer(
    */
   let vite;
 
-  if (!isProd) {
-    vite = await (
-      await import("vite")
-    ).createServer({
-      base: "/",
-      root,
-      logLevel: isTest ? "error" : "info",
-      server: {
-        middlewareMode: true,
-      },
-      appType: "custom",
-    });
-    app.use(vite.middlewares);
-  } else {
-    app.use((await import("compression")).default());
-    app.use(
-      "/",
-      (await import("serve-static")).default(resolve("dist/client"), {
-        index: false,
-      })
-    );
-  }
+  app.use((await import("compression")).default());
+  app.use(
+    "/",
+    (await import("serve-static")).default(resolve("client"), {
+      index: false,
+    })
+  );
+
   app.use(express.static("files"));
   app.get(["/rss/*", "/sitemap.xml"], async (req, res) => {
     const r = await axios.get(baseUrl + req.url);
@@ -64,15 +44,8 @@ export async function createServer(
     const url = req.originalUrl;
 
     try {
-      let template, render;
-      if (!isProd) {
-        template = fs.readFileSync(resolve("index.html"), "utf-8");
-        template = await vite.transformIndexHtml(url, template);
-        render = (await vite.ssrLoadModule("/src/entry-server.ts")).render;
-      } else {
-        template = indexProd;
-        render = (await import("./dist/server/entry-server.js")).render;
-      }
+      const template = indexProd;
+      render = (await import("server/entry-server.js")).render;
 
       const { appHtml, cssHtml, preloadLinks, headPayload, teleports } =
         await render(url, manifest);
@@ -100,7 +73,7 @@ export async function createServer(
 }
 
 createServer().then(({ app }) =>
-  app.listen(process.env.npm_package_config_port, () => {
+  app.listen(3000, () => {
     console.log(
       `
        ____  _       ____  _
@@ -111,7 +84,7 @@ createServer().then(({ app }) =>
       \\___\\_\\_|\\__,_|____/|_|\\___/ \\__, |
                                     __/ |
                                    |___/
-    http://localhost:` + process.env.npm_package_config_port
+    http://localhost:3000`
     );
   })
 );

@@ -1,0 +1,7 @@
+services:
+  web:
+    image: qiublog:241026
+    ports:
+      - "16879:16879"
+    volumes:
+      - ./config:/app/config
