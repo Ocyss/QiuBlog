@@ -2,6 +2,6 @@ services:
   web:
     image: qiublog:241026
     ports:
-      - "16879:16879"
+      - "3000:3000"
     volumes:
       - ./config:/app/config

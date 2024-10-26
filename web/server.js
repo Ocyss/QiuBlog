@@ -100,7 +100,7 @@ export async function createServer(
 }
 
 createServer().then(({ app }) =>
-  app.listen(process.env.npm_package_config_port, () => {
+  app.listen(3000, () => {
     console.log(
       `
        ____  _       ____  _
@@ -111,7 +111,7 @@ createServer().then(({ app }) =>
       \\___\\_\\_|\\__,_|____/|_|\\___/ \\__, |
                                     __/ |
                                    |___/
-    http://localhost:` + process.env.npm_package_config_port
+    http://localhost:3000`
     );
   })
 );
