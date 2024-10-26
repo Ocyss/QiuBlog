@@ -22,7 +22,7 @@ export async function createServer(
         fs.readFileSync(resolve("dist/client/ssr-manifest.json"), "utf-8")
       )
     : {};
-  const baseUrl = "http://127.0.0.1:3000";
+  const baseUrl = "http://127.0.0.1:16879";
   const app = express();
   /**
    * @type {import('vite').ViteDevServer}

@@ -28,7 +28,7 @@ func InitRouter() {
 	startAuth(r)
 	startUser(r)
 	log.Info("init router run~")
-	err := r.Run(fmt.Sprintf("%s:%s", utils.Config.Server.Host, utils.Config.Server.Port))
+	err := r.Run(":16879")
 	if err != nil {
 		log.Panic(fmt.Sprintf("Server startup failure, %v", err))
 	}

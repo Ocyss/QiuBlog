@@ -1,9 +1,7 @@
 import axios from "axios";
 import { message } from "@/utils/client";
 
-const baseURL =
-  (import.meta.env.VITE_HTTPS == "true" ? "https://" : "http://") +
-  import.meta.env.VITE_URL;
+const baseURL = "http://127.0.0.1:16879";
 
 let request = axios.create({
   baseURL,

@@ -1,8 +1,6 @@
 Server:
   # development 开发模式 production 生产模式
   AppMode: production
-  Host: localhost
-  Port: 16879
   # Jwt加密秘钥
   JwtKey:
   Database:

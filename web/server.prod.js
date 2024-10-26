@@ -4,8 +4,6 @@ import { fileURLToPath } from "node:url";
 import express from "express";
 import axios from "axios";
 
-const isTest = process.env.VITEST;
-
 export async function createServer(root = process.cwd()) {
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   const resolve = (p) => path.resolve(__dirname, p);
@@ -16,7 +14,7 @@ export async function createServer(root = process.cwd()) {
     fs.readFileSync(resolve("client/ssr-manifest.json"), "utf-8")
   );
 
-  const baseUrl = "http://127.0.0.1:3000";
+  const baseUrl = "http://127.0.0.1:16879";
   const app = express();
   /**
    * @type {import('vite').ViteDevServer}
