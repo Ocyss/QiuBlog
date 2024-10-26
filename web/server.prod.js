@@ -3,6 +3,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import express from "express";
 import axios from "axios";
+import compression from "compression";
+import serveStatic from "serve-static";
 
 export async function createServer(root = process.cwd()) {
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -21,10 +23,10 @@ export async function createServer(root = process.cwd()) {
    */
   let vite;
 
-  app.use((await import("compression")).default());
+  app.use(compression());
   app.use(
     "/",
-    (await import("serve-static")).default(resolve("client"), {
+    serveStatic(resolve("client"), {
       index: false,
     })
   );
@@ -43,7 +45,7 @@ export async function createServer(root = process.cwd()) {
 
     try {
       const template = indexProd;
-      render = (await import("server/entry-server.js")).render;
+      render = (await import(resolve("server/entry-server.js"))).render;
 
       const { appHtml, cssHtml, preloadLinks, headPayload, teleports } =
         await render(url, manifest);

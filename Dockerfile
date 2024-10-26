@@ -40,18 +40,19 @@ WORKDIR /app
 
 COPY --from=go-builder /app/main .
 COPY --from=node-builder /app/dist web
+COPY --from=node-builder /app/node_modules web/node_modules
 
 COPY web/server.prod.js web/index.mjs
 COPY web/package.prod.json web/package.json
 
 WORKDIR /app/web
 
-RUN if [ "$USE_CN_PROXY" = "true" ]; then \
-  npm config set registry https://registry.npmmirror.com; \
-  fi
+# RUN if [ "$USE_CN_PROXY" = "true" ]; then \
+#   npm config set registry https://registry.npmmirror.com; \
+#   fi
 
-RUN --mount=type=cache,id=npm,target=/root/.npm \
-  npm install --frozen-lockfile
+# RUN --mount=type=cache,id=npm,target=/root/.npm \
+#   npm install --frozen-lockfile
 
 WORKDIR /app
 
