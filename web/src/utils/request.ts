@@ -1,10 +1,10 @@
 import axios from "axios";
 import { message } from "@/utils/client";
 
-const baseURL = "http://127.0.0.1:16879";
+// const baseURL = "http://127.0.0.1:16879";
 
 let request = axios.create({
-  baseURL,
+  // baseURL,
   timeout: 8000, // 超时时间
 });
 

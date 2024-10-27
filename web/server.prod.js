@@ -5,6 +5,7 @@ import express from "express";
 import axios from "axios";
 import compression from "compression";
 import serveStatic from "serve-static";
+import proxy from "express-http-proxy";
 
 export async function createServer(root = process.cwd()) {
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -40,12 +41,20 @@ export async function createServer(root = process.cwd()) {
     res.send(r.data);
   });
 
+  app.use("/api", (req, res) => {
+    proxy("http://127.0.0.1:16879", {
+      proxyReqPathResolver: function (req) {
+        return req.originalUrl;
+      },
+    })(req, res);
+  });
+
   app.use("*", async (req, res) => {
     const url = req.originalUrl;
 
     try {
       const template = indexProd;
-      render = (await import(resolve("server/entry-server.js"))).render;
+      const render = (await import(resolve("server/entry-server.js"))).render;
 
       const { appHtml, cssHtml, preloadLinks, headPayload, teleports } =
         await render(url, manifest);
