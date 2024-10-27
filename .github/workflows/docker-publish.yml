@@ -43,12 +43,14 @@ jobs:
       # It uses the `tags` and `labels` parameters to tag and label the image with the output from the "meta" step.
       - name: Build and push Docker image
         id: push
-        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          cache-to: type=inline
 
       # This step generates an artifact attestation for the image, which is an unforgeable statement about where and how it was built. It increases supply chain security for people who consume the image. For more information, see "[AUTOTITLE](/actions/security-guides/using-artifact-attestations-to-establish-provenance-for-builds)."
       # - name: Generate artifact attestation

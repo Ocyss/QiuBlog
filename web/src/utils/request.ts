@@ -1,7 +1,7 @@
 import axios from "axios";
 import { message } from "@/utils/client";
 
-const baseURL = "http://127.0.0.1:16879";
+const baseURL = import.meta.env.SSR ? "http://127.0.0.1:3000" : undefined;
 
 let request = axios.create({
   baseURL,
